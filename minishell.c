@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/02/26 16:47:29 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:58:10 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,25 @@ int	exit_handling(char *error)
 	exit(1);
 }
 
-void pwd_handling(void)
+void	cd_handling(t_list *shell)
 {
-	
+	cur_dir = ft_strjoin(shell->data->cur_dir, shell->str);
+	chdir(shell->str);
 }
 
-int	is_builtin(char *built)
+void	pwd_handling(t_list *shell)
+{
+	printf("%s\n", shell->data->cur_dir);
+}
+
+int	is_builtin(char *built, t_list *shell)
 {
 	if (!ft_strcmp(built, "echo"))
 		return (fonction echo);
 	if (!ft_strcmp(built, "cd"))
-		return (fonction cd);
+		return (cd_handling(shell));
 	if (!ft_strcmp(built, "pwd"))
-		return (fonction pwd);
+		return (pwd_handling(shell));
 	if (!ft_strcmp(built, "export"))
 		return (fonction export);
 	if (!ft_strcmp(built, "unset"))
@@ -46,6 +52,7 @@ int	is_builtin(char *built)
 int	main(int argc, char **argv, char **env)
 {
 	char	*line;
+	t_list	*shell;
 
 	while (1)
 	{
