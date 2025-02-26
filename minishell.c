@@ -6,32 +6,44 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/02/26 16:06:54 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:47:29 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
+int	exit_handling(char *error)
+{
+	ft_putstr_fd(error, 2);
+	garbagecollector;
+	exit(1);
+}
+
+void pwd_handling(void)
+{
+	
+}
+
 int	is_builtin(char *built)
 {
 	if (!ft_strcmp(built, "echo"))
-		return (1);
+		return (fonction echo);
 	if (!ft_strcmp(built, "cd"))
-		return (1);
+		return (fonction cd);
 	if (!ft_strcmp(built, "pwd"))
-		return (1);
+		return (fonction pwd);
 	if (!ft_strcmp(built, "export"))
-		return (1);
+		return (fonction export);
 	if (!ft_strcmp(built, "unset"))
-		return (1);
+		return (fonction unset);
 	if (!ft_strcmp(built, "env"))
-		return (1);
+		return (fonction env);
 	if (!ft_strcmp(built, "exit"))
-		return (1);
+		return (exit_handling("Exit\n"));
 	return (0);
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **env)
 {
 	char	*line;
 
@@ -40,7 +52,7 @@ int	main(void)
 		line = readline("minishell$> ");
 		if (!line)
 		{
-			ft_printf("\033[1;33mexit\033[0m\n");
+			printf("\033[1;33mexit\033[0m\n");
 			break ;
 		}
 		free(line);
