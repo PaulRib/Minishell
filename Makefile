@@ -36,7 +36,7 @@ $(LIBFT):
 %.o: %.c
 	@$(CC) $(FLAGS) -c $< -o $@ > /dev/null
 	@echo "\n$(MAGENTA)========================================"
-	@echo "      Minishell is compiling... 🛠		"
+	@echo "      Minishell is compiling... 🛠️		"
 	@echo "========================================\n$(RESET)"
 
 all: $(NAME)
@@ -49,7 +49,7 @@ clean:
 fclean: clean
 	@rm -rf $(NAME) > /dev/null
 	@make fclean -C libft > /dev/null
-	@echo "\n$(RED)Deleting EVERYTHING! 🗑\n"
+	@echo "\n$(RED)Deleting EVERYTHING! 🗑️\n"
 
 re: fclean all
 
