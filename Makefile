@@ -36,7 +36,7 @@ $(LIBFT):
 %.o: %.c
 	@$(CC) $(FLAGS) -c $< -o $@ > /dev/null
 	@echo "\n$(MAGENTA)========================================"
-	@echo "        Minishell is compiling... 🛠		"
+	@echo "      Minishell is compiling... 🛠		"
 	@echo "========================================\n$(RESET)"
 
 all: $(NAME)
