@@ -1,0 +1,11 @@
+GIT :
+
+git --delete = delete toute la branche
+git -d = delete la branche en local
+git checkout "nom de la branche" = changer de branche
+git merge "nom branche" "main" = met a jour le main avec mes modifications
+
+MINISHELL :
+
+pour le parsing : precedence climbing ou recursive descent
+se renseigner sur le lexing et AST (abstract syntax tree)
