@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/02/26 14:22:46 by pribolzi         ###   ########.fr       */
+/*   Created: 2025/02/26 14:23:11 by pribolzi          #+#    #+#             */
+/*   Updated: 2025/02/26 14:26:41 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../libft.h"
 
-int	main(void)
+int	ft_strcmp(char *s1, char *s2)
 {
-	char	*line;
+	size_t	i;
 
-	while (1)
+	if (!s1 || !s2)
+		return (-1);
+	i = 0;
+	while (s1[i] != '\0' || s2[i] != '\0')
 	{
-		line = readline("minishell$> ");
-		if (!line)
-		{
-			ft_printf("\033[1;33mexit\033[0m\n");
-			break ;
-		}
-		if ()
-		free(line);
+		if ((unsigned char)s1[i] != (unsigned char)s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
 	}
 	return (0);
 }
