@@ -19,6 +19,11 @@ int	main(void)
 	while (1)
 	{
 		line = readline("minishell$> ");
+		if(!line)
+		{
+			ft_printf("\033[1;33mexit\033[0m\n");
+			break;
+		}
 		printf("%s\n", line);
 		free(line);
 	}
