@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:10:09 by meel-war          #+#    #+#             */
-/*   Updated: 2025/02/28 13:13:00 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/02/28 14:28:29 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,22 @@ char **copy_env(char **env)
 		j++;
 	}
 	new_env[i] = NULL;
+	return(new_env);
+}
+char **build_env(char **env)
+{
+	static int SHLVL = 0;
+	char **new_env;
+	char *temp;
+	
+	SHLVL++;
+	new_env = malloc(2 * sizeof(char *));
+	if(!new_env)
+		return(NULL);
+	new_env[0] = ft_strdup("SHLVL=");
+	temp = ft_itoa(SHLVL);
+	ft_strjoin(new_env[0], temp);
+	new_env[1] = NULL;
+	free(temp);
 	return(new_env);
 }
