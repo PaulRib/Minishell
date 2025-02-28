@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/02/26 16:48:54 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/02/28 12:43:40 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	g_exit_status;
 typedef struct s_data
 {
 	char *cur_dir;
+	char **new_env;
 }			t_data;
 
 typedef struct s_list
@@ -32,16 +33,8 @@ typedef struct s_list
 	char	*str;
 	t_data	*next;
 	t_data	*prev;
-	t_env 	*env;
 	t_token	*token;
 }					t_list;
-
-typedef struct s_env
-{
-	char 	*str;
-	t_env	*next;
-	t_env	*prev;
-}				t_env;
 
 typedef struct s_token
 {
