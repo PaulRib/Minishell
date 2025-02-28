@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/02/28 17:16:00 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/02/28 17:44:13 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	main(int ac, char **av, char **env)
 			data.new_env = build_env(data);
 			print_env(data.new_env);
 		}
-		else if(!ft_strcmp(line, "minishell"))
+		else if(!ft_strcmp(line, "./minishell"))
 		{
 			pid = fork();
 			if(pid == -1)
