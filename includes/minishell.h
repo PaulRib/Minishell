@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/02/26 16:48:54 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/02/27 15:01:01 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,22 @@ int	g_exit_status;
 
 typedef struct s_data
 {
-	char *cur_dir;
+	char	*cur_dir;
 }			t_data;
 
 typedef struct s_list
 {
 	char	*str;
-	t_data	*next;
-	t_data	*prev;
-	t_env 	*env;
+	t_list	*next;
+	t_list	*prev;
+	t_env	*env;
 	t_token	*token;
+	t_data	*dir;
 }					t_list;
 
 typedef struct s_env
 {
-	char 	*str;
+	char	*str;
 	t_env	*next;
 	t_env	*prev;
 }				t_env;

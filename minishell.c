@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/02/26 16:58:10 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/02/27 14:02:19 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,16 @@ int	main(int argc, char **argv, char **env)
 	char	*line;
 	t_list	*shell;
 
+	getpwd(shell->data->cur_dir, 50000);
 	while (1)
 	{
-		line = readline("minishell$> ");
+		line = readline(cur_dir);
 		if (!line)
 		{
 			printf("\033[1;33mexit\033[0m\n");
 			break ;
 		}
+		get_args(&shell, line);
 		free(line);
 	}
 	return (0);
