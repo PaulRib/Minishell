@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/02/28 13:19:39 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/02/28 14:38:59 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ int	is_builtin(char *built)
 int	main(int argc, char **argv, char **env)
 {
 	char	*line;
-
+	
+	copy_env(env);
 	while (1)
 	{
 		line = readline("minishell$> ");

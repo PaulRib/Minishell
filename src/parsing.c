@@ -6,13 +6,13 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:22:37 by meel-war          #+#    #+#             */
-/*   Updated: 2025/02/28 13:22:43 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/02/28 14:38:00 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+// #include "../includes/minishell.h"
 
-void	get_args(t_list **shell, char *line)
-{
+// void	get_args(t_list **shell, char *line)
+// {
 	
-}
+// }
