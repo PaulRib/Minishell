@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/02/28 15:56:45 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/02/28 17:16:00 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,13 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	t_data data;
+	pid_t pid;
+	int status;
+
+	data.cur_dir = NULL;
+	data.SHLVL = 1;
 	
-	data.new_env = copy_env(env);
+	data.new_env = copy_env(env, data);
 	while (1)
 	{
 		line = readline("minishell$> ");
@@ -65,12 +70,31 @@ int	main(int ac, char **av, char **env)
 			printf("\033[1;33mexit\033[0m\n");
 			break ;
 		}
-		if(ft_strcmp(line, "env") == 0)
+		if(!ft_strcmp(line, "env"))
 			print_env(data.new_env);
-		else if(ft_strcmp(line, "env -i") == 0)
+		else if(!ft_strcmp(line, "env -i"))
 		{
-			data.new_env = build_env();
+			data.new_env = build_env(data);
 			print_env(data.new_env);
+		}
+		else if(!ft_strcmp(line, "minishell"))
+		{
+			pid = fork();
+			if(pid == -1)
+			{
+				perror("fork");
+				return(1);
+			}
+			if(pid == 0)
+			{
+				execve("./minishell", av, data.new_env);
+				perror("execve");
+				exit(EXIT_FAILURE);
+			}
+			else
+			{
+				waitpid(pid, &status, 0);
+			}
 		}
 		free(line);
 	}
