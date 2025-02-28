@@ -6,11 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-<<<<<<< HEAD:minishell.c
-/*   Updated: 2025/02/28 13:07:25 by pribolzi         ###   ########.fr       */
-=======
-/*   Updated: 2025/02/28 13:13:03 by pribolzi         ###   ########.fr       */
->>>>>>> main:src/minishell.c
+/*   Updated: 2025/02/28 13:17:02 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +20,7 @@ int	exit_handling(char *error)
 	exit(1);
 }
 
-<<<<<<< HEAD:minishell.c
 int	is_builtin(char *built, t_list *shell)
-=======
-int	is_builtin(char *built)
->>>>>>> main:src/minishell.c
 {
 	if (!ft_strcmp(built, "echo"))
 		return (fonction echo);
