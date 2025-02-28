@@ -6,39 +6,11 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/02/28 12:34:39 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/02/28 13:03:33 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
-
-// int copy_env(t_list **list, char **env)
-// {
-// 	int		i;
-// 	t_env	*tmp;
-
-// 	if(!(*env))
-// 		return(build_env(list));
-// 	i = 0;
-// 	*list = NULL;
-// 	while(env[i])
-// 	{
-// 		tmp = malloc(sizeof (t_env));
-// 		if(!tmp)
-// 			return (free_lst(list));
-// 		tmp->str = ft_strdup(env[i]);
-// 		if(!tmp->str)
-// 		{
-// 			free(tmp);
-// 			return(free_lst(list));
-// 		}
-// 		tmp->next = NULL;
-// 		tmp->prev = NULL;
-// 		ft_lstadd_back((t_env **)list, tmp); // OuaiPaul a dis c etais pas bon ...
-// 		i++;
-// 	}
-// 	return(1);
-// }
 
 char **copy_env(char **env)
 {
