@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/02/27 14:02:19 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/02/28 13:07:25 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,6 @@ int	exit_handling(char *error)
 	ft_putstr_fd(error, 2);
 	garbagecollector;
 	exit(1);
-}
-
-void	cd_handling(t_list *shell)
-{
-	cur_dir = ft_strjoin(shell->data->cur_dir, shell->str);
-	chdir(shell->str);
-}
-
-void	pwd_handling(t_list *shell)
-{
-	printf("%s\n", shell->data->cur_dir);
 }
 
 int	is_builtin(char *built, t_list *shell)
