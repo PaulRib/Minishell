@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/02/28 15:54:58 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:59:30 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@ typedef struct s_data
 {
 	char *cur_dir;
 	char **new_env;
+	int		SHLVL;
 }			t_data;
 
-char **copy_env(char **env);
-char **build_env(void);
+char **copy_env(char **env, t_data data);
+char **build_env(t_data data);
 
 // typedef struct s_list
 // {
