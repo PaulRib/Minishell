@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/02/28 15:54:29 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/02/28 15:56:45 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,6 @@ int	main(int ac, char **av, char **env)
 		}
 		free(line);
 	}
+	free_tab(env);
 	return (0);
 }
