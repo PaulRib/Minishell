@@ -6,27 +6,13 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:22:37 by meel-war          #+#    #+#             */
-/*   Updated: 2025/03/03 15:51:27 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/03 15:53:49 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-
-void	free_tab(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		free(str[i]);
-		i++;
-	}
-	free (str);
-}
-
-static int ft_strlen_mod(char *s)
+static int	ft_strlen_mod(char *s)
 {
 	int	i;
 
@@ -93,7 +79,8 @@ void	ft_minisplit(char *line, t_token *token)
 	k = 0;
 	while (line[k])
 	{
-		while (line[k] && (line[k] == ' ' || line[k] == '\t' || line[k] == '\n'))
+		while (line[k] && (line[k] == ' '
+				|| line[k] == '\t' || line[k] == '\n'))
 			k++;
 		if (line[k] != '|' && line[k] != '>' && line[k] != '<')
 			token->str[i] = fill_word(line, &k);
@@ -108,16 +95,16 @@ void	ft_minisplit(char *line, t_token *token)
 	token->str[i] = NULL;
 }
 
-int main(void)
-{
-	t_token *token;
-	token = malloc(sizeof(t_token));
-	char *line = "cat -e | ls | ls -l";
-	ft_minisplit(line, token);
-	int i = 0;
-	while (token->str[i])
-	{
-		printf("%s", token->str[i]);
-		i++;
-	}
-}
+// int main(void)
+// {
+// 	t_token *token;
+// 	token = malloc(sizeof(t_token));
+// 	char *line = "cat    -e | ls | ls -l";
+// 	ft_minisplit(line, token);
+// 	int i = 0;
+// 	while (token->str[i])
+// 	{
+// 		printf("%s", token->str[i]);
+// 		i++;
+// 	}
+// }
