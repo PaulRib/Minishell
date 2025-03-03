@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/03 13:29:54 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/03 15:58:49 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
 
 // int	exit_handling(char *error)
 // {
@@ -38,11 +37,12 @@
 // 		return (exit_handling("Exit\n"));
 // 	return (0);
 // }
-void print_env(char **env)
+void	print_env(char **env)
 {
-	int i = 0;
+	int	i;
 
-	while(env[i])
+	i = 0;
+	while (env[i])
 	{
 		printf("%s\n", env[i]);
 		i++;
@@ -52,40 +52,37 @@ void print_env(char **env)
 int	main(int ac, char **av, char **env)
 {
 	char	*line;
+	t_data	data;
+	pid_t	pid;
+	int		status;
+
 	(void)ac;
 	(void)av;
-	t_data data;
-	pid_t pid;
-	int status;
-
 	data.cur_dir = NULL;
 	data.SHLVL = 1;
-	
-	data.new_env = copy_env(env, data);
+	if (!env || !env[0])
+		data.new_env = build_env(data);
+	else
+		data.new_env = copy_env(env, data);
 	while (1)
 	{
-		line = readline(cur_dir);
+		line = readline("minishell$>"); // cur_dir a inserer ici
 		if (!line)
 		{
 			printf("\033[1;33mexit\033[0m\n");
 			break ;
 		}
-		if(!ft_strcmp(line, "env"))
+		if (!ft_strcmp(line, "env"))
 			print_env(data.new_env);
-		else if(!ft_strcmp(line, "env -i"))
-		{
-			data.new_env = build_env(data);
-			print_env(data.new_env);
-		}
-		else if(!ft_strcmp(line, "./minishell"))
+		else if (!ft_strcmp(line, "./minishell"))
 		{
 			pid = fork();
-			if(pid == -1)
+			if (pid == -1)
 			{
 				perror("fork");
-				return(1);
+				return (1);
 			}
-			if(pid == 0)
+			if (pid == 0)
 			{
 				execve("./minishell", av, data.new_env);
 				perror("execve");
