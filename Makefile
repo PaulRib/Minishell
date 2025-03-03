@@ -1,10 +1,10 @@
 NAME = minishell
 
-SRC = minishell.c
+SRC = src/minishell.c src/env.c
 
 OBJS = $(SRC:.c=.o)
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -g
 
 CC = cc
 
