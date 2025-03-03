@@ -3,16 +3,121 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:22:37 by meel-war          #+#    #+#             */
-/*   Updated: 2025/02/28 14:38:00 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/03/03 15:46:20 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../includes/minishell.h"
+#include "../includes/minishell.h"
 
-// void	get_args(t_list **shell, char *line)
-// {
-	
-// }
+
+void	free_tab(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free (str);
+}
+
+static int ft_strlen_mod(char *s)
+{
+	int	i;
+
+	while (*s && (*s != '|' || *s != '>' || *s != '<'))
+	{
+		s++;
+		i++;
+	}
+	return (i);
+}
+
+static size_t	count_words(char *s)
+{
+	size_t	count;
+	size_t	i;
+
+	count = 0;
+	i = 0;
+	if (s[i] == '\0')
+		return (0);
+	while (s[i])
+	{
+		if (s[i] && (s[i] != '|' || s[i] != '>' || s[i] != '<')
+			&& (i == 0 || s[i - 1] == '|' || s[i] == '>' || s[i] == '<'))
+			count++;
+		if (s[i] == '|' || s[i] == '>' || s[i] == '<')
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+static char	*fill_word(char *s, int *k)
+{
+	char	*word;
+	int		len;
+	int		i;
+	int		j;
+
+	len = ft_strlen_mod(s);
+	word = malloc(sizeof(char) * (len + 1));
+	if (!word)
+		return (NULL);
+	i = 0;
+	while (s[*k] && s[*k] != '|' && s[*k] != '>' && s[*k] != '<')
+	{
+		word[i] = s[*k];
+		*k = *k + 1;
+		i++;
+	}
+	word[i] = '\0';
+	return (word);
+}
+
+void	ft_minisplit(char *line, t_token *token)
+{
+	int	k;
+	int	i;
+
+	i = 0;
+	token->str = malloc(sizeof(char *) * (count_words(line) + 1));
+	if (!token->str)
+		return (free_tab(token->str));
+	k = 0;
+	while (line[k])
+	{
+		while (line[k] && (line[k] == ' ' || line[k] == '\t' || line[k] == '\n'))
+			k++;
+		if (line[k] != '|' && line[k] != '>' && line[k] != '<')
+			token->str[i] = fill_word(line, &k);
+		i++;
+		if (line[k] == '|' || line[k] == '>' || line[k] == '<')
+		{
+			token->str[i] = malloc(sizeof(char) * (2));
+			token->str[i][0] = line[k++];
+			i++;
+		}
+	}
+	token->str[i] = NULL;
+}
+
+int main(void)
+{
+	t_token *token;
+	token = malloc(sizeof(t_token));
+	char *line = "cat -e | ls | ls -l";
+	ft_minisplit(line, token);
+	int i = 0;
+	while (token->str[i])
+	{
+		printf("%s", token->str[i]);
+		i++;
+	}
+}

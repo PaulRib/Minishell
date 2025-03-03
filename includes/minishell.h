@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/03 13:29:35 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/03 14:53:29 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,11 @@ char **build_env(t_data data);
 // 	t_token	*token;
 // }					t_list;
 
-// typedef struct s_token
-// {
-// 	int				token;
-// 	char			*str;
-// 	struct s_token	*next;
-// }				t_token;
+typedef struct s_token
+{
+	int				*token;
+	char			**str;
+}				t_token;
 
 // typedef struct s_pipex
 // {
