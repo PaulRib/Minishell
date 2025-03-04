@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:22:37 by meel-war          #+#    #+#             */
-/*   Updated: 2025/03/04 12:49:11 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:11:50 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,17 +94,3 @@ void	ft_minisplit(char *line, t_token *token)
 	}
 	token->str[i] = NULL;
 }
-
-// int main(void)
-// {
-// 	t_token *token;
-// 	token = malloc(sizeof(t_token));
-// 	char *line = "cat    -e | ls | ls -l";
-// 	ft_minisplit(line, token);
-// 	int i = 0;
-// 	while (token->str[i])
-// 	{
-// 		printf("%s", token->str[i]);
-// 		i++;
-// 	}
-// }
