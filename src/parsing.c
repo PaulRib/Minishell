@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:22:37 by meel-war          #+#    #+#             */
-/*   Updated: 2025/03/04 12:33:09 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/03/04 12:42:08 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static int	ft_strlen_mod(char *s)
 {
 	int	i;
 
+	i = 0;
 	while (*s && *s != '|' && *s != '>' && *s != '<')
 	{
 		s++;
@@ -50,7 +51,6 @@ static char	*fill_word(char *s, int *k)
 	char	*word;
 	int		len;
 	int		i;
-	int		j;
 
 	len = ft_strlen_mod(s);
 	word = malloc(sizeof(char) * (len + 1));
