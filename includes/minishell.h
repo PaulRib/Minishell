@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/03 14:53:29 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:10:15 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
+# define WORD 1
+# define PIPE 2
+# define REDIR_IN 3
+# define REDIR_OUT 4
+# define APPEND 5
+# define HEREDOC 6
+# define END 7
 // int	g_exit_status;
 
 typedef struct s_data
@@ -39,6 +46,9 @@ char **build_env(t_data data);
 // 	t_data	*prev;
 // 	t_token	*token;
 // }					t_list;
+
+str[0] = "cat";
+token[0] = 1;
 
 typedef struct s_token
 {
