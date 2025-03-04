@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:22:37 by meel-war          #+#    #+#             */
-/*   Updated: 2025/03/03 15:53:49 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/04 12:33:09 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	ft_strlen_mod(char *s)
 {
 	int	i;
 
-	while (*s && (*s != '|' || *s != '>' || *s != '<'))
+	while (*s && *s != '|' && *s != '>' && *s != '<')
 	{
 		s++;
 		i++;
@@ -35,8 +35,8 @@ static size_t	count_words(char *s)
 		return (0);
 	while (s[i])
 	{
-		if (s[i] && (s[i] != '|' || s[i] != '>' || s[i] != '<')
-			&& (i == 0 || s[i - 1] == '|' || s[i] == '>' || s[i] == '<'))
+		if (s[i] && (s[i] != '|' && s[i] != '>' && s[i] != '<')
+			&& (i == 0 || s[i] == '>' || s[i] == '<'))
 			count++;
 		if (s[i] == '|' || s[i] == '>' || s[i] == '<')
 			count++;
