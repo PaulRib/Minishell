@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/03 15:58:49 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/03/05 13:26:23 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,6 @@
 // 	exit(1);
 // }
 
-// int	is_builtin(char *built)
-// {
-// 	if (!ft_strcmp(built, "echo"))
-// 		// return (fonction echo);
-// 	if (!ft_strcmp(built, "cd"))
-// 		// return (fonction cd);
-// 	if (!ft_strcmp(built, "pwd"))
-// 		// return (fonction pwd);
-// 	if (!ft_strcmp(built, "export"))
-// 		// return (fonction export);
-// 	if (!ft_strcmp(built, "unset"))
-// 		// return (fonction unset);
-// 	if (!ft_strcmp(built, "env"))
-// 		// return (fonction env);
-// 	if (!ft_strcmp(built, "exit"))
-// 		return (exit_handling("Exit\n"));
-// 	return (0);
-// }
 void	print_env(char **env)
 {
 	int	i;
