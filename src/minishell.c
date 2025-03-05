@@ -6,11 +6,23 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/05 15:53:11 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/05 16:54:41 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	print_env(char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+	{
+		printf("%s\n", env[i]);
+		i++;
+	}
+}
 
 void	initiate_all(t_list *hub)
 {
@@ -43,7 +55,7 @@ int	main(int ac, char **av, char **env)
 			printf("\033[1;33mexit\033[0m\n");
 			break ;
 		}
-		is_builtin(line, hub);
+		is_builtin(hub);
 		free(line);
 	}
 	free_tab(env);
