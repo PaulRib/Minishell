@@ -6,11 +6,11 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/05 15:34:58 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/05 15:56:24 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../includes/minishell.h"
+#include "../includes/minishell.h"
 
 // void	cd_handling(t_list *shell)
 // {
@@ -18,10 +18,10 @@
 // 	chdir(shell->str);
 // }
 
-// void	pwd_handling(t_list *shell)
-// {
-// 	printf("%s\n", shell->data->cur_dir);
-// }
+void	pwd_handling(t_list *hub)
+{
+	printf("%s\n", hub->data->cur_dir);
+}
 
 // int	exit_handling(char *error)
 // {
@@ -30,21 +30,21 @@
 // 	exit(1);
 // }
 
-// int	is_builtin(char *built)
-// {
-// 	if (!ft_strcmp(built, "echo"))
-// 		// return (fonction echo);
-// 	if (!ft_strcmp(built, "cd"))
-// 		// return (fonction cd);
-// 	if (!ft_strcmp(built, "pwd"))
-// 		// return (fonction pwd);
-// 	if (!ft_strcmp(built, "export"))
-// 		// return (fonction export);
-// 	if (!ft_strcmp(built, "unset"))
-// 		// return (fonction unset);
-// 	if (!ft_strcmp(built, "env"))
-// 		// return (print_env());
-// 	if (!ft_strcmp(built, "exit"))
-// 		return (exit_handling("Exit\n"));
-// 	return (0);
-// }
+int	is_builtin(char *built, t_list *hub)
+{
+	//if (!ft_strcmp(built, "echo"))
+		// return (fonction echo);
+	//if (!ft_strcmp(built, "cd"))
+		// return (fonction cd);
+	if (!ft_strcmp(built, "pwd"))
+		return (pwd_handling(hub));
+	//if (!ft_strcmp(built, "export"))
+		// return (fonction export);
+	//if (!ft_strcmp(built, "unset"))
+		// return (fonction unset);
+	if (!ft_strcmp(built, "env"))
+		return (print_env(hub));
+	if (!ft_strcmp(built, "exit"))
+		return (exit_handling("Exit\n"));
+	return (0);
+}

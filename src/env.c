@@ -6,11 +6,23 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:10:09 by meel-war          #+#    #+#             */
-/*   Updated: 2025/03/05 15:34:21 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/05 15:53:49 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	print_env(t_list *hub)
+{
+	int	i;
+
+	i = 0;
+	while (hub->data->env[i])
+	{
+		printf("%s\n", hub->data->env[i]);
+		i++;
+	}
+}
 
 char	**build_env(t_data data)
 {
