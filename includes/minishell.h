@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/04 15:23:51 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/05 15:36:31 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,20 @@
 
 typedef struct s_data
 {
-	char *cur_dir;
-	char **new_env;
-	int		SHLVL;
+	char	*cur_dir;
+	char	**new_env;
+	int		shlvl;
 }			t_data;
 
-char **copy_env(char **env, t_data data);
-char **build_env(t_data data);
+char	**copy_env(char **env, t_data data);
+char	**build_env(t_data data);
 
-// typedef struct s_list
-// {
-// 	char	*str;
-// 	t_data	*next;
-// 	t_data	*prev;
-// 	t_token	*token;
-// }					t_list;
+typedef struct s_list
+{
+	char	*str;
+	t_data	*data;
+	t_token	*token;
+}					t_list;
 
 typedef struct s_token
 {
