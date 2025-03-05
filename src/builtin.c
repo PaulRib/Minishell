@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/05 15:56:24 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/05 16:01:32 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,6 @@
 // 	cur_dir = ft_strjoin(shell->data->cur_dir, shell->str);
 // 	chdir(shell->str);
 // }
-
-void	pwd_handling(t_list *hub)
-{
-	printf("%s\n", hub->data->cur_dir);
-}
 
 // int	exit_handling(char *error)
 // {
