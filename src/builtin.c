@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/05 16:03:32 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/07 16:04:42 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 
 int	is_builtin(char *built, t_list *hub)
 {
-	//if (!ft_strcmp(built, "echo"))
-		// return (fonction echo);
+	if (!ft_strcmp(built, "echo"))
+		return (echo(hub));
 	//if (!ft_strcmp(built, "cd"))
 		// return (fonction cd);
 	if (!ft_strcmp(built, "pwd"))
