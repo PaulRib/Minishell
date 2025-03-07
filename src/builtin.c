@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/05 16:01:32 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/07 14:15:00 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 
 int	is_builtin(char *built, t_list *hub)
 {
-	//if (!ft_strcmp(built, "echo"))
-		// return (fonction echo);
+	if (!ft_strcmp(built, "echo"))
+		return (echo(hub));
 	//if (!ft_strcmp(built, "cd"))
 		// return (fonction cd);
 	if (!ft_strcmp(built, "pwd"))
