@@ -6,9 +6,11 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:01:33 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/05 16:02:52 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/07 16:05:19 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../includes/minishell.h"
 
 void	pwd_handling(t_list *hub)
 {
