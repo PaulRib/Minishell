@@ -1,18 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   struct.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/05 16:01:33 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/07 16:05:19 by pribolzi         ###   ########.fr       */
+/*   Created: 2025/03/12 16:00:15 by pribolzi          #+#    #+#             */
+/*   Updated: 2025/03/12 17:54:47 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	pwd_handling(t_list *hub)
+void	new_node_token(t_token *ptr, bool place)
 {
-	printf("%s\n", hub->data->cur_dir);
+	t_token	*new;
+
+	if (!ptr)
+		return ;
+	new = malloc(sizeof(t_token));
+	if (!new)
+		return ;
+	if(place == true)
+	{
+		while (ptr->next)
+			ptr = ptr->next;
+		ptr->next = new;
+		new->prev = ptr;
+	}
+	new->next = NULL;
 }
