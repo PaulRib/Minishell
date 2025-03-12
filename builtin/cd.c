@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/07 16:13:03 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/07 16:13:52 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int	cd_handling(t_list *hub, char *path)
 	return (0);
 }
 
-/* Helper function to update environment variables */
+// Helper function to update environment variables
 void update_env(t_list *hub, char *var, char *value)
 {
 	int i = 0;
@@ -157,7 +157,7 @@ void update_env(t_list *hub, char *var, char *value)
 	// You should implement a function to extend the environment array
 }
 
-/* Helper function to print errors */
+// Helper function to print errors
 int print_error(char *message, int return_code)
 {
 	ft_putstr_fd(message, 2);
