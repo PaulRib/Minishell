@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:22:37 by meel-war          #+#    #+#             */
-/*   Updated: 2025/03/12 16:44:04 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/12 16:59:51 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static char	*fill_word(char *s, int *k)
 	int		len;
 	int		i;
 
-	len = ft_strlen_mod(s);
+	len = ft_strlen_mod(&s[*k]);
 	word = malloc(sizeof(char) * (len + 1));
 	if (!word)
 		return (NULL);
@@ -64,15 +64,15 @@ static char	*fill_word(char *s, int *k)
 
 static int	count_delim(char *line, int *k)
 {
-	int	*i;
+	int	i;
 	int	j;
 
 	j = 0;
-	i = k;
-	while (line[*i] && (line[*i] == '|' || line[*i] == '>' || line[*i] == '<'))
+	i = *k;
+	while (line[i] && (line[i] == '|' || line[i] == '>' || line[i] == '<'))
 	{
 		j++;
-		*i = *i + 1;
+		i = i + 1;
 	}
 	return (j);
 }
@@ -127,21 +127,4 @@ void	ft_minisplit(char *line, t_token *token)
 		token = token->next;
 	}
 	token = NULL;
-}
-
-int main(void)
-{
-	char *line;
-	t_token *tmp = malloc(sizeof(t_token));
-	t_token *token = malloc(sizeof(t_token));
-	line = malloc(sizeof(50000));
-	line = "< file1 cat -e | ls -l >> file2";
-	tmp = token;
-	ft_minisplit(line, token);
-	token = tmp;
-	while (token->next)
-	{
-		printf("%s\n", token->str);
-		token = token->next;
-	}
 }
