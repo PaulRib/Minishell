@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:14:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/05 13:25:58 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:41:27 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,3 +34,22 @@ void	get_type(t_token *token)
 		i++;
 	}
 }
+
+// void osef(t_token *token)
+// {
+// 	int i;
+
+// 	i = 0;
+// 	while (token->str[i])
+// 	{
+// 		if (token->type[i] == REDIR_OUT)
+// 			token->type[i + 1] == FD_OUT
+// 		if (token->type[i + 1] == FD_OUT && token->type[i + 2] != PIPE)
+// 			token->type[i + 2] == CMD
+// 		if (token->type[i] == REDIR_IN)
+// 		{
+// 			token->type[i + 1] == FD_IN
+// 			token->type[i - 1] == CMD
+// 		}
+// 	}
+// }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/12 15:41:08 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/03/12 17:07:25 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <stdbool.h>
 
 # define WORD 1
 # define PIPE 2
@@ -39,20 +40,21 @@ typedef struct s_data
 char	**copy_env(char **env, t_data *data);
 char	**build_env(t_data *data);
 
+typedef struct s_token
+{
+	int				type;
+	char			*str;
+	struct s_token	*next;
+	struct s_token	*prev;
+}				t_token;
+
 typedef struct s_shell
 {
 	char	*str;
 	t_data	*data;
-	// t_token	*token;
+	struct s_token	*token;
 }					t_shell;
 
-// typedef struct s_token
-// {
-// 	int				type;
-// 	char			*str;
-// s_token			*next;
-// s_token			*prev;
-// }				t_token;
 
 // typedef struct s_pipex
 // {

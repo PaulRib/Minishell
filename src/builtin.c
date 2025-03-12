@@ -3,20 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/07 14:15:00 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/03/07 16:04:42 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-// void	cd_handling(t_list *shell)
-// {
-// 	cur_dir = ft_strjoin(shell->data->cur_dir, shell->str);
-// 	chdir(shell->str);
-// }
 
 // int	exit_handling(char *error)
 // {
