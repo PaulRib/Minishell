@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:10:09 by meel-war          #+#    #+#             */
-/*   Updated: 2025/03/05 15:53:49 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:22:59 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	print_env(t_list *hub)
+void	print_env(t_shell *hub)
 {
 	int	i;
 
 	i = 0;
-	while (hub->data->env[i])
+	while (hub->data->new_env[i])
 	{
-		printf("%s\n", hub->data->env[i]);
+		printf("%s\n", hub->data->new_env[i]);
 		i++;
 	}
 }
 
-char	**build_env(t_data data)
+char	**build_env(t_data *data)
 {
 	char	**new_env;
 	char	*temp;
@@ -33,14 +33,14 @@ char	**build_env(t_data data)
 	if (!new_env)
 		return (NULL);
 	new_env[0] = ft_strdup("SHLVL=");
-	temp = ft_itoa(data.SHLVL);
+	temp = ft_itoa(data->shlvl);
 	new_env[0] = ft_strjoin("SHLVL=", temp);
 	new_env[1] = NULL;
 	free(temp);
 	return (new_env);
 }
 
-char	**copy_env(char **env, t_data data)
+char	**copy_env(char **env, t_data *data)
 {
 	int		i;
 	int		j;
@@ -61,8 +61,8 @@ char	**copy_env(char **env, t_data data)
 		if (ft_strncmp(env[j], "SHLVL=", 6) == 0)
 		{
 			found_shlvl = 1;
-			data.SHLVL = ft_atoi(env[j] + 6) + 1;
-			temp = ft_itoa(data.SHLVL);
+			data->shlvl = ft_atoi(env[j] + 6) + 1;
+			temp = ft_itoa(data->shlvl);
 			new_env[j] = ft_strjoin("SHLVL=", temp);
 			free(temp);
 		}

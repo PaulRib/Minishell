@@ -3,38 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/05 15:53:11 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:24:08 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	initiate_all(t_list *hub)
+void	initiate_all(t_shell **hub)
 {
-	hub = malloc(sizeof(t_list));
-	hub->data = malloc(sizeof(t_data));
-	hub->token = malloc(sizeof(t_token));
-	getcwd(hub->data->cur_dir, 500);
-	hub->data->shlvl = 1;
+	*hub = malloc(sizeof(t_list));
+	(*hub)->data = malloc(sizeof(t_data));
+	// (*hub)->token = malloc(sizeof(t_token));
+	(*hub)->data->cur_dir = malloc(500);
+	getcwd((*hub)->data->cur_dir, 500);
+	(*hub)->data->shlvl = 1;
 }
 
 int	main(int ac, char **av, char **env)
 {
 	char	*line;
-	t_list	*hub;
-	pid_t	pid;
-	int		status;
+	t_shell	*hub;
+	// pid_t	pid;
+	// int		status;
 
 	(void)ac;
 	(void)av;
-	initiate_all(hub);
+	initiate_all(&hub);
 	if (!env || !env[0])
-		data.new_env = build_env(data);
+		hub->data->new_env = build_env(hub->data);
 	else
-		data.new_env = copy_env(env, data);
+		hub->data->new_env = copy_env(env, hub->data);
 	while (1)
 	{
 		line = readline("minishell$>"); // cur_dir a inserer ici
@@ -43,7 +44,7 @@ int	main(int ac, char **av, char **env)
 			printf("\033[1;33mexit\033[0m\n");
 			break ;
 		}
-		is_builtin(line, hub);
+		// is_builtin(line, hub);
 		free(line);
 	}
 	free_tab(env);
