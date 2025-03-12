@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/12 15:21:07 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:41:08 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,10 @@ typedef struct s_shell
 
 // typedef struct s_token
 // {
-// 	int				*type;
-// 	char			**str;
+// 	int				type;
+// 	char			*str;
+// s_token			*next;
+// s_token			*prev;
 // }				t_token;
 
 // typedef struct s_pipex
