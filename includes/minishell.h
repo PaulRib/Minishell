@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/12 17:53:42 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:56:50 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,6 @@ typedef struct s_data
 	int		shlvl;
 }			t_data;
 
-char	**copy_env(char **env, t_data *data);
-char	**build_env(t_data *data);
-void	new_node_token(t_token *ptr, bool place);
-
 typedef struct s_token
 {
 	int				type;
@@ -56,12 +52,24 @@ typedef struct s_shell
 	struct s_token	*token;
 }					t_shell;
 
-
 // typedef struct s_pipex
 // {
 // 	int	p_fd[2];
 // 	int	fd_in;
 // 	int	fd_out;
 // }				t_pipex;
+
+/* Environnement */
+char	**copy_env(char **env, t_data *data);
+char	**build_env(t_data *data);
+void	print_env(t_shell *hub);
+
+/* Tokenisation */
+void	get_type(t_token *token);
+void	new_node_token(t_token *ptr, bool place);
+void	ft_split_word(t_token *token);
+
+/* Parsing */
+void	ft_minisplit(char *line, t_token *token);
 
 #endif

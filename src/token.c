@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:14:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/12 18:23:08 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:57:11 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,21 @@ void	get_type(t_token *token)
 	int	i;
 
 	i = 0;
-	while (token->next)
+	while (token != NULL)
 	{
 		if (ft_strcmp(token->str, "|") == 0)
 			token->type = PIPE;
 		else if (ft_strcmp(token->str, ">") == 0)
-			token->type = REDIR_IN;
-		else if (ft_strcmp(token->str, "<") == 0)
 			token->type = REDIR_OUT;
+		else if (ft_strcmp(token->str, "<") == 0)
+			token->type = REDIR_IN;
 		else if (ft_strcmp(token->str, ">>") == 0)
 			token->type = APPEND;
 		else if (ft_strcmp(token->str, "<<") == 0)
 			token->type = HEREDOC;
 		else
 			token->type = WORD;
+		token = token->next;	
 	}
 }
 
@@ -53,29 +54,30 @@ void	get_type(t_token *token)
 // 	}
 // }
 
-void check_other_word(t_token *token)
+static void check_other_word(t_token *token)
 {
-	while(token->next)
+	while(token != NULL)
 	{
 		if (token->type == WORD)
 		{
 			ft_split_word(token);
 		}
+		token = token->next;
 	}
 }
 
-char *ft_split_word(t_token *token)
+void ft_split_word(t_token *token)
 {
 	int i;
 
 	i = 0;
 	while(token->str[i])
 	{
-		while (token->str[i] && token->str[i] == ' ' || token->str[i] == '\t' || token->str[i] == '\n')
+		while (token->str[i] && (token->str[i] == ' ' || token->str[i] == '\t' || token->str[i] == '\n'))
 			i++;
-		while (token->str[i] && token->str[i] != ' ' && token->str[i] != '\t' && token->str[i] != '\n')
+		while (token->str[i] && (token->str[i] != ' ' && token->str[i] != '\t' && token->str[i] != '\n'))
 			i++;
-		while (token->str[i] && token->str[i] == ' ' || token->str[i] == '\t' || token->str[i] == '\n')
+		while (token->str[i] && (token->str[i] == ' ' || token->str[i] == '\t' || token->str[i] == '\n'))
 			i++;
 		if(token->str[i])
 		{
@@ -85,7 +87,7 @@ char *ft_split_word(t_token *token)
 	}
 }
 
-char	*ft_strdup_token(t_token *token, int j)
+ static char	*ft_strdup_token(t_token *token, int j)
 {
 	char		*dest;
 	int		i;
@@ -106,7 +108,7 @@ char	*ft_strdup_token(t_token *token, int j)
 	return (dest);
 }
 
-int	ft_strlen(t_token *token, int j)
+static int	ft_strlen(t_token *token, int j)
 {
 	int	i;
 
