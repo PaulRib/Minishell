@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:14:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/13 15:45:49 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/03/13 15:47:58 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,27 +111,31 @@ void ft_split_word(t_token *token)
 }
 static void ft_remove_token_word(t_token *token, int j)
 {
-	int word_len = 0;
-	int i = j;
-	int k = 0;
-	int total_len = ft_strlen(token->str, 0);
+	int word_len;
+	int i;
+	int k;
+	int total_len;
 	char *new_str;
-	
-		while(token->str[i] && (token->str[i] != ' ' || token->str[i] != '\t'))
-		{
-			word_len++;
-			i++;
-		}
-		while(token->str[i] == ' ' || token->str[i] == '\t')
-			i++;
-		new_str = malloc(sizeof(char) * total_len - word_len + 1);
-		if(!new_str)
-			return(NULL);
-		while(k < j)
-			new_str[k++] = token->str[k++];
-		while(token->str[i])
-			new_str[k++] = token->str[i++];
-		new_str[k] = '\0';
+
+	total_len = ft_strlen(token->str);
+	k = 0;
+	i = j;
+	word_len = 0;
+	while(token->str[i] && (token->str[i] != ' ' || token->str[i] != '\t'))
+	{
+		word_len++;
+		i++;
+	}
+	while(token->str[i] == ' ' || token->str[i] == '\t')
+		i++;
+	new_str = malloc(sizeof(char) * total_len - word_len + 1);
+	if(!new_str)
+		return(NULL);
+	while(k < j)
+		new_str[k++] = token->str[k++];
+	while(token->str[i])
+		new_str[k++] = token->str[i++];
+	new_str[k] = '\0';
 	free(token->str);
 	token->str = new_str;
 }
