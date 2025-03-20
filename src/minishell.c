@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/20 14:40:58 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/20 15:37:03 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,7 @@ void ft_hub_parsing(t_shell *shell, char *line)
 	tmp = shell->token;
 	ft_minisplit(line, shell);
 	get_type(shell);
-	while (tmp->next)
-	{
-		if (tmp->type == WORD)
-			ft_split_word(shell);
-		tmp = tmp->next;
-	}
+	ft_split_word(shell);
 	tmp = shell->token;
 	while (tmp->next)
 	{
