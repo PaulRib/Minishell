@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/20 14:33:58 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:26:34 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,14 @@ typedef struct s_shell
 	char	*str;
 	t_data	*data;
 	t_token	*token;
+	t_history *history;
 }					t_shell;
+
+typedef struct s_history
+{
+	char *command;
+	struct s_history *next;
+} t_history;
 
 // typedef struct s_pipex
 // {
@@ -62,7 +69,7 @@ typedef struct s_shell
 /* Environnement */
 char	**copy_env(char **env, t_data *data);
 char	**build_env(t_data *data);
-void	print_env(t_shell *hub);
+int		print_env(t_shell *hub);
 
 /* Tokenisation */
 void	get_type(t_shell *shell);
