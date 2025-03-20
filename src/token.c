@@ -6,46 +6,48 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:14:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/19 15:10:23 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/20 14:44:03 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	get_type(t_token *token)
+void	get_type(t_shell *shell)
 {
-	int	i;
+	int			i;
+	t_token		*tmp;
 
+	tmp = shell->token;
 	i = 0;
-	while (token != NULL)
+	while (tmp != NULL)
 	{
-		if (ft_strcmp(token->str, "|") == 0)
-			token->type = PIPE;
-		else if (ft_strcmp(token->str, ">") == 0)
-			token->type = REDIR_OUT;
-		else if (ft_strcmp(token->str, "<") == 0)
-			token->type = REDIR_IN;
-		else if (ft_strcmp(token->str, ">>") == 0)
-			token->type = APPEND;
-		else if (ft_strcmp(token->str, "<<") == 0)
-			token->type = HEREDOC;
+		if (ft_strcmp(tmp->str, "|") == 0)
+			tmp->type = PIPE;
+		else if (ft_strcmp(tmp->str, ">") == 0)
+			tmp->type = REDIR_OUT;
+		else if (ft_strcmp(tmp->str, "<") == 0)
+			tmp->type = REDIR_IN;
+		else if (ft_strcmp(tmp->str, ">>") == 0)
+			tmp->type = APPEND;
+		else if (ft_strcmp(tmp->str, "<<") == 0)
+			tmp->type = HEREDOC;
 		else
-			token->type = WORD;
-		token = token->next;
+			tmp->type = WORD;
+		tmp = tmp->next;
 	}
 }
 
-static void	check_other_word(t_token *token)
-{
-	while (token != NULL)
-	{
-		if (token->type == WORD)
-		{
-			ft_split_word(token);
-		}
-		token = token->next;
-	}
-}
+// static void	check_other_word(t_token *token)
+// {
+// 	while (token != NULL)
+// 	{
+// 		if (token->type == WORD)
+// 		{
+// 			ft_split_word(token);
+// 		}
+// 		token = token->next;
+// 	}
+// }
 
 static int	ft_strlen_token(t_token *token, int j)
 {
@@ -119,26 +121,28 @@ void	ft_strdup_token(t_token *token, int j)
 	token = tmp;
 }
 
-void	ft_split_word(t_token *token)
+void	ft_split_word(t_shell *shell)
 {
-	int	i;
+	int		i;
+	t_token	*tmp;
 
+	tmp = shell->token;
 	i = 0;
-	while (token->str[i])
+	while (tmp->str[i])
 	{
-		while (token->str[i] && (token->str[i] == ' '
-				|| token->str[i] == '\t' || token->str[i] == '\n'))
+		while (tmp->str[i] && (tmp->str[i] == ' '
+				|| tmp->str[i] == '\t' || tmp->str[i] == '\n'))
 			i++;
-		while (token->str[i] && (token->str[i] != ' '
-				&& token->str[i] != '\t' && token->str[i] != '\n'))
+		while (tmp->str[i] && (tmp->str[i] != ' '
+				&& tmp->str[i] != '\t' && tmp->str[i] != '\n'))
 			i++;
-		while (token->str[i] && (token->str[i] == ' '
-				|| token->str[i] == '\t' || token->str[i] == '\n'))
+		while (tmp->str[i] && (tmp->str[i] == ' '
+				|| tmp->str[i] == '\t' || tmp->str[i] == '\n'))
 			i++;
-		if (token->str[i])
+		if (tmp->str[i])
 		{
-			new_node_token(token, true);
-			ft_strdup_token(token, i);
+			new_node_token(tmp, true, NULL);
+			ft_strdup_token(tmp, i);
 		}
 		break ;
 	}

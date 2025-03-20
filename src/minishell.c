@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/19 15:21:17 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/20 14:40:58 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,32 @@
 
 void	initiate_all(t_shell *shell)
 {
-	shell = malloc(sizeof(t_shell));
 	shell->data = malloc(sizeof(t_data));
 	shell->token = malloc(sizeof(t_token));
-	getcwd((*hub)->data->cur_dir, 500);
+	getcwd(shell->data->cur_dir, 500);
 	shell->data->shlvl = 1;
 }
 
-void ft_hub_parsing(t_token *token, char *line)
+void ft_hub_parsing(t_shell *shell, char *line)
 {
-	
+	t_token	*tmp;
+
+	tmp = shell->token;
+	ft_minisplit(line, shell);
+	get_type(shell);
+	while (tmp->next)
+	{
+		if (tmp->type == WORD)
+			ft_split_word(shell);
+		tmp = tmp->next;
+	}
+	tmp = shell->token;
+	while (tmp->next)
+	{
+		printf("Type de token : %i\n", tmp->type);
+		printf("Contenu du token : %s\n", tmp->str);
+		tmp = tmp->next;
+	}
 }
 
 int	main(int ac, char **av, char **env)
@@ -33,11 +49,12 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
+	shell = malloc(sizeof(t_shell));
 	initiate_all(shell);
 	if (!env || !env[0])
-		hub->data->new_env = build_env(hub->data);
+		shell->data->new_env = build_env(shell->data);
 	else
-		hub->data->new_env = copy_env(env, hub->data);
+		shell->data->new_env = copy_env(env, shell->data);
 	while (1)
 	{
 		line = readline("minishell$>"); // cur_dir a inserer ici
@@ -46,6 +63,7 @@ int	main(int ac, char **av, char **env)
 			printf("\033[1;33mexit\033[0m\n");
 			break ;
 		}
+		ft_hub_parsing(shell, line);
 		// is_builtin(line, hub);
 		free(line);
 	}

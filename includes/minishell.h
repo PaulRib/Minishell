@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/19 15:13:35 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/20 14:33:58 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ typedef struct s_shell
 {
 	char	*str;
 	t_data	*data;
-	t_token *token;
-	struct s_token	*token;
+	t_token	*token;
 }					t_shell;
 
 // typedef struct s_pipex
@@ -66,11 +65,12 @@ char	**build_env(t_data *data);
 void	print_env(t_shell *hub);
 
 /* Tokenisation */
-void	get_type(t_token *token);
-void	new_node_token(t_token *ptr, bool place);
-void	ft_split_word(t_token *token);
+void	get_type(t_shell *shell);
+void	new_node_token(t_token *ptr, bool place, t_token *target);
+void	ft_split_word(t_shell *shell);
 
 /* Parsing */
-void	ft_minisplit(char *line, t_token *token);
+void	ft_minisplit(char *line, t_shell *shell);
+void 	ft_hub_parsing(t_shell *shell, char *line);
 
 #endif

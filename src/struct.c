@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:00:15 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/19 15:09:48 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/20 14:34:45 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	new_node_token(t_token *ptr, bool place, t_token *target)
 	else if (place == false)
 	{
 		while (ptr != target)
-			ptr->next;
+			ptr = ptr->next;
 		ptr->next = new;
 		new->prev = ptr;
 	}
