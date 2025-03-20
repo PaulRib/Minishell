@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:14:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/13 16:54:22 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:10:23 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	check_other_word(t_token *token)
 	}
 }
 
-vstatic int	ft_strlen_token(t_token *token, int j)
+static int	ft_strlen_token(t_token *token, int j)
 {
 	int	i;
 

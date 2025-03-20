@@ -6,32 +6,34 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/12 17:06:17 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:21:17 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	initiate_all(t_shell **hub)
+void	initiate_all(t_shell *shell)
 {
-	*hub = malloc(sizeof(t_list));
-	(*hub)->data = malloc(sizeof(t_data));
-	// (*hub)->token = malloc(sizeof(t_token));
-	(*hub)->data->cur_dir = malloc(500);
+	shell = malloc(sizeof(t_shell));
+	shell->data = malloc(sizeof(t_data));
+	shell->token = malloc(sizeof(t_token));
 	getcwd((*hub)->data->cur_dir, 500);
-	(*hub)->data->shlvl = 1;
+	shell->data->shlvl = 1;
+}
+
+void ft_hub_parsing(t_token *token, char *line)
+{
+	
 }
 
 int	main(int ac, char **av, char **env)
 {
 	char	*line;
-	t_shell	*hub;
-	// pid_t	pid;
-	// int		status;
+	t_shell	*shell;
 
 	(void)ac;
 	(void)av;
-	initiate_all(&hub);
+	initiate_all(shell);
 	if (!env || !env[0])
 		hub->data->new_env = build_env(hub->data);
 	else
