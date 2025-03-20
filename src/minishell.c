@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/20 16:24:34 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/03/20 17:00:09 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	main(int ac, char **av, char **env)
 		}
 		if(*line)
 		{
-			add_history(line);
+			// add_history(line);
 			add_to_history(shell, line);
 		}
 		ft_hub_parsing(shell, line);
