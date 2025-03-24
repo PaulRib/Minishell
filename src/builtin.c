@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/20 16:27:38 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:13:16 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,40 @@
 // 	exit(1);
 // }
 
-int	is_builtin(char *built, t_list *hub)
+int	is_builtin (t_token *token_list)
 {
-	if (!ft_strcmp(built, "echo"))
-		return (echo(hub));
-	//if (!ft_strcmp(built, "cd"))
-		// return (fonction cd);
-	if (!ft_strcmp(built, "pwd"))
-		return (pwd_handling(hub));
-	//if (!ft_strcmp(built, "export"))
-		// return (fonction export);
-	//if (!ft_strcmp(built, "unset"))
-		// return (fonction unset);
-	if (!ft_strcmp(built, "history"))
-		return (history_handling(hub));
-	if (!ft_strcmp(built, "env"))
-		return (print_env(hub));
-	if (!ft_strcmp(built, "exit"))
-		return (exit_handling("Exit\n"));
+	t_token *token_ptr;
+	
+	token_ptr = token_list;
+
+	while (token_ptr)
+	{
+		if (!ft_strcmp(token_ptr->str, "echo"))
+			return (echo(token_ptr));
+		//else if (!ft_strcmp(token_ptr->str, "cd"))
+			// return (fonction cd);
+		else if (!ft_strcmp(token_ptr->str, "pwd"))
+			return (pwd_handling(token_ptr));
+		//else if (!ft_strcmp(token_ptr->str, "export"))
+			// return (fonction export);
+		else if (!ft_strcmp(token_ptr->str, "unset"))
+		{
+			if(token_ptr->next)
+				return (unset_handling(token_ptr->next->str));
+			else
+			{
+				ft_putstr_fd("unset: not enough arguments\n", 2);
+				return (1);
+			}
+		}
+		else if (!ft_strcmp(token_ptr->str, "history"))
+			return (history_handling(token_ptr));
+		else if (!ft_strcmp(token_ptr->str, "env"))
+			return (print_env(token_ptr));
+		else if (!ft_strcmp(token_ptr->str, "exit"))
+			return (exit_handling("Exit\n"));
+
+		token_ptr = token_ptr->next;
+	}
 	return (0);
 }
