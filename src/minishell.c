@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/20 17:00:09 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/03/21 16:02:38 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,28 @@ void	initiate_all(t_shell *shell)
 {
 	shell->data = malloc(sizeof(t_data));
 	shell->token = malloc(sizeof(t_token));
+	shell->number = malloc(sizeof(t_count));
+	ft_memset(shell->number, 0, sizeof(t_count));
 	getcwd(shell->data->cur_dir, 500);
 	shell->data->shlvl = 1;
 }
 
-void ft_hub_parsing(t_shell *shell, char *line)
+void	ft_hub_parsing(t_shell *shell, char *line)
 {
 	t_token	*tmp;
 
 	tmp = shell->token;
+	count_element(shell, line);
 	ft_minisplit(line, shell);
 	get_type(shell);
 	ft_split_word(shell);
 	tmp = shell->token;
+	second_token(shell);
+	associate_options_commands(shell);
 	while (tmp->next)
 	{
-		printf("Type de token : %i\n", tmp->type);
-		printf("Contenu du token : %s\n", tmp->str);
+		printf("Type de token : -%i-\n", tmp->type);
+		printf("Contenu du token : -%s-\n", tmp->str);
 		tmp = tmp->next;
 	}
 }
