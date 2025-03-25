@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/25 15:14:08 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/03/25 15:45:19 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <stdbool.h>
+# include <limits.h>
 
 # define WORD 1
 # define PIPE 2
@@ -97,5 +98,6 @@ void	associate_options_commands(t_shell *shell);
 /*Builtins*/
 void	add_to_history(t_shell *shell, char *command);
 int		unset_handling(t_shell *shell);
+int		ft_pwd(void);
 
 #endif
