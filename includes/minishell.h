@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/25 15:45:19 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/03/26 15:28:11 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,9 @@ void	ft_hub_parsing(t_shell *shell, char *line);
 void	associate_options_commands(t_shell *shell);
 
 /*Builtins*/
+int		is_builtin (t_shell *shell, t_token *token_list);
 void	add_to_history(t_shell *shell, char *command);
-int		unset_handling(t_shell *shell);
+int		ft_unset(t_data *data, char *var_name);
 int		ft_pwd(void);
 
 #endif
