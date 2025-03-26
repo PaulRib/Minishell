@@ -30,7 +30,7 @@ int	is_builtin (t_shell *shell, t_token *token_list)
 		if (!ft_strcmp(token_ptr->str, "echo"))
 			return (ft_echo(token_ptr));
 		else if (!ft_strcmp(token_ptr->str, "cd"))
-			return (ft_handling(token_ptr));
+			return (ft_cd(token_ptr));
 		else if (!ft_strcmp(token_ptr->str, "pwd"))
 			return (ft_pwd());
 		//else if (!ft_strcmp(token_ptr->str, "export"))
