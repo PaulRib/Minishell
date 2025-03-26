@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 17:08:23 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/20 17:08:50 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/03/26 15:26:45 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	add_to_history(t_shell *shell, char *command)
 	tmp->next = new;
 }
 
-int	history_handling(t_shell *hub)
+int	ft_history(t_shell *hub)
 {
 	t_history	*tmp;
 	int			i;

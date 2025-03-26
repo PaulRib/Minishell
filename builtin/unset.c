@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 15:17:08 by meel-war          #+#    #+#             */
-/*   Updated: 2025/03/25 15:17:09 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/03/26 15:26:24 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,23 +56,21 @@ static char	**remove_env_var(char **env, int index)
 	return (new_env);
 }
 
-int	unset_handling(t_shell *shell)
+int	ft_unset(t_data *data, char *var_name)
 {
 	int var_index;
 	char **new_env;
-	char *var_name;
 
-	var_name = shell->str;
 	if (!var_name || !var_name[0])
 		return (0);
-	var_index = find_env_var(shell->data->new_env, var_name);
+	var_index = find_env_var(data->new_env, var_name);
 	if (var_index != -1)
 	{
-		new_env = remove_env_var(shell->data->new_env, var_index);
+		new_env = remove_env_var(data->new_env, var_index);
 		if (new_env)
 		{
-			free_tab(shell->data->new_env);
-			shell->data->new_env = new_env;
+			free_tab(data->new_env);
+			data->new_env = new_env;
 		}
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:15:41 by meel-war          #+#    #+#             */
-/*   Updated: 2025/03/07 14:15:42 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/03/26 15:26:55 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int args_nb(char **temp)
 	return(count);
 }
 
-int	echo_handling(char **temp)
+int	ft_echo(char **temp)
 {
 	int i;
 	int n_param;
