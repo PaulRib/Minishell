@@ -6,27 +6,11 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 15:17:08 by meel-war          #+#    #+#             */
-/*   Updated: 2025/03/26 15:26:24 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/04 17:34:06 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-static int	find_env_var(char **env, char *var)
-{
-	int	i;
-	int	len;
-
-	i = 0;
-	len = ft_strlen(var);
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], var, len) == 0 && env[i][len] == '=')
-			return (i);
-		i++;
-	}
-	return (-1);
-}
 
 static char	**remove_env_var(char **env, int index)
 {
@@ -74,4 +58,13 @@ int	ft_unset(t_data *data, char *var_name)
 		}
 	}
 	return (0);
+}
+
+static int check_unset(t_shell *shell, t_token *token_ptr)
+{
+	if(ft_strcmp(token_ptr->str, "unset") != 0)
+		return(-1);
+	if(!token_ptr->next)
+		return(0);
+	return(ft_unset(shell->data, token_ptr->next->str));
 }
