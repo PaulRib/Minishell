@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/21 15:57:48 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/04 16:33:01 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/wait.h>
 # include <stdbool.h>
 
+# define CMD 0
 # define WORD 1
 # define PIPE 2
 # define REDIR_IN 3
@@ -30,7 +31,8 @@
 # define END 7
 # define FILE_IN 8
 # define FILE_OUT 9
-# define ENDOF 10
+# define S_QUOTE 10
+# define D_QUOTE 11
 // int	g_exit_status;
 
 typedef struct s_data
@@ -54,7 +56,7 @@ typedef struct s_token
 	struct s_token	*prev;
 }				t_token;
 
-typedef	struct s_count
+typedef struct s_count
 {
 	int	nb_pipe;
 	int	is_redir_in;
@@ -84,7 +86,7 @@ int		print_env(t_shell *hub);
 
 /* Tokenisation */
 void	get_type(t_shell *shell);
-void	new_node_token(t_token *ptr, bool place, t_token *target);
+void	new_node_token(t_token *ptr);
 void	ft_split_word(t_shell *shell);
 void	second_token(t_shell *shell);
 void	count_element(t_shell *shell, char *line);
@@ -93,6 +95,7 @@ void	count_element(t_shell *shell, char *line);
 void	ft_minisplit(char *line, t_shell *shell);
 void	ft_hub_parsing(t_shell *shell, char *line);
 void	associate_options_commands(t_shell *shell);
+void	handling_quotes(t_shell *shell);
 
 /*Builtins*/
 void	add_to_history(t_shell *shell, char *command);
