@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:01:33 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/04 17:33:32 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/04 17:42:10 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_pwd(void)
 		return (1);
 	}
 }
-static int	check_pwd(t_shell *shell, t_token *token_ptr)
+int	check_pwd(t_shell *shell, t_token *token_ptr)
 {
 	if (ft_strcmp(token_ptr->str, "pwd") != 0)
 		return (-1);

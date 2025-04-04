@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:15:41 by meel-war          #+#    #+#             */
-/*   Updated: 2025/04/04 17:33:50 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/04 17:42:02 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	ft_echo(char **temp)
 	}
 }
 
-static int check_echo(t_shell *shell, t_token *token_ptr)
+int check_echo(t_shell *shell, t_token *token_ptr)
 {
 	if(ft_strcmp(token_ptr->str, "echo") != 0)
 		return (-1);

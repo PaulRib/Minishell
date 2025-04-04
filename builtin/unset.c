@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 15:17:08 by meel-war          #+#    #+#             */
-/*   Updated: 2025/04/04 17:34:06 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/04 17:42:15 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	ft_unset(t_data *data, char *var_name)
 	return (0);
 }
 
-static int check_unset(t_shell *shell, t_token *token_ptr)
+int check_unset(t_shell *shell, t_token *token_ptr)
 {
 	if(ft_strcmp(token_ptr->str, "unset") != 0)
 		return(-1);
