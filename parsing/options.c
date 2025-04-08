@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 16:13:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/08 16:33:49 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/08 18:17:15 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static bool	check_token_type(t_token *token, int check_type)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!token || !token->str)

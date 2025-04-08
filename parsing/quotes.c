@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 13:19:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/08 18:14:55 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/08 18:16:43 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ static int	process_quote2(t_token *current, int end, int i, char c)
 		ft_putstr_fd("Quotes are not closed\n", 2);
 	return (i);
 }
-
 
 static void	process_quote(t_token *current)
 {
