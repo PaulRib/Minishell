@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:56:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/08 17:55:25 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/08 18:14:27 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,6 @@ int	is_closed(t_token *current, int i, char c)
 	{
 		if (current->str[i] == c)
 			return (i);
-		i++;
-	}
-	return (0);
-}
-
-int	is_space(t_token *after)
-{
-	int	i;
-
-	i = 0;
-	while (after->str[i])
-	{
-		if (after->str[i] != ' ' && after->str[i] != '\n'
-			&& after->str[i] != '\t')
-			return (1);
 		i++;
 	}
 	return (0);
@@ -78,5 +63,27 @@ void	before_quote(t_token *current, int start)
 		rest = ft_substr(current->str, 0, start - 1);
 		free(current->str);
 		current->str = rest;
+	}
+}
+
+void	after_mult_quote(t_token *current, int end)
+{
+	t_token	*after;
+
+	after = malloc(sizeof(t_token));
+	after->str = ft_strdup(&current->str[end]);
+	if (after->str && after->str[0] != '\0' && is_empty(after, 2147483647))
+	{
+		after->next = current->next;
+		after->prev = current;
+		current->next = after;
+		after->type = WORD;
+	}
+	else
+	{
+		if (after->str)
+			free(after->str);
+		if (after)
+			free(after);
 	}
 }

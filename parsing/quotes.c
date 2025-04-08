@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 13:19:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/08 17:59:51 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/08 18:14:55 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,35 +18,13 @@ void	after_quote(t_token *current, t_token *new, int end)
 
 	after = malloc(sizeof(t_token));
 	after->str = ft_strdup(&current->str[end]);
-	if (after->str && after->str[0] != '\0' && is_space(after))
+	if (after->str && after->str[0] != '\0' && is_empty(after, 2147483647))
 	{
 		after->next = new->next;
 		if (new->next)
 			new->next->prev = after;
 		after->prev = new;
 		new->next = after;
-		after->type = WORD;
-	}
-	else
-	{
-		if (after->str)
-			free(after->str);
-		if (after)
-			free(after);
-	}
-}
-
-void	after_mult_quote(t_token *current, int end)
-{
-	t_token	*after;
-
-	after = malloc(sizeof(t_token));
-	after->str = ft_strdup(&current->str[end]);
-	if (after->str && after->str[0] != '\0' && is_space(after))
-	{
-		after->next = current->next;
-		after->prev = current;
-		current->next = after;
 		after->type = WORD;
 	}
 	else
@@ -83,40 +61,35 @@ static void	extract_quote(t_token *current, int start, int end, char c)
 		empty_quote_before(current, new_token, end, c);
 }
 
-static void	process_quote(t_token *current)
+static int	process_quote2(t_token *current, int end, int i, char c)
 {
-	int	end;
-	int	i;
 	int	start;
 
+	start = i + 1;
+	end = is_closed(current, i + 1, c);
+	if (end != 0)
+	{
+		start = i + 1;
+		extract_quote(current, start, end, c);
+		i = end;
+	}
+	else if (end == 0)
+		ft_putstr_fd("Quotes are not closed\n", 2);
+	return (i);
+}
+
+
+static void	process_quote(t_token *current)
+{
+	int	i;
+
 	i = 0;
-	end = 0;
 	while (current->str[i])
 	{
 		if (current->str[i] == '"')
-		{
-			end = is_closed(current, i + 1, '"');
-			if (end != 0)
-			{
-				start = i + 1;
-				extract_quote(current, start, end, '"');
-				i = end;
-			}
-			else if (end == 0)
-				ft_putstr_fd("Quotes are not closed\n", 2);
-		}
+			i = process_quote2(current, 0, i, '"');
 		else if (current->str[i] == '\'')
-		{
-			end = is_closed(current, i + 1, '\'');
-			if (end != 0)
-			{
-				start = i + 1;
-				extract_quote(current, start, end, '\'');
-				i = end;
-			}
-			else if (end == 0)
-				ft_putstr_fd("Quotes are not closed\n", 2);
-		}
+			i = process_quote2(current, 0, i, '\'');
 		i++;
 	}
 }
