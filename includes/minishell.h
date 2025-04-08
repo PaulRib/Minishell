@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/08 18:02:03 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/08 18:03:55 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@
 # include <sys/wait.h>
 # include <stdbool.h>
 
-# ifndef PATH_MAX
-#	define PATH_MAX 4096
-# endif
+# define PATH_MAX 4096
 
 # define CMD 0
 # define WORD 1
@@ -88,7 +86,7 @@ typedef struct s_shell
 char	**copy_env(char **env, t_data *data);
 char	**build_env(t_data *data);
 int		print_env(t_shell *hub);
-char	*ft_get_env(char **env,  char *var_name);
+char	*ft_get_env(char **env, char *var_name);
 int		find_env_var(char **env, char *var);
 char	**add_env_var(char **env, char *new_var);
 int		update_env_var(t_data *data, char *var_name, char *var_value);
@@ -114,7 +112,7 @@ void	before_quote(t_token *current, int start);
 void	after_mult_quote(t_token *current, int end);
 
 /*Builtins*/
-int		is_builtin (t_shell *shell, t_token *token_list);
+int		is_builtin(t_shell *shell, t_token *token_list);
 void	add_to_history(t_shell *shell, char *command);
 int		check_unset(t_shell *shell, t_token *token_ptr);
 int		ft_unset(t_data *data, char *var_name);
