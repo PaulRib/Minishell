@@ -6,30 +6,19 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 13:19:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/04 14:21:40 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/08 17:59:51 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	is_closed(t_token *current, int i, char c)
-{
-	while (current->str[i])
-	{
-		if (current->str[i] == c)
-			return (i);
-		i++;
-	}
-	return (0);
-}
-
-static void	after_quote(t_token *current, t_token *new, int end)
+void	after_quote(t_token *current, t_token *new, int end)
 {
 	t_token	*after;
 
 	after = malloc(sizeof(t_token));
 	after->str = ft_strdup(&current->str[end]);
-	if (after->str)
+	if (after->str && after->str[0] != '\0' && is_space(after))
 	{
 		after->next = new->next;
 		if (new->next)
@@ -40,25 +29,42 @@ static void	after_quote(t_token *current, t_token *new, int end)
 	}
 	else
 	{
-		free(after->str);
-		free(after);
+		if (after->str)
+			free(after->str);
+		if (after)
+			free(after);
+	}
+}
+
+void	after_mult_quote(t_token *current, int end)
+{
+	t_token	*after;
+
+	after = malloc(sizeof(t_token));
+	after->str = ft_strdup(&current->str[end]);
+	if (after->str && after->str[0] != '\0' && is_space(after))
+	{
+		after->next = current->next;
+		after->prev = current;
+		current->next = after;
+		after->type = WORD;
+	}
+	else
+	{
+		if (after->str)
+			free(after->str);
+		if (after)
+			free(after);
 	}
 }
 
 static void	extract_quote(t_token *current, int start, int end, char c)
 {
 	t_token	*new_token;
-	char	*rest;
 
 	new_token = malloc(sizeof(t_token));
 	new_token->str = ft_substr(current->str, start, end - start);
-	if (new_token->str[0] == '\0' || !new_token->str)
-	{
-		free(new_token->str);
-		free(new_token);
-		return ;
-	}
-	else
+	if (is_empty(current, start - 1))
 	{
 		new_token->next = current->next;
 		if (current->next)
@@ -69,29 +75,22 @@ static void	extract_quote(t_token *current, int start, int end, char c)
 			new_token->type = D_QUOTE;
 		else if (c == '\'')
 			new_token->type = S_QUOTE;
-	}
-	rest = ft_substr(current->str, 0, start - 1);
-	if (rest)
-	{
 		if (current->str[end + 1])
 			after_quote(current, new_token, end + 1);
-		free(current->str);
-		current->str = rest;
+		before_quote(current, start - 1);
 	}
-	else if (rest[0] == '\0' || !rest)
-	{
-		free(new_token->str);
-		free(new_token);
-	}
+	else
+		empty_quote_before(current, new_token, end, c);
 }
 
 static void	process_quote(t_token *current)
 {
-	int	start;
 	int	end;
 	int	i;
+	int	start;
 
 	i = 0;
+	end = 0;
 	while (current->str[i])
 	{
 		if (current->str[i] == '"')

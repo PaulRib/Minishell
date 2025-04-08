@@ -2,6 +2,7 @@ NAME = minishell
 
 SRC = src/minishell.c src/env.c parsing/parsing.c src/struct.c \
 		parsing/token.c parsing/word.c builtin/history.c parsing/options.c parsing/quotes.c\
+		parsing/quotes_utils.c
 
 OBJS = $(SRC:.c=.o)
 

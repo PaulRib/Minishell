@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 16:13:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/04 15:58:08 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/08 16:33:49 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	associate_options_commands(t_shell *shell)
 	while (current)
 	{
 		next = current->next;
-		if (current->type >= PIPE && current->type <= FILE_OUT)
+		if (current->type == CMD)
 			last_command = NULL;
 		if (check_token_type(current, 2))
 			last_command = current;

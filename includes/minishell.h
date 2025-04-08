@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/04 16:33:01 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/08 17:55:35 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,13 @@ void	ft_minisplit(char *line, t_shell *shell);
 void	ft_hub_parsing(t_shell *shell, char *line);
 void	associate_options_commands(t_shell *shell);
 void	handling_quotes(t_shell *shell);
+int		is_empty(t_token *current, int start);
+int		is_space(t_token *after);
+int		is_closed(t_token *current, int i, char c);
+void	empty_quote_before(t_token *current, t_token *new, int end, char c);
+void	after_quote(t_token *current, t_token *new, int end);
+void	before_quote(t_token *current, int start);
+void	after_mult_quote(t_token *current, int end);
 
 /*Builtins*/
 void	add_to_history(t_shell *shell, char *command);
