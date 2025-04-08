@@ -11,3 +11,5 @@ REDIRECTION : verifier si fichier existe apres "<" ET s'il y a (au moins) deux a
 redir_out et pipe
 
 Free l historique a la fin de l exec de minishell;
+tcsetatt pour le terminal 
+tester avec bash --posix

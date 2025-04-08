@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 16:13:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/21 16:44:48 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/08 16:33:49 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,20 @@
 
 static bool	check_token_type(t_token *token, int check_type)
 {
-	if (!token || !token->str || token->type != WORD)
+	int i;
+
+	i = 0;
+	if (!token || !token->str)
 		return (false);
+	if (token->type != CMD && token->type != WORD
+		&& token->type != S_QUOTE && token->type != D_QUOTE)
+		return (false);
+	while (token->str[i] == ' ')
+		i++;
 	if (check_type == 1)
-		return (token->str[0] == '-');
+		return (token->str[i] == '-');
 	else if (check_type == 2)
-		return (token->str[0] != '-');
+		return (token->str[i] != '-');
 	return (false);
 }
 
@@ -102,6 +110,8 @@ void	associate_options_commands(t_shell *shell)
 	while (current)
 	{
 		next = current->next;
+		if (current->type == CMD)
+			last_command = NULL;
 		if (check_token_type(current, 2))
 			last_command = current;
 		else if (check_token_type(current, 1) && last_command)

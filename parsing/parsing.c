@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:22:37 by meel-war          #+#    #+#             */
-/*   Updated: 2025/03/20 14:34:26 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/08 14:07:57 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,35 +82,30 @@ static char	*fill_delim(char *s, int *k)
 	return (word);
 }
 
-void	ft_minisplit(char *line, t_shell *shell)
+void ft_minisplit(char *line, t_shell *shell)
 {
-	int		k;
-	bool	delim;
-	t_token	*tmp;
+    int     k;
+    t_token *tmp;
 
-	tmp = shell->token;
-	delim = false;
-	k = 0;
-	while (line[k])
-	{
-		while (line[k] && (line[k] == ' '
-				|| line[k] == '\t' || line[k] == '\n'))
-			k++;
-		while (line[k] == '|' || line[k] == '>' || line[k] == '<')
-		{
-			tmp->str = fill_delim(line, &k);
-			delim = true;
-		}
-		if (delim == true)
-		{
-			new_node_token(tmp, true, NULL);
-			tmp = tmp->next;
-		}
-		delim = false;
-		if (line[k] != '|' && line[k] != '>' && line[k] != '<')
-			tmp->str = fill_word(line, &k);
-		new_node_token(tmp, true, NULL);
-		tmp = tmp->next;
-	}
-	tmp = NULL;
+    tmp = shell->token;
+    k = 0;
+    while (line[k])
+    {
+        while (line[k] && (line[k] == ' ' || line[k] == '\t' || line[k] == '\n'))
+            k++;
+        if (!line[k])
+            break;
+        if (line[k] == '|' || line[k] == '>' || line[k] == '<')
+        {
+            tmp->str = fill_delim(line, &k);
+            new_node_token(tmp);
+            tmp = tmp->next;
+        }
+        else if (line[k])
+        {
+            tmp->str = fill_word(line, &k);
+            new_node_token(tmp);
+            tmp = tmp->next;
+        }
+    }
 }
