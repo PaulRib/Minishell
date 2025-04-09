@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/09 16:58:08 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/09 17:56:33 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ int		ft_pwd(void);
 int		check_cd(t_shell *shell, t_token *token_ptr);
 int		ft_cd(t_data *data, char *path_name);
 int		check_pwd(t_shell *shell, t_token *token_ptr);
+char 	*ft_handle_tilde(char *dir, char *home_dir);
 
 char	**add_env_var(char **env, char *new_var);
 int	find_env_var(char **env, char *var);

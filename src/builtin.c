@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/09 16:57:30 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/09 17:22:59 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	is_builtin (t_shell *shell, t_token *token_list)
 		// 	return(result);
 		result = check_pwd(shell, token_ptr);
 		if(result != -1)
-		// 	return(result);
+		 	return(result);
 		// result = check_unset(shell, token_ptr);
 		// if(result != -1)
 			// return(result);
