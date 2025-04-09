@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 16:13:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/08 18:17:15 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/09 17:16:30 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static bool	check_token_type(t_token *token, int check_type)
 	while (token->str[i] == ' ')
 		i++;
 	if (check_type == 1)
-		return (token->str[i] == '-');
+		return (token->str[i] == '-' && token->str[i + 1]);
 	else if (check_type == 2)
 		return (token->str[i] != '-');
 	return (false);
