@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/08 18:10:35 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:58:08 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <stdbool.h>
+# include <unistd.h>
 
 # define PATH_MAX 4096
 
@@ -116,5 +117,12 @@ void	add_to_history(t_shell *shell, char *command);
 int		check_unset(t_shell *shell, t_token *token_ptr);
 int		ft_unset(t_data *data, char *var_name);
 int		ft_pwd(void);
+int		check_cd(t_shell *shell, t_token *token_ptr);
+int		ft_cd(t_data *data, char *path_name);
+int		check_pwd(t_shell *shell, t_token *token_ptr);
 
+char	**add_env_var(char **env, char *new_var);
+int	find_env_var(char **env, char *var);
+char *ft_get_env(char **env,  char *var_name);
+int	update_env_var(t_data *data, char *var_name, char *var_value);
 #endif

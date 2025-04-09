@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:22:37 by meel-war          #+#    #+#             */
-/*   Updated: 2025/04/08 18:17:27 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:45:35 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,9 @@ void	ft_minisplit(char *line, t_shell *shell)
 			tmp = tmp->next;
 		}
 		else if (line[k])
-		{
 			tmp->str = fill_word(line, &k);
+		if (line[k])
+		{
 			new_node_token(tmp);
 			tmp = tmp->next;
 		}

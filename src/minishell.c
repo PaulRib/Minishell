@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/08 13:40:51 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:45:51 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 	ft_split_word(shell);
 	second_token(shell);
 	associate_options_commands(shell);
-	while (tmp->next)
+	while (tmp)
 	{
 		printf("\033[34;01mType de token : \033[00m-%i-\n", tmp->type);
 		printf("\033[34;01mContenu du token : \033[00m-%s-\n", tmp->str);
@@ -75,7 +75,7 @@ int	main(int ac, char **av, char **env)
 		shell->data->new_env = copy_env(env, shell->data);
 	while (1)
 	{
-		line = readline("minishell$>"); // cur_dir a inserer ici
+		line = readline(shell->data->cur_dir); // cur_dir a inserer ici
 		if (!line)
 		{
 			printf("\033[1;33mexit\033[0m\n");
@@ -88,7 +88,7 @@ int	main(int ac, char **av, char **env)
 			add_to_history(shell, line);
 		}
 		ft_hub_parsing(shell, line);
-		// is_builtin(line, hub);
+		is_builtin(shell, shell->token);
 		free(line);
 		ft_free_node(shell);
 	}

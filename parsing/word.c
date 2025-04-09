@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:59:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/03/20 15:59:55 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:46:16 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	ft_split_word(t_shell *shell)
 	t_token	*current;
 
 	current = shell->token;
-	while (current->next)
+	while (current)
 	{
 		if (current->type == WORD && current->str)
 			process_token(current);
