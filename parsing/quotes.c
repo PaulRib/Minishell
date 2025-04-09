@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 13:19:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/08 18:16:43 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/09 17:03:13 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,15 @@ static void	process_quote(t_token *current)
 	while (current->str[i])
 	{
 		if (current->str[i] == '"')
+		{
 			i = process_quote2(current, 0, i, '"');
+			return ;
+		}
 		else if (current->str[i] == '\'')
+		{
 			i = process_quote2(current, 0, i, '\'');
+			return ;
+		}
 		i++;
 	}
 }
