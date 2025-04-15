@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/15 14:51:07 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/15 16:31:17 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 	ft_split_word(shell);
 	second_token(shell);
 	associate_options_commands(shell);
-	// while (tmp)
-	// {
-	// 	printf("\033[34;01mType de token : \033[00m-%i-\n", tmp->type);
-	// 	printf("\033[34;01mContenu du token : \033[00m-%s-\n", tmp->str);
-	// 	tmp = tmp->next;
-	// }
+	while (tmp)
+	{
+		printf("\033[34;01mType de token : \033[00m-%i-\n", tmp->type);
+		printf("\033[34;01mContenu du token : \033[00m-%s-\n", tmp->str);
+		tmp = tmp->next;
+	}
 }
 
 void	ft_free_node(t_shell *shell)

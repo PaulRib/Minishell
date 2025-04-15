@@ -3,38 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:15:41 by meel-war          #+#    #+#             */
-/*   Updated: 2025/04/15 16:11:13 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/15 16:36:11 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int ft_count(char *str)
+static void	new_node_echo(t_token *current, int start)
 {
-	int i;
-	int n;
+	t_token	*new;
+	char	*echo;
+
+	new = malloc(sizeof(t_token));
+	new->str = ft_substr(current->str, start, ft_strlen(current->str) - start);
+	echo = ft_substr(current->str, 0, start - 1);
+	free (current->str);
+	new->type = WORD;
+	current->str = echo;
+	new->next = current->next;
+	current->next->prev = new;
+	new->prev = current;
+	current->next = new;
+}
+
+int	ft_count(t_token *current)
+{
+	int		i;
+	int		n;
+	t_token	*tmp;
+
+	tmp = current;
 	i = 0;
 	n = 0;
-	int flag = 0;
-	
-	while(str[i])
+	while (tmp->str[i])
 	{
-		if(ft_strncmp(&str[i], "-n", 2) == 0 && flag == 0)
-		{
+		while (i < 4)
 			i++;
+		if (ft_strncmp(&tmp->str[i], "-n", 2) == 0)
+		{
+			i += 2;
 			n++;
 		}
-		else if(i > 4 && ft_strcmp(&str[i], "-n") != 0)
+		else if (tmp->str[i] != '\0' && tmp->str[i] != ' ')
 		{
-			flag = 1;
-			write(1, &str[i], 1);
+			new_node_echo(tmp, i);
+			return (n);
 		}
 		i++;
 	}
-	return(n);
+	return (n);
 }
 
 int	ft_echo(t_token *token_ptr)
@@ -43,7 +63,7 @@ int	ft_echo(t_token *token_ptr)
 	int		n_param;
 
 	n_param = 0;
-	n_param = ft_count(token_ptr->str);
+	n_param = ft_count(token_ptr);
 	current = token_ptr->next;
 	while (current && current->type == WORD)
 	{
