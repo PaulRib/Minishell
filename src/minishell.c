@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/09 17:55:10 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/15 12:55:33 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,11 @@
 void	initiate_all(t_shell *shell)
 {
 	shell->data = malloc(sizeof(t_data));
-	shell->history = malloc(sizeof(t_history));
+	shell->history = NULL;
 	shell->number = malloc(sizeof(t_count));
 	ft_memset(shell->number, 0, sizeof(t_count));
 	ft_memset(shell->data, 0, sizeof(t_data));
 	ft_memset(shell->history, 0, sizeof(t_history));
-	//getcwd(shell->data->cur_dir, 500);
 	getcwd(shell->data->old_dir, 500);
 	getcwd(shell->data->cur_dir, 500);
 	shell->data->shlvl = 1;
@@ -77,7 +76,8 @@ int	main(int ac, char **av, char **env)
 		shell->data->new_env = copy_env(env, shell->data);
 	while (1)
 	{
-		line = readline(shell->data->cur_dir); // cur_dir a inserer ici
+		shell->prompt = ft_strjoin(shell->data->cur_dir, "$ ");
+		line = readline(shell->prompt);
 		if (!line)
 		{
 			printf("\033[1;33mexit\033[0m\n");

@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 16:53:00 by meel-war          #+#    #+#             */
-/*   Updated: 2025/04/04 17:36:46 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/15 12:59:08 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ static int	env_size(char **env)
 	int	i;
 
 	i = 0;
-	// verifie si il y a forcement un env a partir de cette etape normalement oui
-	// si pas le cas garder env dans tout les cas plus secure
 	while (env && env[i])
 		i++;
 	return (i);

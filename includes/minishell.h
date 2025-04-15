@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/09 17:56:33 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/15 13:04:29 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_count
 typedef struct s_shell
 {
 	char		*str;
+	char		*prompt;
 	t_data		*data;
 	t_token		*token;
 	t_history	*history;
@@ -111,19 +112,24 @@ void	after_quote(t_token *current, t_token *new, int end);
 void	before_quote(t_token *current, int start);
 void	after_mult_quote(t_token *current, int end);
 
-/*Builtins*/
+/* Builtins */
 int		is_builtin(t_shell *shell, t_token *token_list);
-void	add_to_history(t_shell *shell, char *command);
-int		check_unset(t_shell *shell, t_token *token_ptr);
-int		ft_unset(t_data *data, char *var_name);
-int		ft_pwd(void);
+/* cd */
 int		check_cd(t_shell *shell, t_token *token_ptr);
 int		ft_cd(t_data *data, char *path_name);
-int		check_pwd(t_shell *shell, t_token *token_ptr);
 char 	*ft_handle_tilde(char *dir, char *home_dir);
+/* history */
+int		ft_history(t_shell *hub);
+void	add_to_history(t_shell *shell, char *command);
+/* unset */
+int		check_unset(t_shell *shell, t_token *token_ptr);
+int		ft_unset(t_data *data, char *var_name);
+/* pwd */
+int		ft_pwd(void);
+int		check_pwd(t_shell *shell, t_token *token_ptr);
+/* echo */
+int		check_echo(t_token *token_ptr);
 
-char	**add_env_var(char **env, char *new_var);
-int	find_env_var(char **env, char *var);
-char *ft_get_env(char **env,  char *var_name);
-int	update_env_var(t_data *data, char *var_name, char *var_value);
+/* Utils */
+
 #endif
