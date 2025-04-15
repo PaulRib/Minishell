@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/09 18:04:39 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/15 13:11:20 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,31 @@ int	check_cd(t_shell *shell, t_token *token_ptr)
 	else
 		return (ft_cd(shell->data, NULL));
 }
-
-static int	handle_directory(char *dir, char *home_dir)
+// Pas encore conforme
+char	*ft_handle_hyphen(char *dir, char *old_dir)
 {
-	// if(!ft_strncmp(dir, "-", 2))
-	// {
-	// 	ft_handle_hyphen();
-	// }
-	if(!ft_strncmp(dir, "~", 1))
+	if (!old_dir)
 	{
-		dir = ft_handle_tilde(dir, home_dir);
+		ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
+		free(dir);
+		return (NULL);
 	}
+	free(dir);
+	dir = ft_strdup(old_dir);
+	ft_printf("%s\n", old_dir);
+	return (dir);
+}
+
+static int	handle_directory(char *dir, char *home_dir, char *old_dir)
+{
+	if (!ft_strncmp(dir, "-", 2))
+	{
+		dir = ft_handle_hyphen(dir, old_dir);
+		if (!dir)
+			return (1);
+	}
+	if (!ft_strncmp(dir, "~", 1))
+		dir = ft_handle_tilde(dir, home_dir);
 	if (access(dir, F_OK) != 0)
 	{
 		ft_putstr_fd("minishell: cd: no such file or directory", 2);
@@ -70,11 +84,11 @@ static int	handle_directory(char *dir, char *home_dir)
 	return (0);
 }
 
-char *ft_handle_tilde(char *dir, char *home_dir)
+char	*ft_handle_tilde(char *dir, char *home_dir)
 {
-	char *tmp;
-	
-	if(!ft_strcmp(dir, "~"))
+	char	*tmp;
+
+	if (!ft_strcmp(dir, "~"))
 	{
 		free(dir);
 		dir = ft_strdup(home_dir);
@@ -82,19 +96,26 @@ char *ft_handle_tilde(char *dir, char *home_dir)
 	else
 	{
 		tmp = ft_substr(dir, 1, ft_strlen(dir) - 1);
-		free (dir);
+		free(dir);
 		dir = ft_strjoin(home_dir, tmp);
 		free(tmp);
 	}
-	return(dir);
+	return (dir);
 }
 
 int	ft_cd(t_data *data, char *path_name)
 {
-	char *home_dir;
-	int result;
-	
+	char	*home_dir;
+	char	*old_dir;
+	int		result;
+
 	home_dir = ft_get_env(data->new_env, "HOME");
+	old_dir = ft_get_env(data->new_env, "OLDPWD");
+	if (getcwd(data->cur_dir, PATH_MAX) == NULL)
+	{
+		ft_putstr_fd("minishell: cd: getcwd error\n", 2);
+		return (1);
+	}
 	if (!path_name)
 	{
 		if (!home_dir)
@@ -102,16 +123,16 @@ int	ft_cd(t_data *data, char *path_name)
 			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 			return (1);
 		}
-		result = handle_directory(home_dir, NULL);
+		result = handle_directory(home_dir, NULL, NULL);
 	}
 	else
-		result = handle_directory(path_name, home_dir);
-	if(result != 0)
-		return(result);
-	if(getcwd(data->cur_dir, PATH_MAX) != NULL)
+		result = handle_directory(path_name, home_dir, old_dir);
+	if (result != 0)
+		return (result);
+	if (getcwd(data->cur_dir, PATH_MAX) != NULL)
 	{
 		update_env_var(data, "OLDPWD", data->old_dir);
 		update_env_var(data, "PWD", data->cur_dir);
 	}
-	return(0);
+	return (0);
 }

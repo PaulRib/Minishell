@@ -6,53 +6,40 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:15:41 by meel-war          #+#    #+#             */
-/*   Updated: 2025/04/04 17:42:02 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/15 13:09:53 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int args_nb(char **temp)
+int	ft_echo(t_token *token_ptr)
 {
-	int		count;
+	t_token	*current;
+	int		n_param;
 
-	count = 0;
-	while(temp[count])
-		count++;
-	return(count);
-}
-
-int	ft_echo(char **temp)
-{
-	int i;
-	int n_param;
-
-	i = 1;
 	n_param = 0;
-	if(args_nb(temp) > 1)
+	current = token_ptr->next;
+	while (current && current->type == WORD && ft_strcmp(current->str,
+			"-n") == 0)
 	{
-		while(temp[i] && ft_strcmp(temp[i], "-n") == 0)
-		{
-			n_param = 1;
-			i++;
-		}
-		while(temp[i])
-		{
-			ft_putstr_fd(temp[i], 1);
-			if(temp[i + 1])
-				write(1, " ", 1);
-			i++;
-		}
+		n_param = 1;
+		current = current->next;
 	}
-	if(n_param == 0)
+	while (current && current->type == WORD)
 	{
+		ft_putstr_fd(current->str, 1);
+		if (current->next && current->next->type == WORD)
+			write(1, " ", 1);
+		current = current->next;
+	}
+	if (n_param == 0)
 		write(1, "\n", 1);
-	}
+	return (0);
 }
 
-int check_echo(t_shell *shell, t_token *token_ptr)
+int	check_echo(t_token *token_ptr)
 {
-	if(ft_strcmp(token_ptr->str, "echo") != 0)
+	if (ft_strcmp(token_ptr->str, "echo") != 0)
 		return (-1);
-	return(ft_echo(token_ptr));
+	return (ft_echo(token_ptr));
 }
