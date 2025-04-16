@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:14:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/16 15:02:18 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/16 17:19:58 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	second_token(t_shell *shell)
 			tmp->next->type = END;
 		if (tmp->type == FILE_IN && tmp->next->type != REDIR_IN)
 			tmp->next->type = CMD;
-		if (tmp->type == PIPE)
+		if (tmp->type == PIPE && tmp->next->type != REDIR_IN)
 			tmp->next->type = CMD;
 		tmp = tmp->next;
 	}
