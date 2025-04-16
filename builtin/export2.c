@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:21:23 by meel-war          #+#    #+#             */
-/*   Updated: 2025/04/16 17:01:52 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/16 17:29:24 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,16 @@ static void	print_export_value(char *env_var, int equal_sign)
 {
 	int	i;
 
-	printf("=\"");
-	i = equal_sign;
-	while (env_var[++i])
+	i = equal_sign + 1;
+	ft_printf("=\"");
+	while (env_var[i])
 	{
 		if (env_var[i] == '\"' || env_var[i] == '\\' || env_var[i] == '$')
-			printf("\\");
-		printf("%c", env_var[i]);
+			ft_printf("\\");
+		ft_printf("%c", env_var[i]);
+		i++;
 	}
-	printf("\"");
+	ft_printf("\"");
 }
 
 static void print_export_format(char *env_var)
