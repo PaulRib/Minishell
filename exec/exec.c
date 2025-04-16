@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/16 17:22:17 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/16 18:11:59 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ static void	count_element(t_shell *shell)
 			shell->count->nb_append++;
 		if (current->type == HEREDOC)
 			shell->count->nb_heredoc++;
+		if (current->type == CMD)
+			shell->exec->nb_cmd++;
 		current = current->next;
 	}
 }
@@ -90,42 +92,47 @@ static void	stock_all_fd(t_shell *shell)
 	shell->exec->eof_heredoc[i] = NULL;
 }
 
-static void	stock_all_cmd(t_shell *shell)
-{
-	int		i;
-	t_token	*first;
+// static void	stock_all_cmd(t_shell *shell)
+// {
+// 	int		i;
+// 	t_token	*first;
 
-	first = shell->token;
-	shell->exec = malloc(sizeof(t_exec));
-	ft_memset(shell->exec, 0, sizeof(t_exec));
-	while (first->next)
-	{
-		if (first->type == CMD)
-			shell->exec->nb_cmd++;
-		first = first->next;
-	}
-	i = 0;
-	shell->exec->cmd = malloc(sizeof(char *) * shell->exec->nb_cmd);
-	first = shell->token;
-	while (first->next && i < shell->exec->nb_cmd)
-	{
-		if (first->type == CMD)
-		{
-			shell->exec->cmd[i] = first->str;
-			i++;
-		}
-		first = first->next;
-	}
-	shell->exec->cmd[i] = NULL;
-}
+// 	first = shell->token;
+// 	shell->exec = malloc(sizeof(t_exec));
+// 	ft_memset(shell->exec, 0, sizeof(t_exec));
+// 	while (first->next)
+// 	{
+// 		if (first->type == CMD)
+// 			shell->exec->nb_cmd++;
+// 		first = first->next;
+// 	}
+// 	i = 0;
+// 	shell->exec->cmd = malloc(sizeof(char *) * shell->exec->nb_cmd);
+// 	first = shell->token;
+// 	while (first->next && i < shell->exec->nb_cmd)
+// 	{
+// 		if (first->type == CMD)
+// 		{
+// 			shell->exec->cmd[i] = first->str;
+// 			i++;
+// 		}
+// 		first = first->next;
+// 	}
+// 	shell->exec->cmd[i] = NULL;
+// }
 
 void	exec_hub(t_shell *shell)
 {
+	shell->exec = malloc(sizeof(t_exec));
+	ft_memset(shell->exec, 0, sizeof(t_exec));
 	count_element(shell);
 	if (shell->count->nb_redir_in == 0 && shell->count->nb_redir_out == 0
 		&& shell->count->nb_append == 0 && shell->count->nb_heredoc == 0)
+	{
 		shell->token->type = CMD;
-	stock_all_cmd(shell);
+		shell->exec->nb_cmd++;
+	}
+	//stock_all_cmd(shell);
 	stock_all_fd(shell);
 	append_heredoc(shell, 0);
 	append_heredoc(shell, 1);
