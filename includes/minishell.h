@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/15 13:04:29 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/16 16:53:37 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,9 @@ void	after_mult_quote(t_token *current, int end);
 
 /* Builtins */
 int		is_builtin(t_shell *shell, t_token *token_list);
+/* export */
+int		check_export(t_shell *shell, t_token *token_ptr);
+int		export_no_args(t_shell *shell);
 /* cd */
 int		check_cd(t_shell *shell, t_token *token_ptr);
 int		ft_cd(t_data *data, char *path_name);

@@ -3,7 +3,7 @@ NAME = minishell
 SRC = src/minishell.c src/env.c parsing/parsing.c src/struct.c src/builtin.c \
 		parsing/token.c parsing/word.c builtin/history.c parsing/options.c parsing/quotes.c\
 		parsing/quotes_utils.c\
-		builtin/cd.c builtin/pwd.c builtin/echo.c builtin/unset.c \
+		builtin/cd.c builtin/pwd.c builtin/echo.c builtin/unset.c builtin/export.c builtin/export2.c \
 		utils/ft_add_env_var.c utils/ft_find_env_var.c utils/ft_get_env.c utils/ft_update_env_var.c\
 
 OBJS = $(SRC:.c=.o)
