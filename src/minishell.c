@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/16 15:21:37 by pribolzi         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/04/16 15:25:05 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../includes/minishell.h"
 
@@ -18,6 +19,9 @@ void	initiate_all(t_shell *shell)
 	shell->history = malloc(sizeof(t_history));
 	shell->count = malloc(sizeof(t_count));
 	ft_memset(shell->count, 0, sizeof(t_count));
+	shell->history = NULL;
+	shell->number = malloc(sizeof(t_count));
+	ft_memset(shell->number, 0, sizeof(t_count));
 	ft_memset(shell->data, 0, sizeof(t_data));
 	ft_memset(shell->history, 0, sizeof(t_history));
 	getcwd(shell->data->old_dir, PATH_MAX);
@@ -75,7 +79,8 @@ int	main(int ac, char **av, char **env)
 		shell->data->new_env = copy_env(env, shell->data);
 	while (1)
 	{
-		line = readline(shell->data->cur_dir);
+		shell->prompt = ft_strjoin(shell->data->cur_dir, "$ ");
+		line = readline(shell->prompt);
 		if (!line)
 		{
 			printf("\033[1;33mexit\033[0m\n");
