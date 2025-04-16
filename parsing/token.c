@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:14:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/08 16:34:47 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:02:18 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,23 +34,6 @@ void	get_type(t_shell *shell)
 		else
 			tmp->type = WORD;
 		tmp = tmp->next;
-	}
-}
-
-void	count_element(t_shell *shell, char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == '|')
-			shell->number->nb_pipe++;
-		if (line[i] == '<')
-			shell->number->is_redir_in++;
-		if (line[i] == '>')
-			shell->number->is_redir_out++;
-		i++;
 	}
 }
 
