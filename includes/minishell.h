@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/16 16:53:37 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/16 18:05:02 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,23 @@ typedef struct s_token
 typedef struct s_count
 {
 	int	nb_pipe;
-	int	is_redir_in;
-	int	is_redir_out;
+	int	nb_redir_in;
+	int	nb_redir_out;
+	int	nb_append;
+	int	nb_heredoc;
 }				t_count;
+
+typedef struct s_exec
+{
+	char	**cmd;
+	char	**eof_heredoc;
+	char	**fd_in;
+	char	**fd_out;
+	int		p_fd[2];
+	int		nb_cmd;
+	bool	append;
+	bool	heredoc;
+}				t_exec;
 
 typedef struct s_shell
 {
@@ -74,7 +88,8 @@ typedef struct s_shell
 	t_data		*data;
 	t_token		*token;
 	t_history	*history;
-	t_count		*number;
+	t_count		*count;
+	t_exec		*exec;
 }					t_shell;
 
 // typedef struct s_pipex
@@ -98,7 +113,6 @@ void	get_type(t_shell *shell);
 void	new_node_token(t_token *ptr);
 void	ft_split_word(t_shell *shell);
 void	second_token(t_shell *shell);
-void	count_element(t_shell *shell, char *line);
 
 /* Parsing */
 void	ft_minisplit(char *line, t_shell *shell);
@@ -130,9 +144,17 @@ int		ft_unset(t_data *data, char *var_name);
 /* pwd */
 int		ft_pwd(void);
 int		check_pwd(t_shell *shell, t_token *token_ptr);
+char	*ft_handle_tilde(char *dir, char *home_dir);
+
+/*Execution*/
+void	exec_hub(t_shell *shell);
 /* echo */
 int		check_echo(t_token *token_ptr);
 
 /* Utils */
 
+char	**add_env_var(char **env, char *new_var);
+int		find_env_var(char **env, char *var);
+char	*ft_get_env(char **env, char *var_name);
+int		update_env_var(t_data *data, char *var_name, char *var_value);
 #endif

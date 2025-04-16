@@ -5,23 +5,26 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/21 15:03:41 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/15 16:31:17 by pribolzi         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/04/16 17:27:40 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../includes/minishell.h"
 
 void	initiate_all(t_shell *shell)
 {
 	shell->data = malloc(sizeof(t_data));
+	shell->count = malloc(sizeof(t_count));
+	ft_memset(shell->count, 0, sizeof(t_count));
 	shell->history = NULL;
-	shell->number = malloc(sizeof(t_count));
-	ft_memset(shell->number, 0, sizeof(t_count));
+	shell->count = malloc(sizeof(t_count));
+	ft_memset(shell->count, 0, sizeof(t_count));
 	ft_memset(shell->data, 0, sizeof(t_data));
 	ft_memset(shell->history, 0, sizeof(t_history));
-	getcwd(shell->data->old_dir, 500);
-	getcwd(shell->data->cur_dir, 500);
+	getcwd(shell->data->old_dir, PATH_MAX);
+	getcwd(shell->data->cur_dir, PATH_MAX);
 	shell->data->shlvl = 1;
 }
 
@@ -30,13 +33,13 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 	t_token	*tmp;
 
 	tmp = shell->token;
-	count_element(shell, line);
 	ft_minisplit(line, shell);
 	get_type(shell);
 	handling_quotes(shell);
 	ft_split_word(shell);
 	second_token(shell);
 	associate_options_commands(shell);
+	exec_hub(shell);
 	while (tmp)
 	{
 		printf("\033[34;01mType de token : \033[00m-%i-\n", tmp->type);

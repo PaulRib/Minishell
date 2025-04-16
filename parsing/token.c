@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:14:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/08 16:34:47 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/16 17:19:58 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,6 @@ void	get_type(t_shell *shell)
 	}
 }
 
-void	count_element(t_shell *shell, char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == '|')
-			shell->number->nb_pipe++;
-		if (line[i] == '<')
-			shell->number->is_redir_in++;
-		if (line[i] == '>')
-			shell->number->is_redir_out++;
-		i++;
-	}
-}
-
 void	second_token(t_shell *shell)
 {
 	t_token	*tmp;
@@ -69,7 +52,7 @@ void	second_token(t_shell *shell)
 			tmp->next->type = END;
 		if (tmp->type == FILE_IN && tmp->next->type != REDIR_IN)
 			tmp->next->type = CMD;
-		if (tmp->type == PIPE)
+		if (tmp->type == PIPE && tmp->next->type != REDIR_IN)
 			tmp->next->type = CMD;
 		tmp = tmp->next;
 	}
