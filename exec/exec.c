@@ -115,7 +115,7 @@ void	exec_hub(t_shell *shell)
 	if (shell->count->nb_redir_in == 0 && shell->count->nb_redir_out == 0
 		&& shell->count->nb_append == 0 && shell->count->nb_heredoc == 0)
 	{
-		shell->token->type = CMD;$
+		shell->token->type = CMD;
 		shell->exec->nb_cmd++;
 	}
 	if (shell->count->nb_heredoc > 1)
