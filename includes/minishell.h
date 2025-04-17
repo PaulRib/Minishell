@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/16 18:05:02 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/17 14:40:52 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ void	empty_quote_before(t_token *current, t_token *new, int end, char c);
 void	after_quote(t_token *current, t_token *new, int end);
 void	before_quote(t_token *current, int start);
 void	after_mult_quote(t_token *current, int end);
+int		check_for_more_words(char *str, int i);
 
 /* Builtins */
 int		is_builtin(t_shell *shell, t_token *token_list);
@@ -134,7 +135,8 @@ int		export_no_args(t_shell *shell);
 /* cd */
 int		check_cd(t_shell *shell, t_token *token_ptr);
 int		ft_cd(t_data *data, char *path_name);
-char 	*ft_handle_tilde(char *dir, char *home_dir);
+char	*ft_handle_tilde(char *dir, char *home_dir);
+
 /* history */
 int		ft_history(t_shell *hub);
 void	add_to_history(t_shell *shell, char *command);

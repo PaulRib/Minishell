@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:22:37 by meel-war          #+#    #+#             */
-/*   Updated: 2025/04/16 15:30:15 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/17 14:44:26 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,14 +97,10 @@ void	ft_minisplit(char *line, t_shell *shell)
 		if (!line[k])
 			break ;
 		if (line[k] == '|' || line[k] == '>' || line[k] == '<')
-		{
 			tmp->str = fill_delim(line, &k);
-			new_node_token(tmp);
-			tmp = tmp->next;
-		}
 		else if (line[k])
 			tmp->str = fill_word(line, &k);
-		if (line[k] && line[k] != ' ')
+		if (check_for_more_words(line, k) > 0)
 		{
 			new_node_token(tmp);
 			tmp = tmp->next;
