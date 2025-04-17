@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/17 14:40:52 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/17 14:51:51 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,17 @@ typedef struct s_count
 
 typedef struct s_exec
 {
-	char	**cmd;
 	char	**eof_heredoc;
-	char	**fd_in;
-	char	**fd_out;
 	int		p_fd[2];
 	int		nb_cmd;
-	bool	append;
-	bool	heredoc;
 }				t_exec;
+
+typedef struct s_pipex
+{
+	int	fd_in;
+	int	fd_out;
+	int	prev_fd;
+}				t_pipex;
 
 typedef struct s_shell
 {
@@ -90,6 +92,7 @@ typedef struct s_shell
 	t_history	*history;
 	t_count		*count;
 	t_exec		*exec;
+	t_pipex		*pipex;
 }					t_shell;
 
 // typedef struct s_pipex
