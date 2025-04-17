@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/16 18:11:59 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/17 14:26:34 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,35 +60,21 @@ static void	append_heredoc(t_shell *shell, int type)
 	}
 }
 
-static void	stock_all_fd(t_shell *shell)
+static void	stock_all_eof(t_shell *shell)
 {
 	t_token	*current;
 	int		i;
-	int		j;
-	int		k;
 
 	i = 0;
-	j = 0;
-	k = 0;
 	current = shell->token;
 	shell->exec->eof_heredoc = malloc(sizeof(char *)
 			* (shell->count->nb_heredoc) + 1);
-	shell->exec->fd_in = malloc(sizeof(char *)
-			* (shell->count->nb_redir_in) + 1);
-	shell->exec->fd_out = malloc(sizeof(char *)
-			* (shell->count->nb_redir_out + shell->count->nb_append) + 1);
 	while (current->next)
 	{
 		if (current->type == END)
 			shell->exec->eof_heredoc[i++] = current->str;
-		if (current->type == REDIR_IN)
-			shell->exec->fd_in[j++] = current->str;
-		if (current->type == REDIR_OUT || current->type == APPEND)
-			shell->exec->fd_out[k++] = current->str;
 		current = current->next;
 	}
-	shell->exec->fd_out[k] = NULL;
-	shell->exec->fd_in[j] = NULL;
 	shell->exec->eof_heredoc[i] = NULL;
 }
 
@@ -132,8 +118,8 @@ void	exec_hub(t_shell *shell)
 		shell->token->type = CMD;
 		shell->exec->nb_cmd++;
 	}
-	//stock_all_cmd(shell);
-	stock_all_fd(shell);
+	if (shell->count->nb_heredoc > 1)
+		stock_all_eof(shell);
 	append_heredoc(shell, 0);
 	append_heredoc(shell, 1);
 }
