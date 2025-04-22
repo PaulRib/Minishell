@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/04/17 14:43:51 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/22 15:41:17 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	initiate_all(t_shell *shell)
 	getcwd(shell->data->old_dir, PATH_MAX);
 	getcwd(shell->data->cur_dir, PATH_MAX);
 	shell->data->shlvl = 1;
+	shell->exit_status = 0;
 }
 
 void	ft_hub_parsing(t_shell *shell, char *line)

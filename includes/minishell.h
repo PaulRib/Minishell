@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/17 14:51:51 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/22 15:32:01 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct s_shell
 	t_count		*count;
 	t_exec		*exec;
 	t_pipex		*pipex;
+	int			exit_status;
 }					t_shell;
 
 // typedef struct s_pipex
@@ -162,4 +163,9 @@ char	**add_env_var(char **env, char *new_var);
 int		find_env_var(char **env, char *var);
 char	*ft_get_env(char **env, char *var_name);
 int		update_env_var(t_data *data, char *var_name, char *var_value);
+
+
+void	expand_all_tokens(t_shell *shell);
+char	*expand_variables(t_shell *shell, char *str);
+char	*ft_strjoin_char(char *s1, char c);
 #endif
