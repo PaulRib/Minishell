@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:59:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/17 14:40:23 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/23 17:47:14 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,12 @@ static void	process_token(t_token *current)
 		first_word = ft_substr(current->str, word_start, word_end - word_start);
 		rest_str = ft_strdup(&current->str[next_word]);
 		create_and_insert_token(current, rest_str);
+		free(current->str);
+		current->str = first_word;
+	}
+	else
+	{
+		first_word = ft_substr(current->str, 0, word_end);
 		free(current->str);
 		current->str = first_word;
 	}

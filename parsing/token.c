@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:14:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/16 17:19:58 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/23 17:31:34 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	get_type(t_shell *shell)
 
 	tmp = shell->token;
 	i = 0;
-	while (tmp != NULL)
+	while (tmp)
 	{
 		if (ft_strcmp(tmp->str, "|") == 0)
 			tmp->type = PIPE;
@@ -42,7 +42,7 @@ void	second_token(t_shell *shell)
 	t_token	*tmp;
 
 	tmp = shell->token;
-	while (tmp->next)
+	while (tmp)
 	{
 		if (tmp->type == REDIR_IN)
 			tmp->next->type = FILE_IN;
