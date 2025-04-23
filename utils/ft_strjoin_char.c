@@ -1,36 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_strjoin_char.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/05 16:01:33 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/09 16:58:36 by meel-war         ###   ########.fr       */
+/*   Created: 2025/04/23 16:04:04 by meel-war          #+#    #+#             */
+/*   Updated: 2025/04/23 16:06:36 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_pwd(void)
+char	*ft_strjoin_char(char *s1, char c)
 {
-	char	cwd[PATH_MAX];
+	char *res;
+	int i;
 
-	if (getcwd(cwd, PATH_MAX))
+	if(!s1)
+		return(NULL);
+	res = malloc(sizeof(char) * (ft_strlen(s1) + 2));
+	if (!res)
+		return(NULL);
+	i = 0;
+	while (s1[i])
 	{
-		printf("%s\n", cwd);
-		return (0);
+		res[i] = s1[i];
+		i++;
 	}
-	else
-	{
-		perror("pwd");
-		return (1);
-	}
-}
-int	check_pwd(t_shell *shell, t_token *token_ptr)
-{
-	(void)shell;
-	if (ft_strcmp(token_ptr->str, "pwd") != 0)
-		return (-1);
-	return (ft_pwd());
+	res[i] = c;
+	res[i + 1] = '\0';
+	return(res);
 }
