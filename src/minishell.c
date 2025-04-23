@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/04/22 15:41:17 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:44:10 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 	get_type(shell);
 	handling_quotes(shell);
 	ft_split_word(shell);
+	expand_all_tokens(shell);
 	second_token(shell);
 	associate_options_commands(shell);
 	while (tmp)
@@ -91,6 +92,7 @@ int	main(int ac, char **av, char **env)
 		{
 			shell->token = malloc(sizeof(t_token));
 			ft_memset(shell->token, 0, sizeof(t_token));
+			add_history(line);
 			add_to_history(shell, line);
 		}
 		ft_hub_parsing(shell, line);

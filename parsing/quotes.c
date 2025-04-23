@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 13:19:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/17 14:31:35 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/23 17:29:11 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	handling_quotes(t_shell *shell)
 	t_token	*tmp;
 
 	tmp = shell->token;
-	while (tmp->next)
+	while (tmp)
 	{
 		if (tmp->type == WORD)
 			process_quote(tmp);
