@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/24 15:46:19 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/24 16:50:51 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ static void	stock_all_eof(t_shell *shell)
 
 static void	open_outfile(t_shell *shell)
 {
-	//int		fd;
 	int i;
 	t_token	*current;
 
@@ -70,27 +69,25 @@ static void	open_outfile(t_shell *shell)
 	i = 0;
 	while (current)
 	{
-		shell->exec->fd_out[i] = 1;
-		// if (current->type == FILE_OUT)
-		// {
-		// 	if (fd)
-		// 		close (fd);
-		// 	if (current->prev->type == REDIR_OUT)
-		// 		fd = open(current->str, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-		// 	else if (current->prev->type == APPEND)
-		// 		fd = open(current->str, O_WRONLY | O_CREAT | O_APPEND, 0777);
-		// 	if (fd == -1)
-		// 	{
-		// 		ft_putstr_fd("minishell: ", 2);
-		// 		ft_putstr_fd(current->str, 2);
-		// 		ft_putstr_fd(": No such file or directory", 2);
-		// 	}
-		// }
-		if (current->type == PIPE)
+		if (current->type == FILE_OUT)
+		{
+			if (shell->exec->fd_out[i] != 1)
+				close (shell->exec->fd_out[i]);
+			if (current->prev->type == REDIR_OUT)
+				shell->exec->fd_out[i] = open(current->str, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+			else if (current->prev->type == APPEND)
+				shell->exec->fd_out[i] = open(current->str, O_WRONLY | O_CREAT | O_APPEND, 0777);
+			if (shell->exec->fd_out[i] == -1)
+			{
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd(current->str, 2);
+				ft_putstr_fd(": No such file or directory", 2);
+			}
+		}
+		else if (current->type == PIPE)
 			i++;
 		current = current->next;
 	}
-	// shell->pipex->fd_out = fd;
 }
 
 char	*get_path(char *cmd, char **envp, char **exec_cmd)
@@ -151,29 +148,27 @@ static void	open_infile(t_shell *shell)
 		{
 			if (current->type == FILE_IN)
 			{
-			if (shell->exec->fd_in[i])
-				close (shell->exec->fd_in[i]);
-			shell->exec->fd_in[i] = open(current->str, O_RDONLY);
-			if (shell->exec->fd_in[i] == -1)
-			{
-				ft_putstr_fd("minishell: ", 2);
-				ft_putstr_fd(current->str, 2);
-				ft_putstr_fd(": No such file or directory", 2);
-			}
-			else if (current->type == HEREDOC)
-			{
 				if (shell->exec->fd_in[i])
-				{
 					close (shell->exec->fd_in[i]);
-					shell->exec->fd_in[i] = 0;
+				shell->exec->fd_in[i] = open(current->str, O_RDONLY);
+				if (shell->exec->fd_in[i] == -1)
+				{
+					ft_putstr_fd("minishell: ", 2);
+					ft_putstr_fd(current->str, 2);
+					ft_putstr_fd(": No such file or directory", 2);
+				}
+				else if (current->type == HEREDOC)
+				{
+					if (shell->exec->fd_in[i])
+					{
+						close (shell->exec->fd_in[i]);
+						shell->exec->fd_in[i] = 0;
+					}
 				}
 			}
 		}
-		}
-		else
-		{
+		else if (current->type == PIPE)
 			i++;
-		}
 		current = current->next;
 	}
 }
@@ -188,12 +183,12 @@ void	child_process(char *cmd, char **envp, t_exec *exec, int *p_fd, int i)
 	if (pid == 0)
 	{
 		close(p_fd[0]);
-		dprintf(2, "%d\n", exec->fd_in[i]);
-		dprintf(2, "%s\n", cmd);
-		if (dup2(exec->fd_in[i], STDIN_FILENO) == -1)
-			exit(0);
-		if (dup2(1, STDOUT_FILENO) == -1)
-			exit(0);
+		// dprintf(2, "%d\n", exec->fd_in[i]);
+		// dprintf(2, "%s\n", cmd);
+		// if (dup2(exec->fd_in[i], STDIN_FILENO) == -1)
+		// 	exit(0);
+		// if (dup2(1, STDOUT_FILENO) == -1)
+		// 	exit(0);
 		execute(cmd, envp);
 	}
 	wait(NULL);
@@ -229,7 +224,7 @@ char *give_curr_cmd(t_shell *shell, int i)
 			str = ft_strjoin(str, " ");
 		current = current->next;
 	}
-	return str;
+	return (str);
 }
 
 void execute_pipe(t_shell *shell)
@@ -247,25 +242,7 @@ void execute_pipe(t_shell *shell)
 		close(p_fd[1]);
 		i++;
 	}
-	// parent_process(give_curr_cmd(shell, i), shell->data->new_env, p_fd);
 }
-
-
-// void verify_nb_process(t_shell *shell)
-// {
-// 	t_token	*current;
-
-// 	current = shell->token;
-// 	while (current->next)
-// 	{
-// 		if (current->type == FILE_OUT && current->next->type == PIPE)
-// 			break ;
-// 		else
-// 			current = current->next;
-// 	}
-// 	if (current->next)
-		
-// }
 
 void	exec_hub(t_shell *shell)
 {
@@ -278,7 +255,6 @@ void	exec_hub(t_shell *shell)
 	ft_memset(shell->exec->fd_out, 1, sizeof(int) * shell->exec->nb_cmd);
 	if (shell->count->nb_heredoc > 1)
 		stock_all_eof(shell);
-	shell->pipex = malloc(sizeof(t_pipex));
 	if (shell->count->nb_redir_in > 0)
 		open_infile(shell);
 	if (shell->count->nb_redir_out > 0 || shell->count->nb_append > 0)

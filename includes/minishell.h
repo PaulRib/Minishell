@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/23 17:55:37 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/24 16:46:21 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,18 +73,11 @@ typedef struct s_exec
 {
 	char	**eof_heredoc;
 	int		nb_cmd;
-	int	p_fd[2];
-	int	*fd_in;
-	int	*fd_out;
+	int		p_fd[2];
+	int		*fd_in;
+	int		*fd_out;
+	int		i;
 }				t_exec;
-
-typedef struct s_pipex
-{
-	int	fd_in;
-	int	fd_out;
-	int	prev_fd;
-	int	*fd;
-}				t_pipex;
 
 typedef struct s_shell
 {
@@ -95,16 +88,8 @@ typedef struct s_shell
 	t_history	*history;
 	t_count		*count;
 	t_exec		*exec;
-	t_pipex		*pipex;
 	int			exit_status;
 }					t_shell;
-
-// typedef struct s_pipex
-// {
-// 	int	p_fd[2];
-// 	int	fd_in;
-// 	int	fd_out;
-// }				t_pipex;
 
 /* Environnement */
 char	**copy_env(char **env, t_data *data);
