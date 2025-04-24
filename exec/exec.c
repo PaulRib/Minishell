@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/24 16:50:51 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/24 17:07:33 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,6 @@ static void	open_infile(t_shell *shell)
 				{
 					ft_putstr_fd("minishell: ", 2);
 					ft_putstr_fd(current->str, 2);
-					ft_putstr_fd(": No such file or directory", 2);
 				}
 				else if (current->type == HEREDOC)
 				{
