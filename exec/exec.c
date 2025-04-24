@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/23 17:55:22 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/24 15:46:19 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,27 +177,6 @@ static void	open_infile(t_shell *shell)
 		current = current->next;
 	}
 }
-	// 	if (current->type == FILE_IN)
-	// 	{
-	// 		if (fd)
-	// 			close (fd);
-	// 		fd = open(current->str, O_RDONLY);
-	// 		if (fd == -1)
-	// 		{
-	// 			ft_putstr_fd("minishell: ", 2);
-	// 			ft_putstr_fd(current->str, 2);
-	// 			ft_putstr_fd(": No such file or directory", 2);
-	// 		}
-	// 	}
-	// 	else if (current->type == HEREDOC)
-	// 		if (fd)
-	// 		{
-	// 			close (fd);
-	// 			fd = 0;
-	// 		}
-	// }
-	// shell->pipex->fd_in = fd;
-
 
 void	child_process(char *cmd, char **envp, t_exec *exec, int *p_fd, int i)
 {
