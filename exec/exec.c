@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/24 17:07:33 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/24 17:10:35 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ static void	open_infile(t_shell *shell)
 				{
 					ft_putstr_fd("minishell: ", 2);
 					ft_putstr_fd(current->str, 2);
+					4wtrgrdf;
 				}
 				else if (current->type == HEREDOC)
 				{
