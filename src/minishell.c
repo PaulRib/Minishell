@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/25 14:26:45 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/25 14:45:12 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	initiate_all(t_shell *shell)
 	getcwd(shell->data->cur_dir, PATH_MAX);
 	shell->data->shlvl = 1;
 	shell->exit_status = 0;
+	init_signals();
 }
 
 void	ft_hub_parsing(t_shell *shell, char *line)
