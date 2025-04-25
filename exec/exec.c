@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/24 17:13:08 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/25 13:44:38 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,12 +183,12 @@ void	child_process(char *cmd, char **envp, t_exec *exec, int *p_fd, int i)
 	if (pid == 0)
 	{
 		close(p_fd[0]);
-		// dprintf(2, "%d\n", exec->fd_in[i]);
-		// dprintf(2, "%s\n", cmd);
-		// if (dup2(exec->fd_in[i], STDIN_FILENO) == -1)
-		// 	exit(0);
-		// if (dup2(1, STDOUT_FILENO) == -1)
-		// 	exit(0);
+		dprintf(2, "%d\n", exec->fd_in[i]);
+		dprintf(2, "%s\n", cmd);
+		if (dup2(exec->fd_in[i], STDIN_FILENO) == -1)
+			exit(0);
+		if (dup2(1, STDOUT_FILENO) == -1)
+			exit(0);
 		execute(cmd, envp);
 	}
 	wait(NULL);

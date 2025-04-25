@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/24 16:49:10 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/25 14:26:45 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ int	main(int ac, char **av, char **env)
 		is_builtin(shell, shell->token);
 		free(line);
 		ft_free_node(shell);
+		
+		// shell->exit_status = g_exit_status;
 	}
 	free_tab(env);
 	return (0);

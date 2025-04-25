@@ -68,12 +68,12 @@ static char	*handle_dollar(t_shell *shell, char *str, int *i)
 	return (value);
 }
 
-static void	update_result(char **result, char *to_add)
+static void	update_result(char **result, char *var)
 {
 	char	*tmp;
 
 	tmp = *result;
-	*result = ft_strjoin(*result, to_add);
+	*result = ft_strjoin(*result, var);
 	free(tmp);
 }
 static void	append_normal_char(char **result, char *str, int *i)
@@ -92,20 +92,16 @@ static void	append_normal_char(char **result, char *str, int *i)
 char	*expand_variables(t_shell *shell, char *str)
 {
 	int		i;
-	int		in_sq;
 	char	*result;
 	char	*var;
 
 	if (!str)
 		return (NULL);
 	i = 0;
-	in_sq = 0;
 	result = ft_strdup("");
 	while (str[i])
 	{
-		if (str[i] == '\'')
-			in_sq = !in_sq;
-		if (str[i] == '$' && !in_sq)
+		if (str[i] == '$')
 		{
 			var = handle_dollar(shell, str, &i);
 			update_result(&result, var);
