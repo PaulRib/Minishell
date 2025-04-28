@@ -1,9 +1,16 @@
-#include "../includes/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/28 16:34:47 by meel-war          #+#    #+#             */
+/*   Updated: 2025/04/28 17:18:09 by meel-war         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static int	is_var_char(char c)
-{
-	return (ft_isalnum(c) || c == '_');
-}
+#include "../includes/minishell.h"
 
 static char	*get_var_name(char *str, int *i)
 {
@@ -19,7 +26,7 @@ static char	*get_var_name(char *str, int *i)
 		var_name = ft_strdup("?");
 		return (var_name);
 	}
-	while (str[*i] && is_var_char(str[*i]))
+	while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))
 	{
 		(*i)++;
 		len++;
