@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/25 14:19:24 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:42:50 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include <signal.h>
 
 # define PATH_MAX 4096
 
@@ -124,9 +123,11 @@ void					after_mult_quote(t_token *current, int end);
 int						check_for_more_words(char *str, int i);
 void					expand_all_tokens(t_shell *shell);
 char					*expand_variables(t_shell *shell, char *str);
+void					update_result(char **result, char *var);
+void					append_normal_char(char **result, char *str, int *i);
 
 /* Signals*/
-void init_signals(void);
+void					init_signals(void);
 
 /* Builtins */
 int						is_builtin(t_shell *shell, t_token *token_list);
