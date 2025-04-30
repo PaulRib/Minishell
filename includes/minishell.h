@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/24 16:46:21 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/28 16:35:34 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@ typedef struct s_count
 typedef struct s_exec
 {
 	char	**eof_heredoc;
-	int		nb_cmd;
+	int		*nb_cmd;
 	int		p_fd[2];
 	int		*fd_in;
 	int		*fd_out;
-	int		i;
+	int		process;
 }				t_exec;
 
 typedef struct s_shell
