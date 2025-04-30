@@ -6,12 +6,13 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/25 14:45:12 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/30 15:52:06 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../includes/minishell.h"
+
+int g_exit_status = 0;
 
 void	initiate_all(t_shell *shell)
 {
@@ -100,7 +101,6 @@ int	main(int ac, char **av, char **env)
 		is_builtin(shell, shell->token);
 		free(line);
 		ft_free_node(shell);
-		
 		// shell->exit_status = g_exit_status;
 	}
 	free_tab(env);

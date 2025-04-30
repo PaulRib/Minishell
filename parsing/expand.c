@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:34:47 by meel-war          #+#    #+#             */
-/*   Updated: 2025/04/28 17:42:06 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/30 15:57:00 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static char	*get_env_or_exit_status(t_shell *shell, char *name)
 	if (ft_strcmp(name, "?") == 0)
 	{
 		tmp = ft_itoa(shell->exit_status);
+		// return (ft_itoa(g_exit_status));
 		result = ft_strdup(tmp);
 		free(tmp);
 	}

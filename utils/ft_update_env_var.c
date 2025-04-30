@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 16:39:34 by meel-war          #+#    #+#             */
-/*   Updated: 2025/04/09 14:48:06 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/30 15:28:26 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,12 @@
 
 int	update_env_var(t_data *data, char *var_name, char *var_value)
 {
-	int var_index;
-	char *new_var;
-	char **new_env;
+	int		var_index;
+	char	*new_var;
+	char	**new_env;
 
 	new_var = ft_strjoin(var_name, "=");
 	new_var = ft_strjoin(new_var, var_value);
-
 	var_index = find_env_var(data->new_env, var_name);
 	if (var_index != -1)
 	{

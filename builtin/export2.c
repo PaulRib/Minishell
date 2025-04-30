@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:21:23 by meel-war          #+#    #+#             */
-/*   Updated: 2025/04/17 15:52:08 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/30 15:11:33 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,35 +28,36 @@ static void	print_export_value(char *env_var, int equal_sign)
 	ft_printf("\"");
 }
 
-static void print_export_format(char *env_var)
+static void	print_export_format(char *env_var)
 {
-	int i;
-	int equal_sign = -1;
-	
+	int	i;
+	int	equal_sign;
+
+	equal_sign = -1;
 	i = 0;
 	while (env_var[i])
 	{
 		if (env_var[i] == '=')
 		{
 			equal_sign = i;
-			break;
+			break ;
 		}
 		i++;
 	}
 	ft_printf("declare -x ");
 	i = 0;
-	while(i < equal_sign || (equal_sign == -1 && env_var[i]))
+	while (i < equal_sign || (equal_sign == -1 && env_var[i]))
 		ft_printf("%c", env_var[i++]);
 	if (equal_sign != -1)
 		print_export_value(env_var, equal_sign);
 	ft_printf("\n");
 }
 
-static void sort_env(char **sorted_env, int env_size)
+static void	sort_env(char **sorted_env, int env_size)
 {
-	int i;
-	int j;
-	char *tmp;
+	int		i;
+	int		j;
+	char	*tmp;
 
 	i = 0;
 	while (i < env_size - 1)
@@ -74,53 +75,52 @@ static void sort_env(char **sorted_env, int env_size)
 		}
 		i++;
 	}
-	
 }
 
-static char **create_env_copy(char **env, int env_size)
+static char	**create_env_copy(char **env, int env_size)
 {
-	char **sorted_env;
-	int i;
+	char	**sorted_env;
+	int		i;
 
 	i = 0;
 	sorted_env = malloc(sizeof(char *) * (env_size + 1));
-	if(!sorted_env)
-		return(NULL);
-	while(i < env_size)
+	if (!sorted_env)
+		return (NULL);
+	while (i < env_size)
 	{
 		sorted_env[i] = ft_strdup(env[i]);
 		if (!sorted_env[i])
 		{
-			while(--i >= 0)
+			while (--i >= 0)
 				free(sorted_env);
 			free(sorted_env);
-			return(NULL);
+			return (NULL);
 		}
 		i++;
 	}
 	sorted_env[env_size] = NULL;
-	return(sorted_env);
+	return (sorted_env);
 }
 
-int export_no_args(t_shell *shell)
+int	export_no_args(t_shell *shell)
 {
-	char **sorted_env;
-	int env_size;
-	int i;
+	char	**sorted_env;
+	int		env_size;
+	int		i;
 
 	env_size = 0;
 	i = 0;
-	while(shell->data->new_env[env_size])
+	while (shell->data->new_env[env_size])
 		env_size++;
 	sorted_env = create_env_copy(shell->data->new_env, env_size);
-	if(!sorted_env)
-		return(0);
+	if (!sorted_env)
+		return (0);
 	sort_env(sorted_env, env_size);
-	while(sorted_env[i])
+	while (sorted_env[i])
 		print_export_format(sorted_env[i++]);
 	i = 0;
-	while(sorted_env[i])
+	while (sorted_env[i])
 		free(sorted_env[i++]);
 	free(sorted_env);
-	return(1);
+	return (1);
 }

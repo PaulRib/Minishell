@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/15 13:11:20 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/30 15:11:10 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static int	validate_tokens(t_token *token_ptr)
 	}
 	return (0);
 }
+
 int	check_cd(t_shell *shell, t_token *token_ptr)
 {
 	int	is_valid;
@@ -42,6 +43,7 @@ int	check_cd(t_shell *shell, t_token *token_ptr)
 	else
 		return (ft_cd(shell->data, NULL));
 }
+
 // Pas encore conforme
 char	*ft_handle_hyphen(char *dir, char *old_dir)
 {

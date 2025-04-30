@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 16:53:00 by meel-war          #+#    #+#             */
-/*   Updated: 2025/04/15 12:59:08 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/30 15:28:02 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,23 @@ static int	env_size(char **env)
 	return (i);
 }
 
-static char **copy_allocate_env(char **env, int size)
+static char	**copy_allocate_env(char **env, int size)
 {
-	char **new_env;
-	int i;
-	int j;
-	
+	char	**new_env;
+	int		i;
+	int		j;
+
 	i = 0;
 	j = 0;
 	new_env = malloc((size + 2) * sizeof(char *));
-	if(!new_env)
+	if (!new_env)
 		return (NULL);
-	while(i < size)
+	while (i < size)
 	{
 		new_env[i] = ft_strdup(env[i]);
 		if (!new_env[i])
 		{
-			while(j < i)
+			while (j < i)
 			{
 				free(new_env[j]);
 				j++;
@@ -51,22 +51,21 @@ static char **copy_allocate_env(char **env, int size)
 	return (new_env);
 }
 
-
 char	**add_env_var(char **env, char *new_var)
 {
-	char **new_env;
-	int size;
-	int j;
+	char	**new_env;
+	int		size;
+	int		j;
 
 	j = 0;
 	size = env_size(env);
 	new_env = copy_allocate_env(env, size);
 	if (!new_env)
-		return(NULL);
+		return (NULL);
 	new_env[size] = ft_strdup(new_var);
-	if(!new_env[size])
+	if (!new_env[size])
 	{
-		while(j < size)
+		while (j < size)
 		{
 			free(new_env[j]);
 			j++;
@@ -75,5 +74,5 @@ char	**add_env_var(char **env, char *new_var)
 		return (NULL);
 	}
 	new_env[size + 1] = NULL;
-	return(new_env);
+	return (new_env);
 }
