@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/30 15:52:57 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/04/30 16:14:08 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,13 @@ typedef struct s_count
 
 typedef struct s_exec
 {
-	char				**eof_heredoc;
-	int					nb_cmd;
-	int					p_fd[2];
-	int					*fd_in;
-	int					*fd_out;
-	int					i;
-}						t_exec;
+	char	**eof_heredoc;
+	int		*nb_cmd;
+	int		p_fd[2];
+	int		*fd_in;
+	int		*fd_out;
+	int		process;
+}				t_exec;
 
 typedef struct s_shell
 {
