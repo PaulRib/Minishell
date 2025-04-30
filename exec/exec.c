@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/30 16:15:26 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/04/30 17:18:52 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ static void	stock_all_eof(t_shell *shell)
 	current = shell->token;
 	shell->exec->eof_heredoc = malloc(sizeof(char *)
 			* (shell->count->nb_heredoc) + 1);
+	if (!shell->exec->eof_heredoc)
+		exit(0);
 	while (current)
 	{
 		if (current->type == END)
@@ -59,7 +61,7 @@ static void	stock_all_eof(t_shell *shell)
 	shell->exec->eof_heredoc[i] = NULL;
 }
 
-static void	open_outfile(t_shell *shell)
+static int	open_outfile(t_shell *shell)
 {
 	int i;
 	t_token	*current;
@@ -81,6 +83,7 @@ static void	open_outfile(t_shell *shell)
 				ft_putstr_fd("minishell: ", 2);
 				ft_putstr_fd(current->str, 2);
 				ft_putstr_fd(": No such file or directory", 2);
+				return (-1)
 			}
 		}
 		if (shell->exec->fd_out[i] != 1 && current->type == PIPE)
@@ -134,7 +137,7 @@ void	execute(char *cmd, char **envp)
 	}
 }
 
-static void	open_infile(t_shell *shell)
+static int	open_infile(t_shell *shell)
 {
 	int i;
 	t_token	*current;
@@ -153,6 +156,7 @@ static void	open_infile(t_shell *shell)
 				ft_putstr_fd("minishell: ", 2);
 				ft_putstr_fd(current->str, 2);
 				ft_putstr_fd(": No such file or directory", 2);
+				return (-1);
 			}
 			else if (current->type == HEREDOC)
 			{
@@ -207,8 +211,6 @@ void	child_process(char *cmd, t_shell *shell, int *p_fd, int fd, int proc, int i
 		close(p_fd[0]);
 		if (fd > 0)
 			dup2(fd, STDIN_FILENO);
-		// printf("FD IN : %d\n", shell->exec->fd_in[proc]);
-		// printf("FD OUT : %d\n", shell->exec->fd_out[proc]);
 		if (i != shell->exec->nb_cmd[proc] - 1)
 			dup2(p_fd[1], STDOUT_FILENO);
 		else if (shell->exec->fd_out[proc] != 1)
@@ -252,8 +254,6 @@ void execute_pipe(t_shell *shell)
 			i++;
 			cmd++;
 		}
-		printf("%d ", proc);
-		printf("%d\n", shell->exec->nb_cmd[proc]);
 		proc++;
 	}
 }
@@ -271,18 +271,20 @@ void	count_process(t_shell *shell)
 			shell->exec->process++;
 		current = current->next;
 	}
-	printf("Proc : %d\n", shell->exec->process);
 }
 
-void	exec_hub(t_shell *shell)
+void initiate_exec(t_shell *shell)
 {
+	int	i;
+
+	i = 0;
 	shell->exec = malloc(sizeof(t_exec));
-	ft_memset(shell->exec, 0, sizeof(t_exec));
-	count_process(shell);
+	ft_memset(shell->exec, 0, sizeof(t_exec))
 	shell->exec->fd_in = malloc(sizeof(int) * shell->exec->process);
 	shell->exec->fd_out = malloc(sizeof(int) * shell->exec->process);
 	shell->exec->nb_cmd = malloc(sizeof(int) * shell->exec->process);
-	int i = 0;
+	if (!shell->exec->fd_in || !shell->exec->fd_out || !shell->exec->nb_cmd)
+		exit(0);
 	while (i < shell->exec->process)
 	{
 		shell->exec->fd_in[i] = 0;
@@ -290,12 +292,36 @@ void	exec_hub(t_shell *shell)
 		shell->exec->nb_cmd[i] = 1;
 		i++;
 	}
+}
+
+void	exec_hub(t_shell *shell)
+{
+	initiate_exec(shell);
+	count_process(shell);
 	count_element(shell);
 	if (shell->count->nb_heredoc > 0)
 		stock_all_eof(shell);
 	if (shell->count->nb_redir_in > 0)
-		open_infile(shell);
+		if (open_infile(shell) == -1)
+			return ;
 	if (shell->count->nb_redir_out > 0 || shell->count->nb_append > 0)
-		open_outfile(shell);
+		if (open_outfile(shell) == -1)
+			return ;
 	execute_pipe(shell);
+}
+
+void	free_exec(t_shell *shell)
+{
+	if (shell->exec)
+	{
+		if (shell->exec->nb_cmd)
+			free(shell->exec->nb_cmd);
+		if (shell->exec->fd_in)
+			free(shell->exec->fd_in);
+		if (shell->exec->fd_out)
+			free(shell->exec->fd_out);
+		if (shell->exec->eof_heredoc)
+			free_tab(shell->exec->eof_heredoc);
+		shell->exec = NULL;
+	}
 }
