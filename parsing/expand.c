@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:34:47 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/05 15:11:28 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:18:35 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,7 @@ static char	*get_env_or_exit_status(t_shell *shell, char *name)
 	if (ft_strcmp(name, "?") == 0)
 	{
 		tmp = ft_itoa(shell->exit_status);
-		// return (ft_itoa(g_exit_status));
-		result = ft_strdup(tmp);
-		free(tmp);
+		return(tmp);
 	}
 	else
 	{
@@ -91,7 +89,7 @@ char	*expand_variables(t_shell *shell, char *str)
 		if (str[i] == '$')
 		{
 			var = handle_dollar(shell, str, &i);
-			update_result(&result, var);
+			result = ft_strjoin(result, var);
 			free(var);
 		}
 		else

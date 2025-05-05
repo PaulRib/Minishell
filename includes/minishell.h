@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/30 16:14:08 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:18:41 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,6 @@ void					after_mult_quote(t_token *current, int end);
 int						check_for_more_words(char *str, int i);
 void					expand_all_tokens(t_shell *shell);
 char					*expand_variables(t_shell *shell, char *str);
-void					update_result(char **result, char *var);
 void					append_normal_char(char **result, char *str, int *i);
 
 /* Signals*/
