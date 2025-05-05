@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/30 17:18:52 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:59:33 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,14 @@ static int	open_outfile(t_shell *shell)
 				ft_putstr_fd("minishell: ", 2);
 				ft_putstr_fd(current->str, 2);
 				ft_putstr_fd(": No such file or directory", 2);
-				return (-1)
+				return (-1);
 			}
 		}
-		if (shell->exec->fd_out[i] != 1 && current->type == PIPE)
+		if (shell->exec->fd_out[i] > 1 && current->type == PIPE)
 			i++;
 		current = current->next;
 	}
+	return (0);
 }
 
 char	*get_path(char *cmd, char **envp, char **exec_cmd)
@@ -116,7 +117,6 @@ char	*get_path(char *cmd, char **envp, char **exec_cmd)
 	}
 	free_tab(exec_cmd);
 	free_tab(path);
-	exit(3);
 	return (NULL);
 }
 
@@ -131,9 +131,11 @@ void	execute(char *cmd, char **envp)
 	path = get_path(exec_cmd[0], envp, exec_cmd);
 	if (execve(path, exec_cmd, envp) == -1)
 	{
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": command not found\n", 2);
+		g_exit_status = 127;
 		free_tab(exec_cmd);
 		free(path);
-		exit(0);
 	}
 }
 
@@ -172,6 +174,7 @@ static int	open_infile(t_shell *shell)
 			i++;
 		current = current->next;
 	}
+	return (0);
 }
 
 char *give_curr_cmd(t_shell *shell, int i)
@@ -261,7 +264,9 @@ void execute_pipe(t_shell *shell)
 void	count_process(t_shell *shell)
 {
 	t_token *current;
+	int		i;
 
+	i = 0;
 	current = shell->token;
 	shell->exec->process = 1;
 	while (current->next)
@@ -271,20 +276,6 @@ void	count_process(t_shell *shell)
 			shell->exec->process++;
 		current = current->next;
 	}
-}
-
-void initiate_exec(t_shell *shell)
-{
-	int	i;
-
-	i = 0;
-	shell->exec = malloc(sizeof(t_exec));
-	ft_memset(shell->exec, 0, sizeof(t_exec))
-	shell->exec->fd_in = malloc(sizeof(int) * shell->exec->process);
-	shell->exec->fd_out = malloc(sizeof(int) * shell->exec->process);
-	shell->exec->nb_cmd = malloc(sizeof(int) * shell->exec->process);
-	if (!shell->exec->fd_in || !shell->exec->fd_out || !shell->exec->nb_cmd)
-		exit(0);
 	while (i < shell->exec->process)
 	{
 		shell->exec->fd_in[i] = 0;
@@ -292,6 +283,17 @@ void initiate_exec(t_shell *shell)
 		shell->exec->nb_cmd[i] = 1;
 		i++;
 	}
+}
+
+void initiate_exec(t_shell *shell)
+{
+	shell->exec = malloc(sizeof(t_exec));
+	ft_memset(shell->exec, 0, sizeof(t_exec));
+	shell->exec->fd_in = malloc(sizeof(int) * shell->exec->process);
+	shell->exec->fd_out = malloc(sizeof(int) * shell->exec->process);
+	shell->exec->nb_cmd = malloc(sizeof(int) * shell->exec->process);
+	if (!shell->exec->fd_in || !shell->exec->fd_out || !shell->exec->nb_cmd)
+		exit(0);
 }
 
 void	exec_hub(t_shell *shell)

@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 16:13:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/09 18:09:37 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:11:44 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ static char	*clean_string(const char *str)
 	}
 	if (j > 0 && result[j - 1] == ' ')
 		j--;
-	result[j] = '\0';
-	return (result);
+	return (result[j] = '\0', result);
 }
 
 static bool	combine_tokens(t_token *command, t_token *option)
