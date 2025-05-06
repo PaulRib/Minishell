@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/05 15:18:41 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/06 11:57:06 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ typedef struct s_exec
 	int		*fd_in;
 	int		*fd_out;
 	int		process;
+	bool	*hrd;
+	int		*prev_fd;
 }				t_exec;
 
 typedef struct s_shell

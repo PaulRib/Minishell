@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/05 14:59:33 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/06 14:02:50 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ static int	open_infile(t_shell *shell)
 			if (shell->exec->fd_in[i])
 				close (shell->exec->fd_in[i]);
 			shell->exec->fd_in[i] = open(current->str, O_RDONLY);
+			shell->exec->hdr[i] = false;
 			if (shell->exec->fd_in[i] == -1)
 			{
 				ft_putstr_fd("minishell: ", 2);
@@ -167,6 +168,7 @@ static int	open_infile(t_shell *shell)
 					close (shell->exec->fd_in[i]);
 					shell->exec->fd_in[i] = 0;
 				}
+				shell->exec->hdr[i] = true;
 			}
 		}
 		if (current->type == PIPE && (current->next->type == REDIR_IN
@@ -202,7 +204,7 @@ char *give_curr_cmd(t_shell *shell, int i)
 	return (str);
 }
 
-void	child_process(char *cmd, t_shell *shell, int *p_fd, int fd, int proc, int i)
+void	child_process(char *cmd, t_shell *shell, int *p_fd, int proc, int i)
 {
 	pid_t	pid;
 
@@ -212,8 +214,8 @@ void	child_process(char *cmd, t_shell *shell, int *p_fd, int fd, int proc, int i
 	if (pid == 0)
 	{
 		close(p_fd[0]);
-		if (fd > 0)
-			dup2(fd, STDIN_FILENO);
+		if (shell->exec->prev_fd[proc] > 0)
+			dup2(shell->exec->prev_fd[proc], STDIN_FILENO);
 		if (i != shell->exec->nb_cmd[proc] - 1)
 			dup2(p_fd[1], STDOUT_FILENO);
 		else if (shell->exec->fd_out[proc] != 1)
@@ -223,8 +225,8 @@ void	child_process(char *cmd, t_shell *shell, int *p_fd, int fd, int proc, int i
 	}
 	else
 	{
-		if (fd > 0 && fd != STDIN_FILENO)
-			close(fd);
+		if (shell->exec->prev_fd[proc] > 0 && shell->exec->prev_fd[proc] != STDIN_FILENO)
+			close(shell->exec->prev_fd[proc]);
 		close(p_fd[1]);
 		free(cmd);
 		waitpid(pid, NULL, 0);
@@ -243,17 +245,17 @@ void execute_pipe(t_shell *shell)
 	proc = 0;
 	while (proc < shell->exec->process)
 	{
-		prev_fd = shell->exec->fd_in[proc];
+		shell->exec->prev_fd[proc] = shell->exec->fd_in[proc];
 		i = 0;
 		while (i < shell->exec->nb_cmd[proc])
 		{
 			if (pipe(p_fd) == -1)
 				exit(0);
-			child_process(give_curr_cmd(shell, cmd), shell, p_fd, prev_fd, proc, i);
-			if (prev_fd > 0)
-				close(prev_fd);
+			child_process(give_curr_cmd(shell, cmd), shell, p_fd, proc, i);
+			if (shell->exec->prev_fd[proc] > 0)
+				close(shell->exec->prev_fd[proc]);
 			close(p_fd[1]);
-			prev_fd = p_fd[0];
+			shell->exec->prev_fd[proc] = p_fd[0];
 			i++;
 			cmd++;
 		}
@@ -278,9 +280,11 @@ void	count_process(t_shell *shell)
 	}
 	while (i < shell->exec->process)
 	{
+		shell->exec->prev_fd[i] = 0;
 		shell->exec->fd_in[i] = 0;
 		shell->exec->fd_out[i] = 1;
 		shell->exec->nb_cmd[i] = 1;
+		shell->exec->hrd[i] = false;
 		i++;
 	}
 }
@@ -292,7 +296,10 @@ void initiate_exec(t_shell *shell)
 	shell->exec->fd_in = malloc(sizeof(int) * shell->exec->process);
 	shell->exec->fd_out = malloc(sizeof(int) * shell->exec->process);
 	shell->exec->nb_cmd = malloc(sizeof(int) * shell->exec->process);
-	if (!shell->exec->fd_in || !shell->exec->fd_out || !shell->exec->nb_cmd)
+	shell->exec->hdr = malloc(sizeof(bool) * shell->exec->process);
+	shell->exec->prev_fd = malloc(sizeof(bool) * shell->exec->process);
+	if (!shell->exec->fd_in || !shell->exec->fd_out || !shell->exec->nb_cmd
+		|| !shell->exec->hdr || !shell->exec->prev_fd)
 		exit(0);
 }
 
@@ -302,7 +309,10 @@ void	exec_hub(t_shell *shell)
 	count_process(shell);
 	count_element(shell);
 	if (shell->count->nb_heredoc > 0)
+	{
 		stock_all_eof(shell);
+		here_doc_hub(shell);
+	}
 	if (shell->count->nb_redir_in > 0)
 		if (open_infile(shell) == -1)
 			return ;
@@ -324,6 +334,10 @@ void	free_exec(t_shell *shell)
 			free(shell->exec->fd_out);
 		if (shell->exec->eof_heredoc)
 			free_tab(shell->exec->eof_heredoc);
+		if (shell->exec->hdr)
+			free(shell->exec->hdr);
+		if (shell->exec->prev_fd)
+			free(shell->exec->prev_fd);
 		shell->exec = NULL;
 	}
 }
