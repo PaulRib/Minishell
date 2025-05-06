@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/06 14:02:50 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:20:19 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,8 +134,8 @@ void	execute(char *cmd, char **envp)
 		ft_putstr_fd(cmd, 2);
 		ft_putstr_fd(": command not found\n", 2);
 		g_exit_status = 127;
-		free_tab(exec_cmd);
-		free(path);
+		// free_tab(exec_cmd);
+		// free(path);
 	}
 }
 
@@ -153,7 +153,7 @@ static int	open_infile(t_shell *shell)
 			if (shell->exec->fd_in[i])
 				close (shell->exec->fd_in[i]);
 			shell->exec->fd_in[i] = open(current->str, O_RDONLY);
-			shell->exec->hdr[i] = false;
+			shell->exec->hrd[i] = false;
 			if (shell->exec->fd_in[i] == -1)
 			{
 				ft_putstr_fd("minishell: ", 2);
@@ -168,7 +168,7 @@ static int	open_infile(t_shell *shell)
 					close (shell->exec->fd_in[i]);
 					shell->exec->fd_in[i] = 0;
 				}
-				shell->exec->hdr[i] = true;
+				shell->exec->hrd[i] = true;
 			}
 		}
 		if (current->type == PIPE && (current->next->type == REDIR_IN
@@ -207,12 +207,14 @@ char *give_curr_cmd(t_shell *shell, int i)
 void	child_process(char *cmd, t_shell *shell, int *p_fd, int proc, int i)
 {
 	pid_t	pid;
+	int status;
 
 	pid = fork();
 	if (pid == -1)
 		exit(0);
 	if (pid == 0)
 	{
+		init_signals_child();
 		close(p_fd[0]);
 		if (shell->exec->prev_fd[proc] > 0)
 			dup2(shell->exec->prev_fd[proc], STDIN_FILENO);
@@ -229,7 +231,23 @@ void	child_process(char *cmd, t_shell *shell, int *p_fd, int proc, int i)
 			close(shell->exec->prev_fd[proc]);
 		close(p_fd[1]);
 		free(cmd);
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			g_exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+		{
+			int sig = WTERMSIG(status);
+			if (sig == SIGQUIT)
+			{
+				ft_putendl_fd("Quit", STDERR_FILENO);
+				g_exit_status = 131;
+			}
+			else if (sig == SIGINT)
+			{
+				write(STDOUT_FILENO, "\n", 1);
+				g_exit_status = 128;
+			}
+		}
 	}
 }
 
@@ -237,7 +255,6 @@ void execute_pipe(t_shell *shell)
 {
 	int		p_fd[2];
 	int		i;
-	int		prev_fd;
 	int		proc;
 	int		cmd;
 
@@ -296,10 +313,10 @@ void initiate_exec(t_shell *shell)
 	shell->exec->fd_in = malloc(sizeof(int) * shell->exec->process);
 	shell->exec->fd_out = malloc(sizeof(int) * shell->exec->process);
 	shell->exec->nb_cmd = malloc(sizeof(int) * shell->exec->process);
-	shell->exec->hdr = malloc(sizeof(bool) * shell->exec->process);
+	shell->exec->hrd = malloc(sizeof(bool) * shell->exec->process);
 	shell->exec->prev_fd = malloc(sizeof(bool) * shell->exec->process);
 	if (!shell->exec->fd_in || !shell->exec->fd_out || !shell->exec->nb_cmd
-		|| !shell->exec->hdr || !shell->exec->prev_fd)
+		|| !shell->exec->hrd || !shell->exec->prev_fd)
 		exit(0);
 }
 
@@ -311,7 +328,7 @@ void	exec_hub(t_shell *shell)
 	if (shell->count->nb_heredoc > 0)
 	{
 		stock_all_eof(shell);
-		here_doc_hub(shell);
+	//	here_doc_hub(shell);
 	}
 	if (shell->count->nb_redir_in > 0)
 		if (open_infile(shell) == -1)
@@ -334,8 +351,8 @@ void	free_exec(t_shell *shell)
 			free(shell->exec->fd_out);
 		if (shell->exec->eof_heredoc)
 			free_tab(shell->exec->eof_heredoc);
-		if (shell->exec->hdr)
-			free(shell->exec->hdr);
+		if (shell->exec->hrd)
+			free(shell->exec->hrd);
 		if (shell->exec->prev_fd)
 			free(shell->exec->prev_fd);
 		shell->exec = NULL;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/30 16:15:41 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:45:05 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	initiate_all(t_shell *shell)
 	getcwd(shell->data->cur_dir, PATH_MAX);
 	shell->data->shlvl = 1;
 	shell->exit_status = 0;
-	init_signals();
 }
 
 void	ft_hub_parsing(t_shell *shell, char *line)
@@ -83,25 +82,26 @@ int	main(int ac, char **av, char **env)
 		shell->data->new_env = copy_env(env, shell->data);
 	while (1)
 	{
+		init_signals();
 		shell->prompt = ft_strjoin(shell->data->cur_dir, "$ ");
 		line = readline(shell->prompt);
 		if (!line)
 		{
-			printf("\033[1;33mexit\033[0m\n");
+			printf("exit\n");
 			break ;
 		}
-		if (*line)
+		if (*line && line[0] != '\0')
 		{
 			shell->token = malloc(sizeof(t_token));
 			ft_memset(shell->token, 0, sizeof(t_token));
 			add_history(line);
 			add_to_history(shell, line);
+			ft_hub_parsing(shell, line);
+			is_builtin(shell, shell->token);
 		}
-		ft_hub_parsing(shell, line);
-		is_builtin(shell, shell->token);
 		free(line);
 		ft_free_node(shell);
-		// shell->exit_status = g_exit_status;
+		shell->exit_status = g_exit_status;
 	}
 	free_tab(env);
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/06 11:57:06 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/06 15:33:52 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ void					append_normal_char(char **result, char *str, int *i);
 
 /* Signals*/
 void					init_signals(void);
+void					init_signals_child(void);
 
 /* Builtins */
 int						is_builtin(t_shell *shell, t_token *token_list);
