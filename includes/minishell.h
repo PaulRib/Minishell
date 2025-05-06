@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/06 15:33:52 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/06 19:38:54 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,15 +70,23 @@ typedef struct s_count
 	int					nb_heredoc;
 }						t_count;
 
+typedef struct s_heredoc
+{
+	char				**eof_heredoc;
+	int					p_fd[2];
+	int					nb_heredoc;
+	bool				hrd;
+	int 				process;
+	struct s_heredoc	*next;
+}				t_heredoc;
+
 typedef struct s_exec
 {
-	char	**eof_heredoc;
 	int		*nb_cmd;
 	int		p_fd[2];
 	int		*fd_in;
 	int		*fd_out;
 	int		process;
-	bool	*hrd;
 	int		*prev_fd;
 }				t_exec;
 
@@ -91,6 +99,7 @@ typedef struct s_shell
 	t_history			*history;
 	t_count				*count;
 	t_exec				*exec;
+	t_heredoc			*heredoc;
 	int					exit_status;
 }						t_shell;
 
@@ -154,6 +163,7 @@ char					*ft_handle_tilde(char *dir, char *home_dir);
 
 /*Execution*/
 void					exec_hub(t_shell *shell);
+void					here_doc_hub(t_shell *shell);
 /* echo */
 int						check_echo(t_token *token_ptr);
 
