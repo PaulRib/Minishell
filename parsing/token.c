@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:14:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/06 11:58:32 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/06 19:06:15 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	get_type(t_shell *shell)
 			tmp->type = APPEND;
 		else if (ft_strcmp(tmp->str, "<<") == 0)
 			tmp->type = HEREDOC;
-		else
+		else if (tmp->type != D_QUOTE && tmp->type != S_QUOTE)
 			tmp->type = WORD;
 		tmp = tmp->next;
 	}
@@ -52,7 +52,8 @@ void	second_token(t_shell *shell)
 			tmp->next->type = END;
 		if (tmp->type == APPEND)
 			tmp->next->type = FILE_OUT;
-		if (tmp->type == FILE_IN && tmp->next->type != REDIR_IN)
+		if (tmp->type == FILE_IN && tmp->next->type != REDIR_IN
+			&& tmp->next->type != HEREDOC)
 			tmp->next->type = CMD;
 		if (tmp->type == PIPE && tmp->next->type != REDIR_IN
 			&& tmp->next->type == WORD)

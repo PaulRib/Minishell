@@ -6,11 +6,11 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:58:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/01/29 15:17:30 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/01/10 16:51:19 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../get_next_line.h"
+#include "../get_next_line_bonus.h"
 
 char	*ft_strjoin_gnl(char *buff, char *line)
 {

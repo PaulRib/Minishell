@@ -10,7 +10,7 @@ SRC = 	lst/ft_lstadd_back.c lst/ft_lstadd_front.c lst/ft_lstclear.c lst/ft_lstde
 		str/ft_strlen.c str/ft_strmapi.c str/ft_strncmp.c str/ft_strnstr.c str/ft_strrchr.c str/ft_strcmp.c\
 		str/ft_strtrim.c str/ft_substr.c str/ft_tolower.c str/ft_toupper.c str/free_tab.c\
 		other/ft_isalnum.c other/ft_isalpha.c other/ft_isascii.c other/ft_isdigit.c other/ft_isprint.c\
-		gnl/get_next_line.c gnl/get_next_line_utils.c\
+		gnl/get_next_line_bonus.c gnl/get_next_line_utils_bonus.c\
 		printf/ft_printf.c printf/ft_printfutils.c printf/ft_printhexa.c\
 
 OBJS = $(SRC:.c=.o)

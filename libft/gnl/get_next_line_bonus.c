@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:59:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/01/29 15:18:05 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/01/10 16:53:24 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../get_next_line.h"
+#include "../get_next_line_bonus.h"
 
 ssize_t	check_line(char *line)
 {
