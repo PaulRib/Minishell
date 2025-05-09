@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/07 17:45:43 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:52:10 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,9 +165,26 @@ int						ft_pwd(void);
 int						check_pwd(t_shell *shell, t_token *token_ptr);
 char					*ft_handle_tilde(char *dir, char *home_dir);
 char					*ft_handle_hyphen(char *dir, char *old_dir);
+
 /* Execution*/
 void					exec_hub(t_shell *shell);
+char					*give_curr_cmd(t_shell *shell, int i);
+void					execute(char *cmd, char **envp);
+char					*get_path(char *cmd, char **envp, char **exec_cmd);
+void					ft_free_exec(t_shell *shell);
+void					count_process(t_shell *shell);
+void					initiate_exec(t_shell *shell);
+void					count_element(t_shell *shell);
+void					execute_pipe(t_shell *shell);
+int						open_infile(t_shell *shell);
+void					open_outfile(t_shell *shell);
+int						check_end(int *i, t_shell *shell, t_heredoc **curr);
+void					create_new_hrd(t_shell *shell, t_heredoc *tmp);
+void					check_and_create(t_shell *shell, t_token *current, t_heredoc *tmp);
+void					check_current_type(t_token *current, t_heredoc *tmp, int process);
 void					here_doc_hub(t_shell *shell);
+void					child_process(char *cmd, t_shell *shell, int proc, int i);
+void					ft_free_heredoc(t_shell *shell);
 /* echo */
 int						check_echo(t_token *token_ptr);
 
