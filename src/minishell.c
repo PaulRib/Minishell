@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/09 14:15:52 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/09 17:51:53 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	shell_loop(t_shell *shell)
 		ft_free_node(shell);
 		shell->exit_status = g_exit_status;
 		printf("%d\n", shell->exit_status);
+		ft_memset(shell->count, 0, sizeof(t_count));
 	}
 }
 
