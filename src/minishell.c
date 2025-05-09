@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/07 17:58:49 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:15:52 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	shell_loop(t_shell *shell)
 
 	while (1)
 	{
+		g_exit_status = 0;
 		shell->prompt = ft_strjoin(shell->data->cur_dir, "$ ");
 		line = readline(shell->prompt);
 		if (!line)
@@ -94,6 +95,7 @@ void	shell_loop(t_shell *shell)
 		free(line);
 		ft_free_node(shell);
 		shell->exit_status = g_exit_status;
+		printf("%d\n", shell->exit_status);
 	}
 }
 

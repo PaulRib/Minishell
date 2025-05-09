@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:36:54 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/06 19:35:39 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:30:08 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,28 +161,28 @@ static void	initiate_heredoc(t_shell *shell)
 	}
 }
 
-static void print_heredoc(t_shell *shell)
-{
-	t_heredoc *tmp;
-	int i;
+// static void print_heredoc(t_shell *shell)
+// {
+// 	t_heredoc *tmp;
+// 	int i;
 
-	tmp = shell->heredoc;
-	while (tmp)
-	{
-		for (i = 0; i < tmp->nb_heredoc; i++)
-		{
-			if (tmp->eof_heredoc && tmp->eof_heredoc[i])
-				printf("EOF %d: %s\n", i, tmp->eof_heredoc[i]);
-			else
-				printf("EOF %d: (null)\n", i);
-		}
-		printf("nb_heredoc: %d\n", tmp->nb_heredoc);
-		printf("hrd: %d\n", tmp->hrd);
-		printf("process: %d\n", tmp->process);
-		printf("---\n");
-		tmp = tmp->next;
-	}
-}
+// 	tmp = shell->heredoc;
+// 	while (tmp)
+// 	{
+// 		for (i = 0; i < tmp->nb_heredoc; i++)
+// 		{
+// 			if (tmp->eof_heredoc && tmp->eof_heredoc[i])
+// 				printf("EOF %d: %s\n", i, tmp->eof_heredoc[i]);
+// 			else
+// 				printf("EOF %d: (null)\n", i);
+// 		}
+// 		printf("nb_heredoc: %d\n", tmp->nb_heredoc);
+// 		printf("hrd: %d\n", tmp->hrd);
+// 		printf("process: %d\n", tmp->process);
+// 		printf("---\n");
+// 		tmp = tmp->next;
+// 	}
+// }
 
 void	here_doc_hub(t_shell *shell)
 {
@@ -197,8 +197,8 @@ void	here_doc_hub(t_shell *shell)
 	if (pid == -1)
 		exit(0);
 	// if (pid != 0)
-	if (pid > 0)
-		print_heredoc(shell);
+	// if (pid > 0)
+	// 	print_heredoc(shell);
 	if (pid == 0)
 		here_doc_process(shell);
 	//close(p_fd[1]);
