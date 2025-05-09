@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:58:09 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/06 16:41:28 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/07 18:22:56 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	init_signals(void)
 	sa_int.sa_handler = &handle_sigint;
 	sigaction(SIGINT, &sa_int, NULL);
 	signal(SIGQUIT, SIG_IGN);
+	g_exit_status = 127;
 }
 
 void	init_signals_child(void)

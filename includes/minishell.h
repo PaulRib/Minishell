@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/06 19:38:54 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/07 17:45:43 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,19 +76,19 @@ typedef struct s_heredoc
 	int					p_fd[2];
 	int					nb_heredoc;
 	bool				hrd;
-	int 				process;
+	int					process;
 	struct s_heredoc	*next;
-}				t_heredoc;
+}						t_heredoc;
 
 typedef struct s_exec
 {
-	int		*nb_cmd;
-	int		p_fd[2];
-	int		*fd_in;
-	int		*fd_out;
-	int		process;
-	int		*prev_fd;
-}				t_exec;
+	int					*nb_cmd;
+	int					p_fd[2];
+	int					*fd_in;
+	int					*fd_out;
+	int					process;
+	int					*prev_fd;
+}						t_exec;
 
 typedef struct s_shell
 {
@@ -103,7 +103,11 @@ typedef struct s_shell
 	int					exit_status;
 }						t_shell;
 
+/* Main */
+void					shell_loop(t_shell *shell);
+
 /* Environnement */
+void					env_exists(char **env, t_shell *shell);
 char					**copy_env(char **env, t_data *data);
 char					**build_env(t_data *data);
 int						print_env(t_shell *hub);
@@ -160,8 +164,8 @@ int						ft_unset(t_data *data, char *var_name);
 int						ft_pwd(void);
 int						check_pwd(t_shell *shell, t_token *token_ptr);
 char					*ft_handle_tilde(char *dir, char *home_dir);
-
-/*Execution*/
+char					*ft_handle_hyphen(char *dir, char *old_dir);
+/* Execution*/
 void					exec_hub(t_shell *shell);
 void					here_doc_hub(t_shell *shell);
 /* echo */

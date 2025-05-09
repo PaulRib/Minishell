@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/06 19:38:46 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/07 17:58:49 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int g_exit_status = 0;
+int		g_exit_status = 0;
 
 void	initiate_all(t_shell *shell)
 {
@@ -28,6 +28,7 @@ void	initiate_all(t_shell *shell)
 	getcwd(shell->data->cur_dir, PATH_MAX);
 	shell->data->shlvl = 1;
 	shell->exit_status = 0;
+	init_signals();
 }
 
 void	ft_hub_parsing(t_shell *shell, char *line)
@@ -48,6 +49,8 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 		printf("\033[34;01mContenu du token : \033[00m-%s-\n", tmp->str);
 		tmp = tmp->next;
 	}
+	if (is_builtin(shell, shell->token) == -1)
+		return ;
 	exec_hub(shell);
 }
 
@@ -67,22 +70,12 @@ void	ft_free_node(t_shell *shell)
 	}
 }
 
-int	main(int ac, char **av, char **env)
+void	shell_loop(t_shell *shell)
 {
 	char	*line;
-	t_shell	*shell;
 
-	(void)ac;
-	(void)av;
-	shell = malloc(sizeof(t_shell));
-	initiate_all(shell);
-	if (!env || !env[0])
-		shell->data->new_env = build_env(shell->data);
-	else
-		shell->data->new_env = copy_env(env, shell->data);
 	while (1)
 	{
-		init_signals();
 		shell->prompt = ft_strjoin(shell->data->cur_dir, "$ ");
 		line = readline(shell->prompt);
 		if (!line)
@@ -97,12 +90,23 @@ int	main(int ac, char **av, char **env)
 			add_history(line);
 			add_to_history(shell, line);
 			ft_hub_parsing(shell, line);
-			is_builtin(shell, shell->token);
 		}
 		free(line);
 		ft_free_node(shell);
 		shell->exit_status = g_exit_status;
 	}
+}
+
+int	main(int ac, char **av, char **env)
+{
+	t_shell	*shell;
+
+	(void)ac;
+	(void)av;
+	shell = malloc(sizeof(t_shell));
+	initiate_all(shell);
+	env_exists(env, shell);
+	shell_loop(shell);
 	free_tab(env);
 	return (0);
 }

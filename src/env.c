@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:10:09 by meel-war          #+#    #+#             */
-/*   Updated: 2025/04/30 16:15:09 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/07 17:36:58 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,41 +43,56 @@ char	**build_env(t_data *data)
 	return (new_env);
 }
 
-char	**copy_env(char **env, t_data *data)
+static int	fill_env(char **env, char **new_env, t_data *data, int size)
 {
-	int		i;
 	int		j;
-	char	**new_env;
-	int		found_shlvl;
-	char	*temp;
+	char	*tmp;
 
-	i = 0;
 	j = 0;
-	found_shlvl = 0;
-	while (env[i])
-		i++;
-	new_env = malloc((i + 1) * sizeof(char *));
-	if (!new_env)
-		return (NULL);
-	while (j < i)
+	while (j < size)
 	{
 		if (ft_strncmp(env[j], "SHLVL=", 6) == 0)
 		{
-			found_shlvl = 1;
 			data->shlvl = ft_atoi(env[j] + 6) + 1;
-			temp = ft_itoa(data->shlvl);
-			new_env[j] = ft_strjoin("SHLVL=", temp);
-			free(temp);
+			tmp = ft_itoa(data->shlvl);
+			new_env[j] = ft_strjoin("SHLVL=", tmp);
+			free(tmp);
 		}
 		else
 			new_env[j] = ft_strdup(env[j]);
 		if (!new_env[j])
 		{
-			free_tab(new_env);
-			return (NULL);
+			return (0);
 		}
 		j++;
 	}
-	new_env[i] = NULL;
+	new_env[size] = NULL;
+	return (1);
+}
+
+char	**copy_env(char **env, t_data *data)
+{
+	int		i;
+	char	**new_env;
+
+	i = 0;
+	while (env[i])
+		i++;
+	new_env = malloc((i + 1) * sizeof(char *));
+	if (!new_env)
+		return (NULL);
+	if (!fill_env(env, new_env, data, i))
+	{
+		free_tab(new_env);
+		return (NULL);
+	}
 	return (new_env);
+}
+
+void	env_exists(char **env, t_shell *shell)
+{
+	if (!env || !env[0])
+		shell->data->new_env = build_env(shell->data);
+	else
+		shell->data->new_env = copy_env(env, shell->data);
 }

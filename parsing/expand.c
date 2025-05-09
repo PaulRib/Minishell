@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:34:47 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/05 15:18:35 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/07 17:21:16 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static char	*get_env_or_exit_status(t_shell *shell, char *name)
 	if (ft_strcmp(name, "?") == 0)
 	{
 		tmp = ft_itoa(shell->exit_status);
-		return(tmp);
+		return (tmp);
 	}
 	else
 	{
