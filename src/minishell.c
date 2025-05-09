@@ -76,6 +76,7 @@ void	shell_loop(t_shell *shell)
 
 	while (1)
 	{
+		g_exit_status = 0;
 		shell->prompt = ft_strjoin(shell->data->cur_dir, "$ ");
 		line = readline(shell->prompt);
 		if (!line)
