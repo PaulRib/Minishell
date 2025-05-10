@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:36:54 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/10 16:33:51 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/10 19:06:19 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	here_doc_process(t_shell *shell)
 		if (!ft_strncmp(line, current->eof_heredoc[i], len)
 			&& line[len] == '\n')
 			i++;
-		else if (i == current->nb_heredoc - 1)
+		else if (i == current->nb_heredoc - 1 || i == current->nb_heredoc)
 			if (current->hrd == true)
 			{
 				line = expand_variables(shell, line);
@@ -66,12 +66,12 @@ static void	stock_all_heredoc(t_shell *shell)
 
 	current = shell->token;
 	tmp = shell->heredoc;
-	while (tmp->next)
+	while (tmp)
 	{
 		i = 0;
 		tmp->eof_heredoc = malloc(sizeof(char *)
 				* tmp->nb_heredoc);
-		while (current)
+		while (current->next)
 		{
 			if (current->type == END)
 				tmp->eof_heredoc[i++] = current->str;

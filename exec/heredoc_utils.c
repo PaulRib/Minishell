@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:39:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/10 16:30:32 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/10 19:01:58 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,5 @@ void	ft_free_heredoc(t_shell *shell)
 		free(shell->heredoc);
 		shell->heredoc = hd_next;
 	}
+	shell->heredoc = NULL;
 }
