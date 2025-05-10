@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/10 18:04:20 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/10 19:15:16 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	shell_loop(t_shell *shell)
 		g_exit_status = 0;
 		shell->prompt = ft_strjoin(shell->data->cur_dir, "$ ");
 		line = readline(shell->prompt);
+		free(shell->prompt);
 		if (!line)
 		{
 			printf("exit\n");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:36:54 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/10 16:33:51 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/10 19:13:30 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void	stock_all_heredoc(t_shell *shell)
 
 	current = shell->token;
 	tmp = shell->heredoc;
-	while (tmp->next)
+	while (tmp)
 	{
 		i = 0;
 		tmp->eof_heredoc = malloc(sizeof(char *)
