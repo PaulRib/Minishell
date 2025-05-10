@@ -6,18 +6,18 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:58:09 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/09 14:13:35 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/10 18:55:00 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	handle_sigint(int signum)
+void	handle_sigint(int sig)
 {
-	(void)signum;
-	write(STDOUT_FILENO, "\n", 1);
-	rl_on_new_line();
+	(void)sig;
 	rl_replace_line("", 0);
+	write(1, "\n", 1);
+	rl_on_new_line();
 	rl_redisplay();
 	g_exit_status = 130;
 }
@@ -26,7 +26,9 @@ void	init_signals(void)
 {
 	struct sigaction	sa_int;
 
-	sa_int.sa_handler = &handle_sigint;
+	sa_int.sa_handler = handle_sigint;
+	sigemptyset(&sa_int.sa_mask);
+	sa_int.sa_flags = 0;
 	sigaction(SIGINT, &sa_int, NULL);
 	signal(SIGQUIT, SIG_IGN);
 }
