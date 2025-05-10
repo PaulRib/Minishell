@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:36:54 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/09 17:49:18 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/10 16:33:51 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void	stock_all_heredoc(t_shell *shell)
 
 	current = shell->token;
 	tmp = shell->heredoc;
-	while (tmp)
+	while (tmp->next)
 	{
 		i = 0;
 		tmp->eof_heredoc = malloc(sizeof(char *)

@@ -1,8 +1,8 @@
 NAME = minishell
 
-SRC = src/minishell.c src/env.c parsing/parsing.c src/struct.c src/builtin.c src/signals.c \
-		parsing/token.c parsing/word.c builtin/history.c parsing/options.c parsing/quotes.c\
-		parsing/quotes_utils.c parsing/expand.c parsing/expand_utils.c \
+SRC = src/minishell.c src/env.c parsing/parser.c src/struct.c src/builtin.c src/signals.c \
+		parsing/token.c parsing/parser_utils.c builtin/history.c parsing/options.c parsing/quotes.c\
+		parsing/quotes_utils.c parsing/expand.c parsing/expand_utils.c\
 		exec/exec.c exec/exec_fd.c exec/exec_utils.c exec/heredoc.c exec/heredoc_utils.c\
 		builtin/cd.c builtin/cd2.c builtin/pwd.c builtin/echo.c builtin/unset.c builtin/export.c builtin/export2.c \
 		utils/ft_add_env_var.c utils/ft_find_env_var.c utils/ft_get_env.c utils/ft_update_env_var.c\

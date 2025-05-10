@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/09 16:52:36 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/10 16:00:47 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*get_path(char *cmd, char **envp, char **exec_cmd)
 	char	*temp;
 
 	i = 0;
+	if (access(cmd, X_OK) == 0)
+		return (cmd);
 	while (envp[i] && ft_strncmp(envp[i], "PATH", 4) != 0)
 		i++;
 	path = ft_split(envp[i] + 5, ':');
@@ -29,14 +31,12 @@ char	*get_path(char *cmd, char **envp, char **exec_cmd)
 		temp = ft_strjoin(path[i], "/");
 		good_path = ft_strjoin(temp, cmd);
 		free(temp);
-		if (access(good_path, F_OK) == 0)
+		if (access(good_path, X_OK) == 0)
 			return (free_tab(path), good_path);
 		i++;
 		free(good_path);
 	}
 	(void)exec_cmd;
-	// free_tab(exec_cmd);
-	// free_tab(path);
 	return (NULL);
 }
 
@@ -54,8 +54,6 @@ void	execute(char *cmd, char **envp)
 		ft_putstr_fd(cmd, 2);
 		ft_putstr_fd(": command not found\n", 2);
 		g_exit_status = 127;
-		// free_tab(exec_cmd);
-		// free(path);
 	}
 }
 

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   word.c                                             :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:59:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/23 17:47:14 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/10 18:33:01 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,26 +29,30 @@ static void	create_and_insert_token(t_token *current, char *remainder)
 	current->next = new_token;
 }
 
-static int	find_word_boundaries(char *str, int *start)
+static void	handle_operator_after_word(t_token *current, int word_start,
+										int word_end)
 {
-	int	i;
+	char	*first_word;
+	char	*rest_str;
 
-	i = *start;
-	while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
-		i++;
-	*start = i;
-	while (str[i] && str[i] != ' ' && str[i] != '\t' && str[i] != '\n')
-		i++;
-	return (i);
+	first_word = ft_substr(current->str, word_start, word_end - word_start);
+	rest_str = ft_strdup(&current->str[word_end]);
+	create_and_insert_token(current, rest_str);
+	free(current->str);
+	current->str = first_word;
 }
 
-int	check_for_more_words(char *str, int i)
+static void	handle_regular_split(t_token *current, int word_start, int word_end,
+								int next_word)
 {
-	while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
-		i++;
-	if (!str[i])
-		return (0);
-	return (i);
+	char	*first_word;
+	char	*rest_str;
+
+	first_word = ft_substr(current->str, word_start, word_end - word_start);
+	rest_str = ft_strdup(&current->str[next_word]);
+	create_and_insert_token(current, rest_str);
+	free(current->str);
+	current->str = first_word;
 }
 
 static void	process_token(t_token *current)
@@ -56,26 +60,28 @@ static void	process_token(t_token *current)
 	int		word_start;
 	int		word_end;
 	int		next_word;
+	int		op_len;
 	char	*first_word;
-	char	*rest_str;
 
 	word_start = 0;
 	word_end = find_word_boundaries(current->str, &word_start);
-	next_word = check_for_more_words(current->str, word_end);
-	if (next_word)
+	next_word = 0;
+	if (current->str[word_end] && is_delimiter(current->str[word_end]))
+		next_word = check_for_more_words(current->str, word_end);
+	else if (current->str[word_end])
+		next_word = word_end;
+	if (!next_word)
 	{
 		first_word = ft_substr(current->str, word_start, word_end - word_start);
-		rest_str = ft_strdup(&current->str[next_word]);
-		create_and_insert_token(current, rest_str);
 		free(current->str);
 		current->str = first_word;
+		return ;
 	}
+	op_len = is_special_operator(current->str, word_end);
+	if (op_len > 0 && word_start != word_end)
+		handle_operator_after_word(current, word_start, word_end);
 	else
-	{
-		first_word = ft_substr(current->str, 0, word_end);
-		free(current->str);
-		current->str = first_word;
-	}
+		handle_regular_split(current, word_start, word_end, next_word);
 }
 
 void	ft_split_word(t_shell *shell)
