@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:01:44 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/09 16:51:58 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/10 15:53:05 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,6 @@ void	ft_free_exec(t_shell *shell)
 			free(shell->exec->fd_in);
 		if (shell->exec->fd_out)
 			free(shell->exec->fd_out);
-		if (shell->heredoc->eof_heredoc)
-			free_tab(shell->heredoc->eof_heredoc);
 		if (shell->exec->prev_fd)
 			free(shell->exec->prev_fd);
 		shell->exec = NULL;
