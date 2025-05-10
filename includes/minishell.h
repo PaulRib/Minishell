@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/09 16:52:10 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:54:39 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,8 @@ int						check_export(t_shell *shell, t_token *token_ptr);
 int						export_no_args(t_shell *shell);
 /* cd */
 int						check_cd(t_shell *shell, t_token *token_ptr);
+int						handle_directory(char *dir, char *home_dir,
+							char *old_dir);
 int						ft_cd(t_data *data, char *path_name);
 char					*ft_handle_tilde(char *dir, char *home_dir);
 

@@ -16,10 +16,12 @@ int	update_env_var(t_data *data, char *var_name, char *var_value)
 {
 	int		var_index;
 	char	*new_var;
+	char	*tmp;
 	char	**new_env;
 
-	new_var = ft_strjoin(var_name, "=");
-	new_var = ft_strjoin(new_var, var_value);
+	tmp = ft_strjoin(var_name, "=");
+	new_var = ft_strjoin(tmp, var_value);
+	free(tmp);
 	var_index = find_env_var(data->new_env, var_name);
 	if (var_index != -1)
 	{

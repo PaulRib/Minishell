@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/07 17:53:30 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:44:54 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ static int	validate_tokens(t_token *token_ptr)
 		return (0);
 	if (token_ptr->next->type != WORD)
 	{
-		ft_putstr_fd("syntax error near unexpected token 'newline'\n", 2);
+		ft_putstr_fd("bash: syntax error near unexpected token 'newline'\n", 2);
 		return (1);
 	}
 	else if (token_ptr->next && token_ptr->next->next)
 	{
-		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+		ft_putstr_fd("bash: cd: too many arguments\n", 2);
 		return (1);
 	}
 	return (0);
@@ -44,29 +44,24 @@ int	check_cd(t_shell *shell, t_token *token_ptr)
 		return (ft_cd(shell->data, NULL));
 }
 
-static int	handle_directory(char *dir, char *home_dir, char *old_dir)
+static int	update_cur_dir(t_data *data, char *path_name, char *old_dir)
 {
-	if (!ft_strncmp(dir, "-", 2))
+	char	real_path[PATH_MAX];
+
+	if (path_name && path_name[0] == '/')
+		ft_strlcpy(data->cur_dir, path_name, PATH_MAX);
+	else if (path_name && !ft_strcmp(path_name, "-"))
+		ft_strlcpy(data->cur_dir, old_dir, PATH_MAX);
+	else if (!path_name)
+		ft_strlcpy(data->cur_dir, old_dir, PATH_MAX);
+	else
 	{
-		dir = ft_handle_hyphen(dir, old_dir);
-		if (!dir)
+		if (getcwd(real_path, PATH_MAX) == NULL)
+		{
+			ft_putstr_fd("bash: cd: getcwd error\n", 2);
 			return (1);
-	}
-	if (!ft_strncmp(dir, "~", 1))
-		dir = ft_handle_tilde(dir, home_dir);
-	if (access(dir, F_OK) != 0)
-	{
-		ft_putstr_fd("minishell: cd: no such file or directory", 2);
-		ft_putstr_fd(dir, 2);
-		ft_putstr_fd("\n", 2);
-		return (1);
-	}
-	if (chdir(dir) != 0)
-	{
-		ft_putstr_fd("minishell: cd: permission denied: ", 2);
-		ft_putstr_fd(dir, 2);
-		ft_putstr_fd("\n", 2);
-		return (1);
+		}
+		ft_strlcpy(data->cur_dir, real_path, PATH_MAX);
 	}
 	return (0);
 }
@@ -79,7 +74,7 @@ int	execute_cd(t_data *data, char *path_name, char *home_dir, char *old_dir)
 	{
 		if (!home_dir)
 		{
-			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+			ft_putstr_fd("bash: cd: HOME not set\n", 2);
 			return (1);
 		}
 		result = handle_directory(home_dir, NULL, NULL);
@@ -88,11 +83,11 @@ int	execute_cd(t_data *data, char *path_name, char *home_dir, char *old_dir)
 		result = handle_directory(path_name, home_dir, old_dir);
 	if (result != 0)
 		return (result);
-	if (getcwd(data->cur_dir, PATH_MAX) != NULL)
-	{
-		update_env_var(data, "OLDPWD", data->old_dir);
-		update_env_var(data, "PWD", data->cur_dir);
-	}
+	ft_strlcpy(data->old_dir, data->cur_dir, PATH_MAX);
+	if (update_cur_dir(data, path_name, old_dir) != 0)
+		return (1);
+	update_env_var(data, "OLDPWD", data->old_dir);
+	update_env_var(data, "PWD", data->cur_dir);
 	return (0);
 }
 
@@ -103,9 +98,9 @@ int	ft_cd(t_data *data, char *path_name)
 
 	home_dir = ft_get_env(data->new_env, "HOME");
 	old_dir = ft_get_env(data->new_env, "OLDPWD");
-	if (getcwd(data->cur_dir, PATH_MAX) == NULL)
+	if (getcwd(data->old_dir, PATH_MAX) == NULL)
 	{
-		ft_putstr_fd("minishell: cd: getcwd error\n", 2);
+		ft_putstr_fd("bash: cd: getcwd error\n", 2);
 		return (1);
 	}
 	return (execute_cd(data, path_name, home_dir, old_dir));
