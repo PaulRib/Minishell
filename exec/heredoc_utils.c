@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:39:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/09 17:52:48 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/10 15:56:05 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	ft_free_heredoc(t_shell *shell)
 	while (shell->heredoc)
 	{
 		hd_next = shell->heredoc->next;
-		if (shell->heredoc->eof_heredoc)
+		if (*shell->heredoc->eof_heredoc)
 			free_tab(shell->heredoc->eof_heredoc);
 		free(shell->heredoc);
 		shell->heredoc = hd_next;
