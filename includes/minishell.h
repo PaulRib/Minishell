@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/10 19:29:55 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/12 15:48:17 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ void					add_to_history(t_shell *shell, char *command);
 int						check_unset(t_shell *shell, t_token *token_ptr);
 int						ft_unset(t_data *data, char *var_name);
 /* pwd */
-int						ft_pwd(void);
+int						ft_pwd(t_shell *shell);
 int						check_pwd(t_shell *shell, t_token *token_ptr);
 char					*ft_handle_tilde(char *dir, char *home_dir);
 char					*ft_handle_hyphen(char *dir, char *old_dir);

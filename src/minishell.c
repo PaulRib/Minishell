@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/10 19:58:15 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/12 15:52:50 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	shell_loop(t_shell *shell)
 		//free(line);
 		ft_free_node(shell);
 		shell->exit_status = g_exit_status;
-		printf("%d\n", shell->exit_status);
+		// printf("%d\n", shell->exit_status);
 		ft_memset(shell->count, 0, sizeof(t_count));
 	}
 }
