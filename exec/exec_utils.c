@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:01:44 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/10 15:56:50 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/12 17:14:19 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,12 @@ void	ft_free_exec(t_shell *shell)
 			free(shell->exec->fd_out);
 		if (shell->exec->prev_fd)
 			free(shell->exec->prev_fd);
+		close_fd_exec(shell);
 		shell->exec = NULL;
 	}
+}
+
+void execute_fork()
+{
+	
 }

@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/10 18:22:57 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/12 16:04:44 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ void					init_signals(void);
 void					init_signals_child(void);
 
 /* Builtins */
-int						is_builtin(t_shell *shell, t_token *token_list);
+int						is_builtin(t_shell *shell);
 /* export */
 int						check_export(t_shell *shell, t_token *token_ptr);
 int						export_no_args(t_shell *shell);
@@ -177,7 +177,7 @@ char					*ft_handle_hyphen(char *dir, char *old_dir);
 void					exec_hub(t_shell *shell);
 char					*give_curr_cmd(t_shell *shell, int i);
 void					execute(char *cmd, char **envp);
-char					*get_path(char *cmd, char **envp, char **exec_cmd);
+char					*get_path(char *cmd, char **envp);
 void					ft_free_exec(t_shell *shell);
 void					count_process(t_shell *shell);
 void					initiate_exec(t_shell *shell);
@@ -192,6 +192,9 @@ void					check_current_type(t_token *current, t_heredoc *tmp, int process);
 void					here_doc_hub(t_shell *shell);
 void					child_process(char *cmd, t_shell *shell, int proc, int i);
 void					ft_free_heredoc(t_shell *shell);
+void 					execute_one_cmd(t_shell *shell);
+int 					check_single_builtin(t_shell *shell);
+void 					close_fd_exec(t_shell *shell);
 /* echo */
 int						check_echo(t_token *token_ptr);
 
