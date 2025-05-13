@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:36:54 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/12 14:44:17 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/13 17:57:42 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	do_all_pipe(t_shell *shell)
 	}
 }
 
-static void	here_doc_process(t_shell *shell)
+void	here_doc_process(t_shell *shell)
 {
 	int			i;
 	char		*line;
@@ -58,7 +58,7 @@ static void	here_doc_process(t_shell *shell)
 	}
 }
 
-static void	stock_all_heredoc(t_shell *shell)
+void	stock_all_heredoc(t_shell *shell)
 {
 	t_token		*current;
 	t_heredoc	*tmp;
@@ -86,7 +86,7 @@ static void	stock_all_heredoc(t_shell *shell)
 	}
 }
 
-static void	initiate_heredoc(t_shell *shell)
+void	initiate_heredoc(t_shell *shell)
 {
 	t_token		*current;
 	t_heredoc	*tmp;

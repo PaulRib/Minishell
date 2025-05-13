@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/12 16:57:14 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/13 17:54:35 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 		printf("\033[34;01mContenu du token : \033[00m-%s-\n", tmp->str);
 		tmp = tmp->next;
 	}
-	exec_hub(shell);
+	//exec_hub(shell);
+	execute_parsed_line(shell);
 }
 
 void	ft_free_node(t_shell *shell)

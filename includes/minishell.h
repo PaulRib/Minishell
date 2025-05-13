@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/12 16:04:44 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/13 17:58:07 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+// # include "../new/pipeline_executor.h"
+// # include "../new/heredoc_manager.h"
+// # include "../new/heredoc_input_processor.h"
 
 # define PATH_MAX 4096
 
@@ -205,5 +208,22 @@ int						find_env_var(char **env, char *var);
 char					*ft_get_env(char **env, char *var_name);
 int						update_env_var(t_data *data, char *var_name,
 							char *var_value);
+
+/* New*/
+void execute_parsed_line(t_shell *shell);
+void	execute_commands_sequence_child(t_shell *shell);
+int		process_heredoc_inputs_loop(t_shell *shell);
+int		handle_all_heredocs_globally(t_shell *shell);
+void	initiate_heredoc_list(t_shell *shell);
+void	stock_heredoc_delimiters(t_shell *shell);
+int		process_heredoc_inputs_loop(t_shell *shell);
+int		create_heredoc_pipes(t_shell *shell);
+void	execute_pipeline(t_shell *shell);
+void	execute_pipeline_command(t_shell *shell, char *cmd_str, int proc_index, int cmd_in_proc_index);
+void	setup_pipe_fds(t_shell *shell, int proc_index, int cmd_in_proc_index);
+void	wait_for_pipeline_command(pid_t pid, t_shell *shell, int proc_index, char *cmd_str);
+void	stock_all_heredoc(t_shell *shell);
+void	here_doc_process(t_shell *shell);
+void	initiate_heredoc(t_shell *shell);
 
 #endif
