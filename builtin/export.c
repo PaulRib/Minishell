@@ -72,8 +72,10 @@ int	check_export(t_shell *shell, t_token *token_ptr)
 		return (0);
 	}
 	token_ptr = token_ptr->next;
-	while (token_ptr && token_ptr->type == WORD)
+	while (token_ptr && (token_ptr->type == WORD || token_ptr->type == S_QUOTE || token_ptr->type == D_QUOTE))
 	{
+		if(token_ptr->next->type == S_QUOTE || token_ptr->next->type == D_QUOTE)
+			token_ptr->str = ft_strjoin(token_ptr->str, token_ptr->next->str);
 		if (!export_var(shell->data, token_ptr->str))
 			return (-1);
 		token_ptr = token_ptr->next;
