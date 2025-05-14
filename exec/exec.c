@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/10 16:00:47 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/14 15:02:09 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,8 +132,8 @@ void	child_process(char *cmd, t_shell *shell, int proc, int i)
 
 void	exec_hub(t_shell *shell)
 {
-	initiate_exec(shell);
 	count_process(shell);
+	initiate_exec(shell);
 	count_element(shell);
 	if (shell->count->nb_redir_in > 0)
 		if (open_infile(shell) == -1)

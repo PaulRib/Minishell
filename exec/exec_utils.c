@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:01:44 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/10 15:56:50 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/14 15:04:57 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,9 @@ void	count_element(t_shell *shell)
 
 void	initiate_exec(t_shell *shell)
 {
-	shell->exec = malloc(sizeof(t_exec));
-	ft_memset(shell->exec, 0, sizeof(t_exec));
+	int	i;
+
+	i = 0;
 	shell->exec->fd_in = malloc(sizeof(int) * shell->exec->process);
 	shell->exec->fd_out = malloc(sizeof(int) * shell->exec->process);
 	shell->exec->nb_cmd = malloc(sizeof(int) * shell->exec->process);
@@ -52,14 +53,22 @@ void	initiate_exec(t_shell *shell)
 	if (!shell->exec->fd_in || !shell->exec->fd_out || !shell->exec->nb_cmd
 		|| !shell->exec->prev_fd)
 		exit(0);
+	while (i < shell->exec->process)
+	{
+		shell->exec->prev_fd[i] = 0;
+		shell->exec->fd_in[i] = 0;
+		shell->exec->fd_out[i] = 1;
+		shell->exec->nb_cmd[i] = 1;
+		i++;
+	}
 }
 
 void	count_process(t_shell *shell)
 {
 	t_token	*current;
-	int		i;
 
-	i = 0;
+	shell->exec = malloc(sizeof(t_exec));
+	ft_memset(shell->exec, 0, sizeof(t_exec));
 	current = shell->token;
 	shell->exec->process = 1;
 	while (current->next)
@@ -68,14 +77,6 @@ void	count_process(t_shell *shell)
 				|| current->next->type == HEREDOC))
 			shell->exec->process++;
 		current = current->next;
-	}
-	while (i < shell->exec->process)
-	{
-		shell->exec->prev_fd[i] = 0;
-		shell->exec->fd_in[i] = 0;
-		shell->exec->fd_out[i] = 1;
-		shell->exec->nb_cmd[i] = 1;
-		i++;
 	}
 }
 
