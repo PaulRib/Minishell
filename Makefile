@@ -6,7 +6,7 @@ SRC = src/minishell.c src/env.c parsing/parser.c src/struct.c src/builtin.c src/
 		exec/exec.c exec/exec_fd.c exec/exec_utils.c exec/heredoc.c exec/heredoc_utils.c\
 		builtin/cd.c builtin/cd2.c builtin/pwd.c builtin/echo.c builtin/unset.c builtin/export.c builtin/export2.c \
 		utils/ft_add_env_var.c utils/ft_find_env_var.c utils/ft_get_env.c utils/ft_update_env_var.c\
-		new/command_executor.c new/heredoc_input_processor.c new/heredoc_manager.c new/orchestrator.c new/pipeline_executor.c\
+		new/command_executor.c new/heredoc_input_processor.c new/orchestrator.c new/pipeline_executor.c\
 
 OBJS = $(SRC:.c=.o)
 

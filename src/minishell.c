@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/13 17:54:35 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:05:39 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,6 @@ int	main(int ac, char **av, char **env)
 	initiate_all(shell);
 	env_exists(env, shell);
 	shell_loop(shell);
-	free_tab(env);
+	//free_tab(env);
 	return (0);
 }

@@ -5,130 +5,187 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 17:42:55 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/13 17:50:17 by pribolzi         ###   ########.fr       */
+/*   Created: 2025/05/14 16:42:32 by pribolzi          #+#    #+#             */
+/*   Updated: 2025/05/14 18:29:24 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "pipeline_executor.h"
+
 #include "../includes/minishell.h"
 
-// External functions that will be linked from other C files.
-// These should ideally be in minishell.h or specific headers if not already.
-extern char *give_curr_cmd(t_shell *shell, int i);
-extern void execute_external_or_builtin(char *full_cmd_str, t_shell *shell);
+// User's functions (ensure prototypes are in minishell.h or accessible)
+// extern char *give_curr_cmd(t_shell *shell, int global_cmd_idx);
+// extern void init_signals_child(void);
 
-// Child helper: sets up FDs for a command in a pipeline.
-// Called by the child process after fork.
-void setup_pipe_fds(t_shell *shell, int proc_idx, int cmd_in_proc_idx)
+// Helper to wait for a single pipeline command process
+void wait_for_pipeline_command_v2(pid_t pid, char *cmd_str)
 {
-	init_signals_child();
-	close(shell->exec->p_fd[0]); // Child closes read end of its output pipe
+    int status;
+    int sig;
 
-	if (shell->exec->prev_fd[proc_idx] != STDIN_FILENO)
-	{
-		dup2(shell->exec->prev_fd[proc_idx], STDIN_FILENO);
-		close(shell->exec->prev_fd[proc_idx]);
-	}
-
-	if (cmd_in_proc_idx != shell->exec->nb_cmd[proc_idx] - 1)
-	{
-		dup2(shell->exec->p_fd[1], STDOUT_FILENO);
-	}
-	else if (shell->exec->fd_out[proc_idx] != STDOUT_FILENO)
-	{
-		dup2(shell->exec->fd_out[proc_idx], STDOUT_FILENO);
-		if (shell->exec->fd_out[proc_idx] > STDERR_FILENO)
-			close(shell->exec->fd_out[proc_idx]);
-	}
-	close(shell->exec->p_fd[1]);
+    waitpid(pid, &status, 0);
+    if (WIFEXITED(status))
+        g_exit_status = WEXITSTATUS(status);
+    else if (WIFSIGNALED(status))
+    {
+        sig = WTERMSIG(status);
+        g_exit_status = 128 + sig;
+        if (sig == SIGQUIT)
+            ft_putendl_fd("Quit (core dumped)", STDERR_FILENO);
+    }
+    if (cmd_str)
+        free(cmd_str);
 }
 
-// Parent helper: waits for a pipeline command, sets exit status, frees command string.
-void wait_for_pipeline_command(pid_t pid, t_shell *shell, int proc_idx, char *cmd_str)
+// Sets up FDs for a command within an internal pipeline of a "process" segment.
+// current_proc_idx: index of the overall "process" segment (for fd_in/fd_out of the segment).
+// cmd_in_segment_idx: index of the command within this segment's internal pipeline.
+// num_cmds_in_segment: total number of commands in this segment's internal pipeline.
+// pipe_fds: array of pipe FDs for this internal pipeline. pipe_fds[j][0] is read, pipe_fds[j][1] is write.
+void setup_internal_pipe_fds_v2(t_shell *shell, int current_proc_idx,
+                                int cmd_in_segment_idx, int num_cmds_in_segment,
+                                int (*pipe_fds)[2])
 {
-	int status;
-	int sig;
+    init_signals_child();
 
-	(void)shell; // g_exit_status is global
-	(void)proc_idx; // Not directly used in this wait logic part
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-	{
-		sig = WTERMSIG(status);
-		g_exit_status = 128 + sig;
-		if (sig == SIGQUIT)
-			ft_putendl_fd("Quit (core dumped)", STDERR_FILENO);
-	}
-	if (cmd_str)
-		free(cmd_str);
+    // Input redirection
+    if (cmd_in_segment_idx == 0) // First command in the internal pipeline
+    {
+        // Use the main input for this "process" segment
+        // This could be from a heredoc (via prev_fd) or a file redirection
+        if (shell->exec->prev_fd[current_proc_idx] != STDIN_FILENO && shell->exec->prev_fd[current_proc_idx] != 0) // Check if prev_fd is set and valid
+        {
+            dup2(shell->exec->prev_fd[current_proc_idx], STDIN_FILENO);
+            close(shell->exec->prev_fd[current_proc_idx]);
+        }
+        else if (shell->exec->fd_in[current_proc_idx] != STDIN_FILENO)
+        {
+            dup2(shell->exec->fd_in[current_proc_idx], STDIN_FILENO);
+            close(shell->exec->fd_in[current_proc_idx]);
+        }
+    }
+    else // Not the first command, take input from the previous command's pipe
+    {
+        dup2(pipe_fds[cmd_in_segment_idx - 1][0], STDIN_FILENO);
+    }
+
+    // Output redirection
+    if (cmd_in_segment_idx == num_cmds_in_segment - 1) // Last command in the internal pipeline
+    {
+        // Use the main output for this "process" segment
+        if (shell->exec->fd_out[current_proc_idx] != STDOUT_FILENO)
+        {
+            dup2(shell->exec->fd_out[current_proc_idx], STDOUT_FILENO);
+            close(shell->exec->fd_out[current_proc_idx]);
+        }
+    }
+    else // Not the last command, output to the next command's pipe
+    {
+        dup2(pipe_fds[cmd_in_segment_idx][1], STDOUT_FILENO);
+    }
+
+    // Close all pipe fds in the child, as they are now duplicated to stdin/stdout or not needed
+    for (int i = 0; i < num_cmds_in_segment - 1; ++i)
+    {
+        close(pipe_fds[i][0]);
+        close(pipe_fds[i][1]);
+    }
 }
 
-// Forks, child executes a pipeline command, parent waits.
-void execute_pipeline_command(t_shell *shell, char *cmd_str, int proc_idx, int cmd_in_proc_idx)
+// Main function to execute a pipeline of commands within a specific "process" segment.
+void execute_pipeline_v2(t_shell *shell, int current_proc_idx)
 {
-	pid_t pid;
+    int num_cmds_in_seg;
+    int (*pipe_fds)[2]; // Array of pipes for this internal pipeline
+    pid_t *pids;
+    char *cmd_str;
+    int global_cmd_idx_base;
+    int i;
 
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("minishell: fork");
-		if (cmd_str)
-			free(cmd_str);
-		g_exit_status = 1;
-		return;
-	}
-	if (pid == 0)
-	{
-		setup_pipe_fds(shell, proc_idx, cmd_in_proc_idx);
-		execute_external_or_builtin(cmd_str, shell); // Exits on its own
-		exit(g_exit_status); // Fallback exit if exec/builtin somehow returns
-	}
-	wait_for_pipeline_command(pid, shell, proc_idx, cmd_str);
-}
+    num_cmds_in_seg = shell->exec->nb_cmd[current_proc_idx];
+    if (num_cmds_in_seg <= 0) return; // Should not happen
 
-// Parent helper: manages its pipe FDs after a child is launched and waited for.
-static void parent_manage_fds_after_cmd(t_shell *shell, int proc_idx)
-{
-	if (shell->exec->prev_fd[proc_idx] > STDIN_FILENO)
-		close(shell->exec->prev_fd[proc_idx]);
+    pipe_fds = NULL;
+    if (num_cmds_in_seg > 1)
+    {
+        pipe_fds = malloc(sizeof(int[2]) * (num_cmds_in_seg - 1));
+        if (!pipe_fds) { perror("minishell: malloc for pipes"); g_exit_status = 1; return; }
+        for (i = 0; i < num_cmds_in_seg - 1; ++i)
+        {
+            if (pipe(pipe_fds[i]) == -1)
+            { perror("minishell: pipe"); g_exit_status = 1; free(pipe_fds); return; }
+        }
+    }
 
-	close(shell->exec->p_fd[1]);
-	shell->exec->prev_fd[proc_idx] = shell->exec->p_fd[0];
-}
+    pids = malloc(sizeof(pid_t) * num_cmds_in_seg);
+    if (!pids) { perror("minishell: malloc for pids"); g_exit_status = 1; if (pipe_fds) free(pipe_fds); return; }
 
-// Main function to execute a pipeline of commands.
-void execute_pipeline(t_shell *shell)
-{
-	int p_idx;
-	int c_idx_p;
-	int overall_cmd_idx;
-	char *cmd_s;
+    global_cmd_idx_base = get_global_cmd_idx(shell, current_proc_idx, 0);
 
-	overall_cmd_idx = 0;
-	p_idx = 0;
-	while (p_idx < shell->exec->process)
-	{
-		if (shell->exec->prev_fd[p_idx] == STDIN_FILENO)
-			shell->exec->prev_fd[p_idx] = shell->exec->fd_in[p_idx];
-		c_idx_p = 0;
-		while (c_idx_p < shell->exec->nb_cmd[p_idx])
-		{
-			if (pipe(shell->exec->p_fd) == -1)
-			{perror("minishell: pipe"); g_exit_status = 1; return;}
-			cmd_s = give_curr_cmd(shell, overall_cmd_idx);
-			if (!cmd_s) {g_exit_status = 1; close(shell->exec->p_fd[0]);
-				close(shell->exec->p_fd[1]); return;}
-			execute_pipeline_command(shell, cmd_s, p_idx, c_idx_p);
-			parent_manage_fds_after_cmd(shell, p_idx);
-			c_idx_p++;
-			overall_cmd_idx++;
-		}
-		if (shell->exec->prev_fd[p_idx] > STDIN_FILENO)
-			{close(shell->exec->prev_fd[p_idx]); shell->exec->prev_fd[p_idx] = STDIN_FILENO;}
-		p_idx++;
-	}
+    i = 0;
+    while (i < num_cmds_in_seg)
+    {
+        cmd_str = give_curr_cmd(shell, global_cmd_idx_base + i);
+        if (!cmd_str) { g_exit_status = 1; /* Error getting command */ break; }
+
+        pids[i] = fork();
+        if (pids[i] < 0)
+        { perror("minishell: fork"); free(cmd_str); g_exit_status = 1; break; }
+
+        if (pids[i] == 0) // Child process for this command in the internal pipeline
+        {
+            setup_internal_pipe_fds_v2(shell, current_proc_idx, i, num_cmds_in_seg, pipe_fds);
+            // execute_external_or_builtin_v2 will handle builtins or execve, and exit.
+            // It uses fd_in[current_proc_idx] and fd_out[current_proc_idx] if it were a single command,
+            // but setup_internal_pipe_fds_v2 has already redirected STDIN/STDOUT.
+            // So, execute_external_or_builtin_v2 needs to be careful not to re-dup if called from here.
+            // For now, we pass current_proc_idx, but its fd_in/fd_out usage inside might need adjustment
+            // if called from a pipeline context where STDIN/STDOUT are already piped.
+            // A simpler execute_external_or_builtin_v2 might just take cmd_str and rely on STDIN/STDOUT being set.
+            execute_external_or_builtin_v2(shell, cmd_str, current_proc_idx); // Pass current_proc_idx for context if needed by builtin logic
+            exit(g_exit_status); // Should be redundant if execute_external_or_builtin_v2 exits
+        }
+        // Parent (global child) continues to fork next command in segment
+        free(cmd_str); // Parent frees the command string from give_curr_cmd
+        i++;
+    }
+
+    // Parent (global child) closes all its copies of pipe FDs for this internal pipeline
+    if (pipe_fds)
+    {
+        for (i = 0; i < num_cmds_in_seg - 1; ++i)
+        {
+            close(pipe_fds[i][0]);
+            close(pipe_fds[i][1]);
+        }
+        free(pipe_fds);
+    }
+
+    // Parent (global child) waits for all commands in this internal pipeline
+    // g_exit_status will be that of the last command waited for.
+    for (i = 0; i < num_cmds_in_seg; ++i)
+    {
+        if (pids[i] > 0) // Only wait if fork was successful for this command
+        {
+            // We don't have the cmd_str here anymore to pass to wait_for_pipeline_command_v2.
+            // The original wait_for_pipeline_command took cmd_str to free it.
+            // Here, cmd_str is freed in the loop above. So, a simpler wait is needed.
+            int temp_status;
+            waitpid(pids[i], &temp_status, 0);
+            if (i == num_cmds_in_seg - 1) // If it's the last command of the pipeline segment
+            {
+                if (WIFEXITED(temp_status))
+                    g_exit_status = WEXITSTATUS(temp_status);
+                else if (WIFSIGNALED(temp_status))
+                {
+                    int sig = WTERMSIG(temp_status);
+                    g_exit_status = 128 + sig;
+                    if (sig == SIGQUIT)
+                        ft_putendl_fd("Quit (core dumped)", STDERR_FILENO);
+                }
+            }
+        }
+    }
+    free(pids);
 }
 

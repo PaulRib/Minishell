@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/13 15:32:41 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:13:43 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,21 +129,21 @@ void	child_process(char *cmd, t_shell *shell, int proc, int i)
 	}
 }
 
-void	exec_hub(t_shell *shell)
-{
-	initiate_exec(shell);
-	count_process(shell);
-	count_element(shell);
-	if (shell->count->nb_redir_in > 0)
-		if (open_infile(shell) == -1)
-			return ;
-	if (shell->count->nb_redir_out > 0 || shell->count->nb_append > 0)
-		open_outfile(shell);
-	if (shell->count->nb_heredoc > 0)
-		here_doc_hub(shell);
-	if (shell->count->nb_pipe == 0)
-		execute_one_cmd(shell);
-	else
-		execute_pipe(shell);
-	ft_free_exec(shell);
-}
+// void	exec_hub(t_shell *shell)
+// {
+// 	initiate_exec(shell);
+// 	count_process(shell);
+// 	count_element(shell);
+// 	if (shell->count->nb_redir_in > 0)
+// 		if (open_infile(shell) == -1)
+// 			return ;
+// 	if (shell->count->nb_redir_out > 0 || shell->count->nb_append > 0)
+// 		open_outfile(shell);
+// 	if (shell->count->nb_heredoc > 0)
+// 		here_doc_hub(shell);
+// 	if (shell->count->nb_pipe == 0)
+// 		execute_one_cmd(shell);
+// 	else
+// 		execute_pipe(shell);
+// 	ft_free_exec(shell);
+// }

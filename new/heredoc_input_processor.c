@@ -1,141 +1,126 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   heredoc_input_processor.c                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 17:43:07 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/13 17:53:38 by pribolzi         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// Fichier: /home/ubuntu/heredoc_input_processor.c.mod
+// Contient les modifications pour la gestion des signaux dans la lecture du heredoc.
 
-#include "../includes/minishell.h" // For t_shell, g_exit_status, etc.
-//#include "heredoc_input_processor.h"
-#include <stdio.h> // For perror, if not in libft
+#include "../includes/minishell.h"
 
-// Assumed global for SIGINT handling during heredoc, set by signal handler
-// extern int g_sigint_heredoc_received;
-// For now, we'll assume get_next_line behavior or another mechanism handles SIGINT detection.
-// If get_next_line returns NULL on SIGINT, that needs to be distinguished from EOF.
-// Let's assume a simplified path: if GNL returns NULL, it's EOF or error.
-// Proper SIGINT handling would require a flag set by a signal handler.
+// Fonction existante de l'utilisateur (supposée présente dans un autre fichier ou le .h)
+// extern char *expand_variables(t_shell *shell, char *str);
+// extern int check_end(int *i, t_shell *shell, t_heredoc **curr);
 
-static void print_heredoc_eof_warning_msg(const char *delimiter)
+// Fonction existante de l'utilisateur pour afficher le message d'avertissement EOF
+static void print_heredoc_eof_warning_msg_v2(const char *delimiter)
 {
-	ft_putstr_fd("minishell: warning: here-document delimited by end-of-file (wanted `", 2);
-	ft_putstr_fd((char *)delimiter, 2);
-	ft_putstr_fd("`)\n", 2);
+    ft_putstr_fd("minishell: warning: here-document delimited by end-of-file (wanted `", 2);
+    if (delimiter)
+        ft_putstr_fd((char *)delimiter, 2);
+    else
+        ft_putstr_fd("unknown", 2);
+    ft_putstr_fd("`)\n", 2);
 }
 
-// Handles the logic when a heredoc node is finished or loop is ending for it.
-// Returns 0 if there are more heredoc nodes, -1 if all done.
-static int finalize_heredoc_node(t_shell *shell, t_heredoc **current_hd_ptr,
-                                 int *delim_idx_ptr)
+// Lit une ligne, la compare au délimiteur, l'écrit si besoin.
+// Retourne:
+//   0 : Ligne traitée, continuer la lecture pour le même délimiteur.
+//   1 : Délimiteur trouvé.
+//   2 : EOF (Ctrl+D) rencontré (g_exit_status sera 0).
+//   3 : Interruption par SIGINT (g_exit_status sera 130).
+static int read_heredoc_line(t_shell *shell, t_heredoc *hd_node, const char *delimiter)
 {
-	t_heredoc *node;
+    char *line_read;
+    char *line_to_write;
+    int eof_str_len;
 
-	node = *current_hd_ptr;
-	if (node->hrd == true && shell->exec && node->process < shell->exec->process)
-		shell->exec->prev_fd[node->process] = node->p_fd[0];
-	if (node->p_fd[1] > 0) // Close write end of the pipe for this heredoc
-	{
-		close(node->p_fd[1]);
-		node->p_fd[1] = -1; // Mark as closed
-	}
-	if (node->next)
-	{
-		*current_hd_ptr = node->next;
-		*delim_idx_ptr = 0;
-		return (0); // More nodes
-	}
-	*current_hd_ptr = NULL; // No more heredoc nodes
-	return (-1);          // All done
+    // ft_putstr_fd("> ", STDOUT_FILENO); // Prompt pour heredoc (optionnel)
+
+    // Vérifier si SIGINT a été reçu avant la lecture (par le handler principal)
+    ft_putstr_fd(">", 1);
+	if (g_exit_status == 130)
+        return (3);
+
+    line_read = get_next_line(STDIN_FILENO);
+
+    // Vérifier si SIGINT a été reçu pendant ou juste après get_next_line
+    if (g_exit_status == 130)
+    {
+        if (line_read) 
+            free(line_read);
+        return (3);
+    }
+
+    if (!line_read) // EOF (Ctrl+D)
+    {
+        print_heredoc_eof_warning_msg_v2(delimiter);
+        g_exit_status = 0; // Comportement Bash pour heredoc EOF
+        return (2);
+    }
+
+    eof_str_len = ft_strlen(delimiter);
+    if (ft_strncmp(line_read, delimiter, eof_str_len) == 0 &&
+        line_read[eof_str_len] == '\n')
+    {
+        free(line_read);
+        return (1); // Délimiteur trouvé
+    }
+
+    // Écrire la ligne dans le pipe si ce heredoc est actif (hd_node->hrd == true)
+    // La logique originale de l'utilisateur pour l'écriture (via hrd) est respectée.
+    if (hd_node->hrd == true)
+    {
+        line_to_write = expand_variables(shell, line_read); // Fonction de l'utilisateur
+        ft_putstr_fd(line_to_write, hd_node->p_fd[1]);
+        if (line_to_write != line_read) // Si expand_variables a alloué une nouvelle chaîne
+            free(line_to_write);
+    }
+    free(line_read);
+    return (0); // Ligne traitée, continuer
 }
 
-// Processes one line of input for the current heredoc delimiter.
-// Returns 0 to continue, 1 to break from this node, 2 for overall error/interrupt.
-static int process_line_for_heredoc(t_shell *shell, t_heredoc *node,
-                                    int *d_idx, char *line)
+// Gère la boucle de lecture pour tous les heredocs.
+// Retourne:
+//   0 : Succès, tous les heredocs traités.
+//   1 : EOF (Ctrl+D) global rencontré (g_exit_status = 0).
+//   2 : Interruption globale par SIGINT (g_exit_status = 130).
+//   3 : Erreur interne (ex: délimiteur manquant) (g_exit_status = 1).
+int process_heredoc_inputs_loop_v2(t_shell *shell)
 {
-	int d_len;
+    t_heredoc   *current_hd_node;
+    int         delim_idx; // Index du délimiteur actuel pour le nœud courant
+    int         line_status;
 
-	d_len = ft_strlen(node->eof_heredoc[*d_idx]);
-	if (ft_strncmp(line, node->eof_heredoc[*d_idx], d_len) == 0 &&
-	    line[d_len] == '\n')
-	{
-		(*d_idx)++; // Matched this delimiter
-	}
-	else if (*d_idx == node->nb_heredoc - 1 || *d_idx == node->nb_heredoc)
-	{
-		if (node->hrd == true)
-		{
-			line = expand_variables(shell, line); // expand_variables might realloc line
-			ft_putstr_fd(line, node->p_fd[1]);
-		}
-	}
-	// If not delimiter and not matching the specific write condition, line is consumed
-	free(line);
-	if (*d_idx == node->nb_heredoc) // All delimiters for this node met
-		return (1); // Break from this node
-	return (0);     // Continue reading for this node
+    current_hd_node = shell->heredoc;
+    delim_idx = 0;
+    while (current_hd_node) // Boucle sur chaque nœud heredoc
+    {
+        // Si tous les délimiteurs pour le nœud actuel ont été traités
+        if (delim_idx >= current_hd_node->nb_heredoc)
+        {
+            // check_end ferme p_fd[1] du nœud actuel, met à jour shell->exec->prev_fd,
+            // avance current_hd_node au suivant, et réinitialise delim_idx (via le pointeur i*).
+            if (check_end(&delim_idx, shell, &current_hd_node) == -1)
+                break; // Plus de nœuds heredoc, sortie normale de la boucle
+            continue;  // Recommencer la boucle avec le nouveau current_hd_node et delim_idx = 0
+        }
+
+        // S'assurer que le délimiteur est défini
+        if (!current_hd_node->eof_heredoc || !current_hd_node->eof_heredoc[delim_idx])
+        {
+            g_exit_status = 1;
+            return (3); // Erreur interne
+        }
+        
+        // Lire et traiter une ligne pour le délimiteur actuel
+        line_status = read_heredoc_line(shell, current_hd_node, 
+                                      current_hd_node->eof_heredoc[delim_idx]);
+
+        if (line_status == 1) // Délimiteur trouvé pour le délimiteur actuel
+            delim_idx++;      // Passer au délimiteur suivant pour ce nœud
+        else if (line_status == 2) // EOF global
+            return (1); // g_exit_status est déjà 0
+        else if (line_status == 3) // SIGINT global
+            return (2); // g_exit_status est déjà 130
+        // Si line_status == 0, continuer la lecture pour le même délimiteur
+    }
+    return (0); // Succès
 }
 
-// Reads input lines for a single heredoc node until all its delimiters are met or EOF.
-// Returns 0 on success for this node, 1 on EOF/warning, 2 on SIGINT/critical error.
-static int read_input_for_node(t_shell *shell, t_heredoc *current_hd_node,
-                               int *delim_idx_for_node)
-{
-	char *line;
-	int  status;
-
-	while (*delim_idx_for_node < current_hd_node->nb_heredoc)
-	{
-		ft_putstr_fd("> ", 1); // Prompt
-		line = get_next_line(0);
-		// TODO: Proper SIGINT check here. If SIGINT, set g_exit_status=130, free line, return 2.
-		// For now, GNL returning NULL is EOF or error.
-		if (!line)
-		{
-			print_heredoc_eof_warning_msg(current_hd_node->eof_heredoc[*delim_idx_for_node]);
-			g_exit_status = 0; // Bash behavior
-			return (1);        // EOF occurred, stop processing heredocs
-		}
-		status = process_line_for_heredoc(shell, current_hd_node, 
-		                                  delim_idx_for_node, line);
-		if (status == 1) // All delims for this node met
-			break;
-		// if status == 2 (error), it would have returned already from process_line (not current impl)
-	}
-	return (0); // Success for this node (all its delimiters found)
-}
-
-// Main loop to process inputs for all heredocs.
-// Called by handle_all_heredocs_globally (in heredoc_manager.c).
-// Returns 0 on success, 1 on EOF/warning, 2 on SIGINT/critical error.
-int process_heredoc_inputs_loop(t_shell *shell)
-{
-	t_heredoc *current_hd_node;
-	int delim_idx_for_node;
-	int node_status;
-
-	current_hd_node = shell->heredoc;
-	delim_idx_for_node = 0;
-	while (current_hd_node)
-	{
-		node_status = read_input_for_node(shell, current_hd_node, &delim_idx_for_node);
-		if (node_status != 0) // EOF or SIGINT occurred
-		{
-			// Finalize current node partially if EOF, then return status
-			// If it was SIGINT (status 2), g_exit_status is 130.
-			// If it was EOF (status 1), g_exit_status is 0.
-			finalize_heredoc_node(shell, &current_hd_node, &delim_idx_for_node); 
-			return (node_status == 2 ? 2 : 1); // Return 2 for sigint, 1 for eof
-		}
-		// All delimiters for current_hd_node were found successfully.
-		if (finalize_heredoc_node(shell, &current_hd_node, &delim_idx_for_node) == -1)
-			break; // All heredoc nodes processed
-	}
-	return (0); // All heredocs processed successfully
-}
 

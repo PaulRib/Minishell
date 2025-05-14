@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/13 17:58:07 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:19:09 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-// # include "../new/pipeline_executor.h"
-// # include "../new/heredoc_manager.h"
-// # include "../new/heredoc_input_processor.h"
+# include <stdio.h>
 
 # define PATH_MAX 4096
 
@@ -210,20 +208,25 @@ int						update_env_var(t_data *data, char *var_name,
 							char *var_value);
 
 /* New*/
+int get_global_cmd_idx(t_shell *shell, int target_proc_idx, int cmd_in_target_proc_idx);
+char *get_command_path_v2(char *cmd_name, char **envp);
+void execute_external_or_builtin_v2(t_shell *shell, char *full_cmd_str, int proc_idx);
+void execute_commands_sequence_child_v2(t_shell *shell);
+int process_heredoc_inputs_loop_v2(t_shell *shell);
+void stock_heredoc_delimiters_v2(t_shell *shell);
+void initiate_heredoc_list_v2(t_shell *shell);
+int create_heredoc_pipes_v2(t_shell *shell);
+int handle_all_heredocs_globally_v2(t_shell *shell);
 void execute_parsed_line(t_shell *shell);
-void	execute_commands_sequence_child(t_shell *shell);
-int		process_heredoc_inputs_loop(t_shell *shell);
-int		handle_all_heredocs_globally(t_shell *shell);
-void	initiate_heredoc_list(t_shell *shell);
-void	stock_heredoc_delimiters(t_shell *shell);
-int		process_heredoc_inputs_loop(t_shell *shell);
-int		create_heredoc_pipes(t_shell *shell);
-void	execute_pipeline(t_shell *shell);
-void	execute_pipeline_command(t_shell *shell, char *cmd_str, int proc_index, int cmd_in_proc_index);
-void	setup_pipe_fds(t_shell *shell, int proc_index, int cmd_in_proc_index);
-void	wait_for_pipeline_command(pid_t pid, t_shell *shell, int proc_index, char *cmd_str);
-void	stock_all_heredoc(t_shell *shell);
-void	here_doc_process(t_shell *shell);
+void run_global_child_process_v2(t_shell *shell);
+void wait_for_global_child_v2(pid_t child_pid, t_shell *shell);
+void wait_for_pipeline_command_v2(pid_t pid, char *cmd_str);
+void setup_internal_pipe_fds_v2(t_shell *shell, int current_proc_idx,
+                                int cmd_in_segment_idx, int num_cmds_in_segment,
+                                int (*pipe_fds)[2]);
+void execute_pipeline_v2(t_shell *shell, int current_proc_idx);
 void	initiate_heredoc(t_shell *shell);
+void	stock_all_heredoc(t_shell *shell);
+
 
 #endif
