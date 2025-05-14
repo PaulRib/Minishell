@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 13:19:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/23 17:56:38 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/14 14:55:29 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	extract_quote(t_token *current, int start, int end, char c)
 			new_token->type = S_QUOTE;
 		if (current->str[end + 1])
 			after_quote(current, new_token, end + 1);
-		before_quote(current, start - 1);
+		before_quote(current, start);
 	}
 	else
 		empty_quote_before(current, new_token, end, c);
