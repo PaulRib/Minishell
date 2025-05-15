@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:15:41 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/13 16:55:44 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:13:38 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,8 @@ int	ft_echo(t_token *token_ptr)
 			|| current->type == D_QUOTE))
 	{
 		ft_putstr_fd(current->str, 1);
-		if (current->next && (current->next->type == WORD
-				|| current->next->type == S_QUOTE
-				|| current->next->type == D_QUOTE))
+		if (current->next && ((current->type == WORD && current->next->type == WORD)
+			|| current->last_space == true || current->next->first_space == true))
 			write(1, " ", 1);
 		current = current->next;
 	}

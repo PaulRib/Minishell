@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/15 16:41:59 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:18:10 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 		tmp = tmp->next;
 	}
 	//exec_hub(shell);
-	execute_parsed_line(shell);
+	is_builtin(shell);
+	//execute_parsed_line(shell);
 }
 
 void	ft_free_node(t_shell *shell)
@@ -63,9 +64,12 @@ void	ft_free_node(t_shell *shell)
 	while (shell->token)
 	{
 		tmp = shell->token->next;
+		shell->token->first_space = false;
+		shell->token->last_space = false;
 		if (shell->token->str)
 			free(shell->token->str);
 		free(shell->token);
+		shell->token = NULL;
 		shell->token = tmp;
 	}
 }

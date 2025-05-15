@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/15 16:40:53 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:12:27 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ typedef struct s_token
 {
 	int					type;
 	char				*str;
+	bool				first_space;
+	bool				last_space;
 	struct s_token		*next;
 	struct s_token		*prev;
 }						t_token;
