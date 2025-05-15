@@ -6,37 +6,28 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:12 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/14 16:44:35 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/15 19:20:22 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-// User's functions (ensure prototypes are in minishell.h or accessible)
-// extern char *give_curr_cmd(t_shell *shell, int i); // Global command index
-// extern int  check_single_builtin(t_shell *shell); // This might need to be adapted or used carefully
-// extern void is_builtin(t_shell *shell); // User's main builtin dispatcher
 
-// Helper to calculate the global command index for give_curr_cmd
-// A "process" (segment) `target_proc_idx` can have multiple commands `cmd_in_target_proc_idx`.
-// The global index is the sum of commands in all preceding "processes" plus the command index within the current "process".
-int get_global_cmd_idx(t_shell *shell, int target_proc_idx, int cmd_in_target_proc_idx)
+int get_global_cmd_idx(t_shell *shell, int target_proc_i, int cmd_in_target_proc_i)
 {
     int global_idx;
     int i;
 
     global_idx = 0;
     i = 0;
-    while (i < target_proc_idx)
+    while (i < target_proc_i)
     {
         global_idx += shell->exec->nb_cmd[i];
         i++;
     }
-    global_idx += cmd_in_target_proc_idx;
+    global_idx += cmd_in_target_proc_i;
     return (global_idx);
 }
 
-// Gets the full path for a command, adapted from user's get_path
-// User's original get_path is in exec.c
 char *get_command_path_v2(char *cmd_name, char **envp)
 {
     // This function should be a direct copy or adaptation of the user's `get_path` function.
@@ -79,8 +70,8 @@ char *get_command_path_v2(char *cmd_name, char **envp)
 
 // Executes a single command (external or builtin that needs forking/redirection setup)
 // This is for a "process" segment that contains only one command.
-// proc_idx is the index for fd_in/fd_out for this specific "process" segment.
-void execute_external_or_builtin_v2(t_shell *shell, char *full_cmd_str, int proc_idx)
+// proc_i is the index for fd_in/fd_out for this specific "process" segment.
+void execute_external_or_builtin_v2(t_shell *shell, char *full_cmd_str, int proc_i)
 {
     char    **exec_args;
     char    *cmd_path;
@@ -93,15 +84,15 @@ void execute_external_or_builtin_v2(t_shell *shell, char *full_cmd_str, int proc
     { free_tab(exec_args); g_exit_status = 127; /* Command not found like */ return; }
 
     // Setup redirections for this specific process segment
-    if (shell->exec->fd_in[proc_idx] != STDIN_FILENO)
+    if (shell->exec->fd_in[proc_i] != STDIN_FILENO)
     {
-        dup2(shell->exec->fd_in[proc_idx], STDIN_FILENO);
-        close(shell->exec->fd_in[proc_idx]);
+        dup2(shell->exec->fd_in[proc_i], STDIN_FILENO);
+        close(shell->exec->fd_in[proc_i]);
     }
-    if (shell->exec->fd_out[proc_idx] != STDOUT_FILENO)
+    if (shell->exec->fd_out[proc_i] != STDOUT_FILENO)
     {
-        dup2(shell->exec->fd_out[proc_idx], STDOUT_FILENO);
-        close(shell->exec->fd_out[proc_idx]);
+        dup2(shell->exec->fd_out[proc_i], STDOUT_FILENO);
+        close(shell->exec->fd_out[proc_i]);
     }
 
     // Check if it's a builtin that should run in this forked context
@@ -148,83 +139,32 @@ void execute_external_or_builtin_v2(t_shell *shell, char *full_cmd_str, int proc
 // Main entry point for command execution within the global child process
 void execute_commands_sequence_child_v2(t_shell *shell)
 {
-    int proc_idx;         // Index for the user-defined "process" segment
-    int global_cmd_idx;   // Overall command index for give_curr_cmd
+    int		proc_i;
+    int		global_cmd_idx; 
+	char	*cmd_str;
 
-    proc_idx = 0;
-    while (proc_idx < shell->exec->process) // Loop through each user-defined "process" segment
+    proc_i = 0;
+    while (proc_i < shell->exec->process)
     {
-        if (shell->exec->nb_cmd[proc_idx] == 1) // This "process" segment has only one command
+        if (shell->exec->nb_cmd[proc_i] == 1)
         {
-            // It's a single command for this segment. It might be a builtin or external.
-            // It needs to run in the current context (global child), using fd_in/out of this segment.
-            // Builtins that modify parent env are handled before global fork.
-            // Other builtins run here. If it's `exit`, it will terminate the global child.
-
-            // Get the command string using the global command index
-            global_cmd_idx = get_global_cmd_idx(shell, proc_idx, 0);
-            char *cmd_str = give_curr_cmd(shell, global_cmd_idx);
-
-            // If it's a builtin that should run directly in this child process (and not fork again)
-            // User's `check_single_builtin` checks if the *first token* is a builtin.
-            // This needs to be adapted to check the command for the current proc_idx.
-            // For simplicity, let's assume user's `is_builtin` can be called. It sets g_exit_status.
-            // If `is_builtin` returns 1 (executed), we trust it set g_exit_status.
-            // This is a delicate part: how to run builtins in this context without extra forks if not needed,
-            // and correctly setting g_exit_status for the global child to pick up.
-
-            // Option 1: If it's a builtin, run it directly here. Otherwise, fork for external.
-            // This is what `execute_one_cmd` from user's `exec_fd.c` did.
-            // It called `child_process` if not `check_single_builtin`.
-            // Here, we are already in the global child. So, for a single command in a segment,
-            // we can directly call the builtin logic or `execve` logic.
-
-            // If user's `is_builtin` also executes the command:
-            // We need to ensure redirections `fd_in[proc_idx]` and `fd_out[proc_idx]` are handled.
-            // The original `execute_one_cmd` did this before calling `is_builtin`.
-
-            if (shell->exec->fd_in[proc_idx] != STDIN_FILENO)
-                dup2(shell->exec->fd_in[proc_idx], STDIN_FILENO);
-            if (shell->exec->fd_out[proc_idx] != STDOUT_FILENO)
-                dup2(shell->exec->fd_out[proc_idx], STDOUT_FILENO);
-            
-            // Close original FDs if they were duplicated and are not std(in/out/err)
-            if (shell->exec->fd_in[proc_idx] > STDERR_FILENO) close(shell->exec->fd_in[proc_idx]);
-            if (shell->exec->fd_out[proc_idx] > STDERR_FILENO) close(shell->exec->fd_out[proc_idx]);
-
-            // Now, execute. If it's a builtin, call user's is_builtin. Else, call execve wrapper.
-            // This assumes `is_builtin` will use the already duped STDIN/STDOUT.
-            // And that `is_builtin` sets `g_exit_status`.
-            // And that `is_builtin` returns a value indicating if it handled the command.
-            // User's `is_builtin` returns -1 if it's a builtin (and executes it), 0 if not.
-            // This is based on a quick look at user's `is_builtin` in their `builtin.c`.
-            // It seems `is_builtin` calls the builtin functions which should set `g_exit_status`.
-
-            // Let's refine: check if the command for this segment is a builtin.
-            // `give_curr_cmd` gives the full string. We need to parse it or use tokens.
-            // This is where `check_single_builtin` was used, which takes `shell->token`.
-            // This needs to be re-thought for `proc_idx`.
-            // For now, let's assume we call `execute_external_or_builtin_v2` which will try builtins
-            // or execve. This function needs to be robust.
-            // The original `execute_one_cmd` called `is_builtin` if `check_single_builtin` was true.
-            // Or `child_process` (which forks and calls `execute`) if false.
-            // Since we are already in a child, we don't want to fork again for a single command.
-
-            // Let's simplify: call a function that tries builtin, then execve if not.
-            // This is essentially what `execute_external_or_builtin_v2` should do.
-            execute_external_or_builtin_v2(shell, cmd_str, proc_idx);
-            // `g_exit_status` should be set by this function or the execve call.
-            if (cmd_str) free(cmd_str);
+            global_cmd_idx = get_global_cmd_idx(shell, proc_i, 0);
+        	cmd_str = give_curr_cmd(shell, global_cmd_idx);
+            if (shell->exec->fd_in[proc_i] != STDIN_FILENO)
+                dup2(shell->exec->fd_in[proc_i], STDIN_FILENO);
+            if (shell->exec->fd_out[proc_i] != STDOUT_FILENO)
+                dup2(shell->exec->fd_out[proc_i], STDOUT_FILENO);
+            if (shell->exec->fd_in[proc_i] > STDERR_FILENO)
+				close(shell->exec->fd_in[proc_i]);
+            if (shell->exec->fd_out[proc_i] > STDERR_FILENO)
+				close(shell->exec->fd_out[proc_i]);
+            execute_external_or_builtin_v2(shell, cmd_str, proc_i);
+            if (cmd_str)
+				free(cmd_str);
         }
-        else // This "process" segment has multiple commands (a pipeline within the segment)
-        {
-            execute_pipeline_v2(shell, proc_idx); // Pass the current "process" segment index
-            // g_exit_status will be set by the last command of this internal pipeline
-        }
-        proc_idx++;
+        else
+            execute_pipeline_v2(shell, proc_i);
+        proc_i++;
     }
-    // After all "process" segments are done, the g_exit_status of the *last* one executed
-    // will be the one that the global child process exits with.
-    // This is implicitly handled as g_exit_status is updated by each execution.
 }
 

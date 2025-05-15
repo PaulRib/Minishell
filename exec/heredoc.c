@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:36:54 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/15 16:40:41 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/15 19:01:12 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,76 +90,54 @@ static void close_all_heredoc_fds(t_heredoc *heredoc_list)
     }
 }
 
-// Crée les pipes pour tous les heredocs actifs.
-// Met à jour g_exit_status et nettoie les pipes en cas d'erreur.
-// Retourne 0 en cas de succès, 1 en cas d'échec de pipe().
 int create_heredoc_pipes_v2(t_shell *shell)
 {
-    t_heredoc *current_hd_node;
+    t_heredoc *current;
 
-    current_hd_node = shell->heredoc;
-    while (current_hd_node)
+    current = shell->heredoc;
+    while (current)
     {
-        current_hd_node->p_fd[0] = -1; // Initialiser comme non ouverts/invalides
-        current_hd_node->p_fd[1] = -1;
-        if (current_hd_node->hrd == true) // Seulement si le heredoc est actif
+        current->p_fd[0] = -1;
+        current->p_fd[1] = -1;
+        if (current->hrd == true)
         {
-            if (pipe(current_hd_node->p_fd) == -1)
+            if (pipe(current->p_fd) == -1)
             {
                 perror("minishell: pipe for heredoc");
                 g_exit_status = 1;
-                close_all_heredoc_fds(shell->heredoc); // Nettoyer les pipes déjà ouverts
-                return (1);        // Échec
+                close_all_heredoc_fds(shell->heredoc);
+                return (1);
             }
         }
-        current_hd_node = current_hd_node->next;
+        current = current->next;
     }
-    return (0); // Succès
+    return (0);
 }
 
-// Gère la logique principale pour tous les heredocs.
-// Appelé par l'orchestrateur avant l'exécution des commandes.
-// Retourne 0 si l'exécution de la commande peut continuer (heredocs lus ou EOF).
-// Retourne une valeur non nulle si l'exécution doit être annulée (erreur, SIGINT).
-// g_exit_status est mis à jour en conséquence.
 int handle_all_heredocs_globally_v2(t_shell *shell)
 {
     int process_status;
 
-    // initiate_heredoc_list_v2 et stock_heredoc_delimiters_v2 sont appelées
-    // par l'orchestrateur avant cette fonction.
-    if (!shell->heredoc) // Si initiate_heredoc n'a trouvé aucun heredoc
-        return (0);      // Rien à faire, continuer.
+    if (!shell->heredoc)
+        return (0);
 
     if (create_heredoc_pipes_v2(shell) != 0)
     {
-        // g_exit_status est 1. Pipes nettoyés par create_heredoc_pipes_v2.
-        ft_free_heredoc(shell); // Libérer les structures heredoc
-        shell->heredoc = NULL;  // Marquer la liste comme vide
-        return (g_exit_status); // Retourne 1, annuler l'exécution
-    }
-
-    process_status = process_heredoc_inputs_loop_v2(shell);
-
-    if (process_status == 0 || process_status == 1) // Succès ou EOF global
-    {
-        // Pour succès (0), g_exit_status est 0 (ou dernier statut si pertinent).
-        // Pour EOF (1), g_exit_status est 0 (par process_heredoc_inputs_loop_v2).
-        // Dans les deux cas, l'exécution de la commande doit continuer.
-        // Les pipes (p_fd[0]) sont prêts pour la lecture par les commandes.
-        // Le nettoyage final (ft_free_heredoc, fermeture des p_fd[0]) se fera après l'exécution.
-        return (0);
-    }
-    else // Interruption (SIGINT, status 2) ou Erreur interne (status 3)
-    {
-        // Pour SIGINT (status 2), g_exit_status est 130.
-        // Pour Erreur interne (status 3), g_exit_status est 1.
-        close_all_heredoc_fds(shell->heredoc); // Fermer tous les fds (lecture et écriture)
-        ft_free_heredoc(shell);                // Libérer les structures heredoc
+        ft_free_heredoc(shell);
         shell->heredoc = NULL;
-        if (process_status == 2) // SIGINT
-            return (130);        // Annuler l'exécution, statut final 130
-        else // process_status == 3, Erreur interne
-            return (1);          // Annuler l'exécution, statut final 1
+        return (g_exit_status);
+    }
+    process_status = process_heredoc_inputs_loop_v2(shell);
+    if (process_status == 0 || process_status == 1)
+        return (0);
+    else 
+    {
+        close_all_heredoc_fds(shell->heredoc);
+        ft_free_heredoc(shell);
+        shell->heredoc = NULL;
+        if (process_status == 2)
+            return (130);
+        else
+            return (1);
     }
 }

@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/14 18:29:24 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/15 19:30:14 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ void wait_for_pipeline_command_v2(pid_t pid, char *cmd_str)
 }
 
 // Sets up FDs for a command within an internal pipeline of a "process" segment.
-// current_proc_idx: index of the overall "process" segment (for fd_in/fd_out of the segment).
+// proc_i: index of the overall "process" segment (for fd_in/fd_out of the segment).
 // cmd_in_segment_idx: index of the command within this segment's internal pipeline.
 // num_cmds_in_segment: total number of commands in this segment's internal pipeline.
 // pipe_fds: array of pipe FDs for this internal pipeline. pipe_fds[j][0] is read, pipe_fds[j][1] is write.
-void setup_internal_pipe_fds_v2(t_shell *shell, int current_proc_idx,
+void setup_internal_pipe_fds_v2(t_shell *shell, int proc_i,
                                 int cmd_in_segment_idx, int num_cmds_in_segment,
                                 int (*pipe_fds)[2])
 {
@@ -53,15 +53,15 @@ void setup_internal_pipe_fds_v2(t_shell *shell, int current_proc_idx,
     {
         // Use the main input for this "process" segment
         // This could be from a heredoc (via prev_fd) or a file redirection
-        if (shell->exec->prev_fd[current_proc_idx] != STDIN_FILENO && shell->exec->prev_fd[current_proc_idx] != 0) // Check if prev_fd is set and valid
+        if (shell->exec->prev_fd[proc_i] != STDIN_FILENO && shell->exec->prev_fd[proc_i] != 0) // Check if prev_fd is set and valid
         {
-            dup2(shell->exec->prev_fd[current_proc_idx], STDIN_FILENO);
-            close(shell->exec->prev_fd[current_proc_idx]);
+            dup2(shell->exec->prev_fd[proc_i], STDIN_FILENO);
+            close(shell->exec->prev_fd[proc_i]);
         }
-        else if (shell->exec->fd_in[current_proc_idx] != STDIN_FILENO)
+        else if (shell->exec->fd_in[proc_i] != STDIN_FILENO)
         {
-            dup2(shell->exec->fd_in[current_proc_idx], STDIN_FILENO);
-            close(shell->exec->fd_in[current_proc_idx]);
+            dup2(shell->exec->fd_in[proc_i], STDIN_FILENO);
+            close(shell->exec->fd_in[proc_i]);
         }
     }
     else // Not the first command, take input from the previous command's pipe
@@ -73,10 +73,10 @@ void setup_internal_pipe_fds_v2(t_shell *shell, int current_proc_idx,
     if (cmd_in_segment_idx == num_cmds_in_segment - 1) // Last command in the internal pipeline
     {
         // Use the main output for this "process" segment
-        if (shell->exec->fd_out[current_proc_idx] != STDOUT_FILENO)
+        if (shell->exec->fd_out[proc_i] != STDOUT_FILENO)
         {
-            dup2(shell->exec->fd_out[current_proc_idx], STDOUT_FILENO);
-            close(shell->exec->fd_out[current_proc_idx]);
+            dup2(shell->exec->fd_out[proc_i], STDOUT_FILENO);
+            close(shell->exec->fd_out[proc_i]);
         }
     }
     else // Not the last command, output to the next command's pipe
@@ -93,7 +93,7 @@ void setup_internal_pipe_fds_v2(t_shell *shell, int current_proc_idx,
 }
 
 // Main function to execute a pipeline of commands within a specific "process" segment.
-void execute_pipeline_v2(t_shell *shell, int current_proc_idx)
+void execute_pipeline_v2(t_shell *shell, int proc_i)
 {
     int num_cmds_in_seg;
     int (*pipe_fds)[2]; // Array of pipes for this internal pipeline
@@ -102,26 +102,22 @@ void execute_pipeline_v2(t_shell *shell, int current_proc_idx)
     int global_cmd_idx_base;
     int i;
 
-    num_cmds_in_seg = shell->exec->nb_cmd[current_proc_idx];
-    if (num_cmds_in_seg <= 0) return; // Should not happen
-
+    num_cmds_in_seg = shell->exec->nb_cmd[proc_i];
     pipe_fds = NULL;
-    if (num_cmds_in_seg > 1)
+    pipe_fds = malloc(sizeof(int[2]) * (num_cmds_in_seg - 1));
+    if (!pipe_fds)
+		exit(0);
+	i = 0;
+    while (i < num_cmds_in_seg - 1)
     {
-        pipe_fds = malloc(sizeof(int[2]) * (num_cmds_in_seg - 1));
-        if (!pipe_fds) { perror("minishell: malloc for pipes"); g_exit_status = 1; return; }
-        for (i = 0; i < num_cmds_in_seg - 1; ++i)
-        {
-            if (pipe(pipe_fds[i]) == -1)
-            { perror("minishell: pipe"); g_exit_status = 1; free(pipe_fds); return; }
-        }
+        if (pipe(pipe_fds[i]) == -1)
+			exit(0);
+		i++;
     }
-
     pids = malloc(sizeof(pid_t) * num_cmds_in_seg);
-    if (!pids) { perror("minishell: malloc for pids"); g_exit_status = 1; if (pipe_fds) free(pipe_fds); return; }
-
-    global_cmd_idx_base = get_global_cmd_idx(shell, current_proc_idx, 0);
-
+    if (!pids)
+		exit(0);
+    global_cmd_idx_base = get_global_cmd_idx(shell, proc_i, 0);
     i = 0;
     while (i < num_cmds_in_seg)
     {
@@ -134,15 +130,15 @@ void execute_pipeline_v2(t_shell *shell, int current_proc_idx)
 
         if (pids[i] == 0) // Child process for this command in the internal pipeline
         {
-            setup_internal_pipe_fds_v2(shell, current_proc_idx, i, num_cmds_in_seg, pipe_fds);
+            setup_internal_pipe_fds_v2(shell, proc_i, i, num_cmds_in_seg, pipe_fds);
             // execute_external_or_builtin_v2 will handle builtins or execve, and exit.
-            // It uses fd_in[current_proc_idx] and fd_out[current_proc_idx] if it were a single command,
+            // It uses fd_in[proc_i] and fd_out[proc_i] if it were a single command,
             // but setup_internal_pipe_fds_v2 has already redirected STDIN/STDOUT.
             // So, execute_external_or_builtin_v2 needs to be careful not to re-dup if called from here.
-            // For now, we pass current_proc_idx, but its fd_in/fd_out usage inside might need adjustment
+            // For now, we pass proc_i, but its fd_in/fd_out usage inside might need adjustment
             // if called from a pipeline context where STDIN/STDOUT are already piped.
             // A simpler execute_external_or_builtin_v2 might just take cmd_str and rely on STDIN/STDOUT being set.
-            execute_external_or_builtin_v2(shell, cmd_str, current_proc_idx); // Pass current_proc_idx for context if needed by builtin logic
+            execute_external_or_builtin_v2(shell, cmd_str, proc_i); // Pass proc_i for context if needed by builtin logic
             exit(g_exit_status); // Should be redundant if execute_external_or_builtin_v2 exits
         }
         // Parent (global child) continues to fork next command in segment
