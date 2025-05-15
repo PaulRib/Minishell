@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:41:29 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/09 16:06:54 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:19:26 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,61 @@ void	execute_pipe(t_shell *shell)
 		}
 		proc++;
 	}
+}
+
+void close_fd_exec(t_shell *shell)
+{
+	int	i;
+	
+	i = 0;
+	while (i < shell->exec->process)
+	{
+		if (shell->exec->fd_in[i] != 0)
+			close(shell->exec->fd_in[i]);
+		if (shell->exec->fd_out[i] != 1)
+			close(shell->exec->fd_out[i]);
+		i++;
+	}
+}
+
+void execute_one_cmd(t_shell *shell)
+{
+	if (check_single_builtin(shell) == -1)
+		child_process(give_curr_cmd(shell, 0), shell, 0, 0);
+	else
+	{
+		if (shell->exec->fd_in[0] != 0)
+			dup2(shell->exec->fd_in[0], STDIN_FILENO);
+		if (shell->exec->fd_out[0] != 1)
+			dup2(shell->exec->fd_out[0], STDOUT_FILENO);
+		is_builtin(shell);
+	}
+	dup2(STDIN_FILENO, 1);
+	dup2(STDOUT_FILENO, 0);
+}
+
+int check_single_builtin(t_shell *shell)
+{
+	t_token	*current;
+
+	current = shell->token;
+	while (current)
+	{
+		if (ft_strncmp(current->str, "cd", 3) == 0)
+			return (1);
+		if (ft_strncmp(current->str, "echo", 5) == 0)
+			return (1);
+		if (ft_strncmp(current->str, "pwd", 4) == 0)
+			return (1);
+		if (ft_strncmp(current->str, "env", 4) == 0)
+			return (1);
+		if (ft_strncmp(current->str, "history", 8) == 0)
+			return (1);
+		if (ft_strncmp(current->str, "unset", 6) == 0)
+			return (1);
+		if (ft_strncmp(current->str, "export", 7) == 0)
+			return (1);
+		current = current->next;
+	}
+	return (-1);
 }

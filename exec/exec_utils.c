@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:01:44 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/14 15:04:57 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:40:31 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	initiate_exec(t_shell *shell)
 	shell->exec->fd_in = malloc(sizeof(int) * shell->exec->process);
 	shell->exec->fd_out = malloc(sizeof(int) * shell->exec->process);
 	shell->exec->nb_cmd = malloc(sizeof(int) * shell->exec->process);
-	shell->exec->prev_fd = malloc(sizeof(bool) * shell->exec->process);
+	shell->exec->prev_fd = malloc(sizeof(int) * shell->exec->process);
 	if (!shell->exec->fd_in || !shell->exec->fd_out || !shell->exec->nb_cmd
 		|| !shell->exec->prev_fd)
 		exit(0);
@@ -92,6 +92,12 @@ void	ft_free_exec(t_shell *shell)
 			free(shell->exec->fd_out);
 		if (shell->exec->prev_fd)
 			free(shell->exec->prev_fd);
+		close_fd_exec(shell);
 		shell->exec = NULL;
 	}
+}
+
+void execute_fork()
+{
+	
 }

@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/30 15:29:40 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/12 16:02:39 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	is_builtin(t_shell *shell, t_token *token_list)
+int	is_builtin(t_shell *shell)
 {
 	t_token	*token_ptr;
 
-	token_ptr = token_list;
+	token_ptr = shell->token;
 	while (token_ptr)
 	{
 		if (check_cd(shell, token_ptr) != -1)

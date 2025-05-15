@@ -6,13 +6,13 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/14 15:02:09 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:40:25 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*get_path(char *cmd, char **envp, char **exec_cmd)
+char	*get_path(char *cmd, char **envp)
 {
 	int		i;
 	char	**path;
@@ -36,7 +36,6 @@ char	*get_path(char *cmd, char **envp, char **exec_cmd)
 		i++;
 		free(good_path);
 	}
-	(void)exec_cmd;
 	return (NULL);
 }
 
@@ -48,7 +47,7 @@ void	execute(char *cmd, char **envp)
 	if (!cmd || !cmd[0])
 		exit(2);
 	exec_cmd = ft_split(cmd, ' ');
-	path = get_path(exec_cmd[0], envp, exec_cmd);
+	path = get_path(exec_cmd[0], envp);
 	if (execve(path, exec_cmd, envp) == -1)
 	{
 		ft_putstr_fd(cmd, 2);
@@ -130,18 +129,21 @@ void	child_process(char *cmd, t_shell *shell, int proc, int i)
 	}
 }
 
-void	exec_hub(t_shell *shell)
-{
-	count_process(shell);
-	initiate_exec(shell);
-	count_element(shell);
-	if (shell->count->nb_redir_in > 0)
-		if (open_infile(shell) == -1)
-			return ;
-	if (shell->count->nb_redir_out > 0 || shell->count->nb_append > 0)
-		open_outfile(shell);
-	if (shell->count->nb_heredoc > 0)
-		here_doc_hub(shell);
-	execute_pipe(shell);
-	ft_free_exec(shell);
-}
+// void	exec_hub(t_shell *shell)
+// {
+// 	initiate_exec(shell);
+// 	count_process(shell);
+// 	count_element(shell);
+// 	if (shell->count->nb_redir_in > 0)
+// 		if (open_infile(shell) == -1)
+// 			return ;
+// 	if (shell->count->nb_redir_out > 0 || shell->count->nb_append > 0)
+// 		open_outfile(shell);
+// 	if (shell->count->nb_heredoc > 0)
+// 		here_doc_hub(shell);
+// 	if (shell->count->nb_pipe == 0)
+// 		execute_one_cmd(shell);
+// 	else
+// 		execute_pipe(shell);
+// 	ft_free_exec(shell);
+// }
