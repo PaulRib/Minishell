@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/15 17:12:27 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:06:41 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,6 +229,6 @@ void setup_internal_pipe_fds_v2(t_shell *shell, int current_proc_idx,
 void execute_pipeline_v2(t_shell *shell, int current_proc_idx);
 void	initiate_heredoc(t_shell *shell);
 void	stock_all_heredoc(t_shell *shell);
-
+void	execute_command(t_shell *shell, char *full_cmd_str);
 
 #endif
