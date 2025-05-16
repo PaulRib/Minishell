@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_executor.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:12 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/15 19:20:22 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/16 19:15:58 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,12 +165,14 @@ void	execute_single_command(t_shell *shell, int proc_i)
 		g_exit_status = 1;
 		return;
 	}
+	init_signals_blocking_cmd();
 	pid = fork();
 	if (pid < 0)
 	{
 		perror("minishell: fork");
 		free(cmd_str);
 		g_exit_status = 1;
+		init_signals();
 		return;
 	}
 	if (pid == 0)
@@ -181,6 +183,7 @@ void	execute_single_command(t_shell *shell, int proc_i)
 	}
 	free(cmd_str);
 	waitpid(pid, &status, 0);
+	init_signals();
 	if (WIFEXITED(status))
 		g_exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))

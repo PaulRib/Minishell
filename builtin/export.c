@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:38:15 by meel-war          #+#    #+#             */
-/*   Updated: 2025/04/17 16:24:36 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:25:19 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,11 @@ int	check_export(t_shell *shell, t_token *token_ptr)
 	token_ptr = token_ptr->next;
 	while (token_ptr && (token_ptr->type == WORD || token_ptr->type == S_QUOTE || token_ptr->type == D_QUOTE))
 	{
-		if(token_ptr->next->type == S_QUOTE || token_ptr->next->type == D_QUOTE)
-			token_ptr->str = ft_strjoin(token_ptr->str, token_ptr->next->str);
+		if(token_ptr->next)
+		{
+			if(token_ptr->next->type == S_QUOTE || token_ptr->next->type == D_QUOTE)
+				token_ptr->str = ft_strjoin(token_ptr->str, token_ptr->next->str);
+		}
 		if (!export_var(shell->data, token_ptr->str))
 			return (-1);
 		token_ptr = token_ptr->next;

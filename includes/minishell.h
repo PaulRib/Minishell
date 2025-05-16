@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/16 16:06:41 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:38:03 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # include <stdio.h>
+# include <termios.h>
 
 # define PATH_MAX 4096
 
@@ -230,5 +231,8 @@ void execute_pipeline_v2(t_shell *shell, int current_proc_idx);
 void	initiate_heredoc(t_shell *shell);
 void	stock_all_heredoc(t_shell *shell);
 void	execute_command(t_shell *shell, char *full_cmd_str);
+void	init_signals_heredoc(void);
+void	init_signals_blocking_cmd(void);
+void	handle_sigint_noninteractive(int sig);
 
 #endif
