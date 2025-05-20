@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:36:54 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/16 15:14:02 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:28:57 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,12 @@ void	stock_all_heredoc(t_shell *shell)
 		i = 0;
 		tmp->eof_heredoc = malloc(sizeof(char *)
 				* tmp->nb_heredoc);
-		while (current->next)
+		while (current)
 		{
 			if (current->type == END)
 				tmp->eof_heredoc[i++] = current->str;
-			if (current->type == END && current->next->type != HEREDOC)
+			if (current->type == PIPE && current->next->type != REDIR_IN
+			&& current->next->type != HEREDOC)
 			{
 				current = current->next;
 				break ;
@@ -79,12 +80,12 @@ static void close_all_heredoc_fds(t_heredoc *heredoc_list)
         if (current_hd->p_fd[0] > 0 && current_hd->p_fd[0] != -1)
         {
             close(current_hd->p_fd[0]);
-            current_hd->p_fd[0] = -1; // Marquer comme fermé
+            current_hd->p_fd[0] = -1;
         }
         if (current_hd->p_fd[1] > 0 && current_hd->p_fd[1] != -1)
         {
             close(current_hd->p_fd[1]);
-            current_hd->p_fd[1] = -1; // Marquer comme fermé
+            current_hd->p_fd[1] = -1;
         }
         current_hd = current_hd->next;
     }

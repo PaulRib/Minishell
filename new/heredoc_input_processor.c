@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:58:14 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/15 19:21:17 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:26:19 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static void	print_heredoc_eof_warning_msg_v2(char *delimiter)
 	ft_putstr_fd("`)\n", 2);
 }
 
-// Check if line matches delimiter
 static int	check_delimiter_match(char *line_read, char *delimiter)
 {
 	int	eof_str_len;
@@ -35,7 +34,6 @@ static int	check_delimiter_match(char *line_read, char *delimiter)
 	return (0);
 }
 
-// Process line for heredoc
 static int	process_heredoc_line(t_shell *shell, t_heredoc *hd_node,
 		char *line_read)
 {
@@ -48,20 +46,15 @@ static int	process_heredoc_line(t_shell *shell, t_heredoc *hd_node,
 		free(line_to_write);
 	}
 	else
-	{
 		ft_putstr_fd(line_read, hd_node->p_fd[1]);
-	}
 	return (0);
 }
 
-// Setup heredoc file descriptors for a process
 void	setup_heredoc_fd_for_process(t_shell *shell, t_heredoc *hd_node, int proc_idx)
 {
 	if (hd_node->p_fd[0] > 2)
 	{
 		shell->exec->prev_fd[proc_idx] = hd_node->p_fd[0];
-		// Don't close p_fd[0] here, it will be used later
-		// Only close the write end
 		if (hd_node->p_fd[1] > 2)
 			close(hd_node->p_fd[1]);
 	}
@@ -97,7 +90,6 @@ static int	read_heredoc_line(t_shell *shell, t_heredoc *hd_node, char *delimiter
 	return (0);
 }
 
-// Close all heredoc file descriptors
 void	close_heredoc_fds(t_shell *shell)
 {
 	t_heredoc	*current;

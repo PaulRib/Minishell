@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:12 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/15 19:20:22 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:18:02 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,29 +88,6 @@ char	*get_command_path(char *cmd_name, char **envp)
 	return (ft_strdup(cmd_name));
 }
 
-// Setup redirections for a single command
-void	setup_command_redirections(t_shell *shell, int proc_i)
-{
-	// Input redirection
-	if (shell->exec->prev_fd[proc_i] > 2)
-	{
-		dup2(shell->exec->prev_fd[proc_i], STDIN_FILENO);
-		close(shell->exec->prev_fd[proc_i]);
-	}
-	else if (shell->exec->fd_in[proc_i] > 2)
-	{
-		dup2(shell->exec->fd_in[proc_i], STDIN_FILENO);
-		close(shell->exec->fd_in[proc_i]);
-	}
-
-	// Output redirection
-	if (shell->exec->fd_out[proc_i] > 2)
-	{
-		dup2(shell->exec->fd_out[proc_i], STDOUT_FILENO);
-		close(shell->exec->fd_out[proc_i]);
-	}
-}
-
 // Execute command with execve
 void	execute_command(t_shell *shell, char *full_cmd_str)
 {
@@ -149,50 +126,6 @@ void	execute_command(t_shell *shell, char *full_cmd_str)
 	}
 }
 
-// Execute a single command
-void	execute_single_command(t_shell *shell, int proc_i)
-{
-	int		global_cmd_idx;
-	char	*cmd_str;
-	pid_t	pid;
-	int		status;
-	int		sig;
-
-	global_cmd_idx = get_global_cmd_idx(shell, proc_i, 0);
-	cmd_str = give_curr_cmd(shell, global_cmd_idx);
-	if (!cmd_str)
-	{
-		g_exit_status = 1;
-		return;
-	}
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("minishell: fork");
-		free(cmd_str);
-		g_exit_status = 1;
-		return;
-	}
-	if (pid == 0)
-	{
-		setup_command_redirections(shell, proc_i);
-		execute_command(shell, cmd_str);
-		exit(g_exit_status);
-	}
-	free(cmd_str);
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-	{
-		sig = WTERMSIG(status);
-		g_exit_status = 128 + sig;
-		if (sig == SIGQUIT)
-			ft_putendl_fd("Quit (core dumped)", STDERR_FILENO);
-	}
-}
-
-// Main entry point for command execution within the global child process
 void	execute_commands_sequence_child_v2(t_shell *shell)
 {
 	int	proc_i;
@@ -200,10 +133,7 @@ void	execute_commands_sequence_child_v2(t_shell *shell)
 	proc_i = 0;
 	while (proc_i < shell->exec->process)
 	{
-		if (shell->exec->nb_cmd[proc_i] == 1)
-			execute_single_command(shell, proc_i);
-		else
-			execute_pipeline_v2(shell, proc_i);
+		execute_pipeline_v2(shell, proc_i);
 		proc_i++;
 	}
 }

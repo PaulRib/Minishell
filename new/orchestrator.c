@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   orchestrator.c                                     :+:      :+:    :+:   */
+/*   exec_hub.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:28 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/15 19:03:09 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:36:33 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ int	process_heredocs(t_shell *shell)
 			ft_free_heredoc(shell);
 			return (1);
 		}
-		setup_heredoc_fds(shell);
 	}
 	return (0);
 }
@@ -99,13 +98,13 @@ void	run_global_child_process_v2(t_shell *shell)
 		exit(g_exit_status);
 	if (process_redirections(shell))
 		exit(g_exit_status);
+	setup_heredoc_fds(shell);
 	execute_commands_sequence_child_v2(shell);
 	ft_free_exec(shell);
 	ft_free_heredoc(shell);
 	exit(g_exit_status);
 }
 
-// Parent process waits for the global child and sets exit status
 void	wait_for_global_child_v2(pid_t child_pid, t_shell *shell)
 {
 	int	status;

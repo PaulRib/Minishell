@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:39:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/14 17:41:04 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:27:10 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,27 +30,22 @@ int	check_end(int *i, t_shell *shell, t_heredoc **curr)
 		return (-1);
 }
 
-void	create_new_hrd(t_shell *shell, t_heredoc *tmp)
-{
-	t_heredoc	*new;
-
-	(void)shell;
-	new = malloc(sizeof(t_heredoc));
-	if (!new)
-		return ;
-	ft_memset(new, 0, sizeof(t_heredoc));
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new;
-}
-
 void	check_and_create(t_shell *shell, t_token *current, t_heredoc *tmp)
 {
+	t_heredoc *new;
+
+	(void)shell;
 	while (current)
 	{
 		if (current->type == END)
 		{
-			create_new_hrd(shell, tmp);
+			new = malloc(sizeof(t_heredoc));
+			if (!new)
+				return ;
+			ft_memset(new, 0, sizeof(t_heredoc));
+			while (tmp->next)
+				tmp = tmp->next;
+			tmp->next = new;
 			return ;
 		}
 		if (current->type == PIPE && (current->next->type == REDIR_IN

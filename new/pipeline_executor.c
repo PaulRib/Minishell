@@ -6,62 +6,27 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/15 19:30:14 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:26:31 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-// Helper to wait for a single pipeline command process
-void	wait_for_pipeline_command_v2(pid_t pid, char *cmd_str)
-{
-	int	status;
-	int	sig;
-
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-	{
-		g_exit_status = WEXITSTATUS(status);
-	}
-	else if (WIFSIGNALED(status))
-	{
-		sig = WTERMSIG(status);
-		g_exit_status = 128 + sig;
-		if (sig == SIGQUIT)
-		{
-			ft_putendl_fd("Quit (core dumped)", STDERR_FILENO);
-		}
-	}
-	if (cmd_str)
-	{
-		free(cmd_str);
-	}
-}
-
-// Setup input redirection for pipeline command
 void	setup_pipeline_input(t_shell *shell, int proc_i, 
 		int cmd_idx, int (*pipe_fds)[2])
 {
 	if (cmd_idx == 0)
 	{
-		if (shell->exec->prev_fd[proc_i] > 2)
-		{
-			dup2(shell->exec->prev_fd[proc_i], STDIN_FILENO);
-			close(shell->exec->prev_fd[proc_i]);
-		}
-		else if (shell->exec->fd_in[proc_i] > 2)
+		if (shell->exec->fd_in[proc_i] > 2)
 		{
 			dup2(shell->exec->fd_in[proc_i], STDIN_FILENO);
 			close(shell->exec->fd_in[proc_i]);
 		}
 	}
 	else
-	{
 		dup2(pipe_fds[cmd_idx - 1][0], STDIN_FILENO);
-	}
 }
 
-// Setup output redirection for pipeline command
 void	setup_pipeline_output(t_shell *shell, int proc_i,
 		int cmd_idx, int num_cmds, int (*pipe_fds)[2])
 {
@@ -74,12 +39,9 @@ void	setup_pipeline_output(t_shell *shell, int proc_i,
 		}
 	}
 	else
-	{
 		dup2(pipe_fds[cmd_idx][1], STDOUT_FILENO);
-	}
 }
 
-// Close all pipe file descriptors
 void	close_all_pipe_fds(int num_cmds, int (*pipe_fds)[2])
 {
 	int	i;
@@ -95,7 +57,6 @@ void	close_all_pipe_fds(int num_cmds, int (*pipe_fds)[2])
 	}
 }
 
-// Sets up FDs for a command within a pipeline
 void	setup_pipeline_fds(t_shell *shell, int proc_i,
 		int cmd_idx, int num_cmds, int (*pipe_fds)[2])
 {
@@ -105,7 +66,6 @@ void	setup_pipeline_fds(t_shell *shell, int proc_i,
 	close_all_pipe_fds(num_cmds, pipe_fds);
 }
 
-// Create pipes for the pipeline
 int	create_pipeline_pipes(int num_cmds, int (**pipe_fds)[2])
 {
 	int	i;
@@ -113,9 +73,7 @@ int	create_pipeline_pipes(int num_cmds, int (**pipe_fds)[2])
 
 	*pipe_fds = malloc(sizeof(int[2]) * (num_cmds - 1));
 	if (!(*pipe_fds))
-	{
 		return (0);
-	}
 	i = 0;
 	while (i < num_cmds - 1)
 	{
@@ -137,7 +95,6 @@ int	create_pipeline_pipes(int num_cmds, int (**pipe_fds)[2])
 	return (1);
 }
 
-// Allocate memory for process IDs
 pid_t	*allocate_pids(int num_cmds)
 {
 	pid_t	*pids;
@@ -150,7 +107,6 @@ pid_t	*allocate_pids(int num_cmds)
 	return (pids);
 }
 
-// Handle child process execution
 void	handle_pipeline_child(t_shell *shell, int proc_i, int cmd_idx, 
 		int num_cmds, int (*pipe_fds)[2], char *cmd_str)
 {
@@ -159,7 +115,6 @@ void	handle_pipeline_child(t_shell *shell, int proc_i, int cmd_idx,
 	exit(g_exit_status);
 }
 
-// Fork and execute a command in the pipeline
 int	fork_pipeline_command(t_shell *shell, int proc_i, int cmd_idx, 
 		int num_cmds, int (*pipe_fds)[2], pid_t *pids)
 {
@@ -190,7 +145,6 @@ int	fork_pipeline_command(t_shell *shell, int proc_i, int cmd_idx,
 	return (1);
 }
 
-// Execute all commands in the pipeline
 void	execute_pipeline_commands(t_shell *shell, int proc_i, 
 		int num_cmds, int (*pipe_fds)[2], pid_t *pids)
 {
@@ -210,7 +164,6 @@ void	execute_pipeline_commands(t_shell *shell, int proc_i,
 	}
 }
 
-// Wait for a specific command in the pipeline
 void	wait_for_command(pid_t pid, int is_last)
 {
 	int	status;
@@ -235,7 +188,6 @@ void	wait_for_command(pid_t pid, int is_last)
 	}
 }
 
-// Wait for all commands in the pipeline to complete
 void	wait_for_all_commands(int num_cmds, pid_t *pids)
 {
 	int	i;
@@ -246,14 +198,16 @@ void	wait_for_all_commands(int num_cmds, pid_t *pids)
 	{
 		if (pids[i] > 0)
 		{
-			is_last = (i == num_cmds - 1);
+			if (i == num_cmds - 1)
+				is_last = num_cmds;
+			else
+				is_last = 0;
 			wait_for_command(pids[i], is_last);
 		}
 		i++;
 	}
 }
 
-// Main function to execute a pipeline of commands
 void	execute_pipeline_v2(t_shell *shell, int proc_i)
 {
 	int		num_cmds;
