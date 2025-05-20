@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/15 18:02:20 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:30:41 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 		tmp = tmp->next;
 	}
 	//exec_hub(shell);
+	is_builtin(shell);
 	execute_parsed_line(shell);
 }
 
@@ -79,6 +80,7 @@ void	shell_loop(t_shell *shell)
 
 	while (1)
 	{
+		g_exit_status = 0;
 		shell->prompt = ft_strjoin(shell->data->cur_dir, "$ ");
 		line = readline(shell->prompt);
 		free(shell->prompt);
@@ -97,7 +99,6 @@ void	shell_loop(t_shell *shell)
 		}
 		//free(line);
 		ft_free_node(shell);
-		shell->exit_status = g_exit_status;
 		// printf("%d\n", shell->exit_status);
 		ft_memset(shell->count, 0, sizeof(t_count));
 	}

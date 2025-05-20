@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/20 14:26:31 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:09:22 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	close_all_pipe_fds(int num_cmds, int (*pipe_fds)[2])
 void	setup_pipeline_fds(t_shell *shell, int proc_i,
 		int cmd_idx, int num_cmds, int (*pipe_fds)[2])
 {
-	init_signals_child();
+	init_signals_cmd();
 	setup_pipeline_input(shell, proc_i, cmd_idx, pipe_fds);
 	setup_pipeline_output(shell, proc_i, cmd_idx, num_cmds, pipe_fds);
 	close_all_pipe_fds(num_cmds, pipe_fds);
@@ -112,7 +112,7 @@ void	handle_pipeline_child(t_shell *shell, int proc_i, int cmd_idx,
 {
 	setup_pipeline_fds(shell, proc_i, cmd_idx, num_cmds, pipe_fds);
 	execute_command(shell, cmd_str);
-	exit(g_exit_status);
+	exit(0);
 }
 
 int	fork_pipeline_command(t_shell *shell, int proc_i, int cmd_idx, 
@@ -125,7 +125,7 @@ int	fork_pipeline_command(t_shell *shell, int proc_i, int cmd_idx,
 	cmd_str = give_curr_cmd(shell, global_cmd_idx);
 	if (!cmd_str)
 	{
-		g_exit_status = 1;
+		shell->exit_status = 1;
 		return (0);
 	}
 	pids[cmd_idx] = fork();
@@ -133,7 +133,7 @@ int	fork_pipeline_command(t_shell *shell, int proc_i, int cmd_idx,
 	{
 		perror("minishell: fork");
 		free(cmd_str);
-		g_exit_status = 1;
+		shell->exit_status = 1;
 		return (0);
 	}
 	if (pids[cmd_idx] == 0)
@@ -141,6 +141,8 @@ int	fork_pipeline_command(t_shell *shell, int proc_i, int cmd_idx,
 		handle_pipeline_child(shell, proc_i, cmd_idx, num_cmds, 
 			pipe_fds, cmd_str);
 	}
+	else
+		signal_block();
 	free(cmd_str);
 	return (1);
 }
@@ -173,16 +175,21 @@ void	wait_for_command(pid_t pid, int is_last)
 	if (is_last)
 	{
 		if (WIFEXITED(status))
-		{
-			g_exit_status = WEXITSTATUS(status);
-		}
+			shell->exit_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
-		{
+		{// dans commande bloquante dans le cas de pipe
 			sig = WTERMSIG(status);
-			g_exit_status = 128 + sig;
 			if (sig == SIGQUIT)
 			{
-				ft_putendl_fd("Quit (core dumped)", STDERR_FILENO);
+				shell->exit_status = 131;
+				handle_sigquit_cmd(sig);
+				//valeur de retour shell->exit_status
+			}
+			if(sig == SIGINT)
+			{
+				shell->exit_status = 130;
+				handle_sigint_cmd(sig);
+				//valeur de retour shell->exit_status
 			}
 		}
 	}
@@ -230,6 +237,7 @@ void	execute_pipeline_v2(t_shell *shell, int proc_i)
 	execute_pipeline_commands(shell, proc_i, num_cmds, pipe_fds, pids);
 	close_all_pipe_fds(num_cmds, pipe_fds);
 	free(pipe_fds);
-	wait_for_all_commands(num_cmds, pids);
+	wait_for_all_commands(num_cmds, pids, shell);
+	init_signals();
 	free(pids);
 }

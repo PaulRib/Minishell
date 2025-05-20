@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:36:54 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/20 14:28:57 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:08:27 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int handle_all_heredocs_globally_v2(t_shell *shell)
 {
     int process_status;
 
+    g_exit_status = 0;
     if (!shell->heredoc)
         return (0);
 
@@ -126,7 +127,7 @@ int handle_all_heredocs_globally_v2(t_shell *shell)
     {
         ft_free_heredoc(shell);
         shell->heredoc = NULL;
-        return (g_exit_status);
+        return (0); //il y avait g_exit_status
     }
     process_status = process_heredoc_inputs_loop_v2(shell);
     if (process_status == 0 || process_status == 1)
