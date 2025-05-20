@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/20 17:23:46 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:52:31 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,18 @@ void	handle_pipeline_child(t_shell *shell, int proc_i, t_pipe *pipe,
 	init_signals_cmd();
 	setup_pipeline_redir(shell, proc_i, pipe);
 	close_all_pipe_fds(shell, pipe->pipe_fds, proc_i);
-	execute_command(shell, cmd_str);
-	exit(0);
+	if	(!is_cmd_a_builtin(shell, pipe))
+		execute_command(shell, cmd_str);
+	else
+		exit(0);
 }
 
 int	fork_pipeline_command(t_shell *shell, int proc_i, t_pipe *pipe)
 {
 	char	*cmd_str;
-	int		global_cmd_idx;
 
-	global_cmd_idx = get_global_cmd_idx(shell, proc_i, pipe->cmd_idx);
-	cmd_str = give_curr_cmd(shell, global_cmd_idx);
+	pipe->global_idx = get_global_cmd_idx(shell, proc_i, pipe->cmd_idx);
+	cmd_str = give_curr_cmd(shell, pipe->global_idx);
 	if (!cmd_str)
 	{
 		shell->exit_status = 1;

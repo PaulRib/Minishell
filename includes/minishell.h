@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/20 17:19:19 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:29:47 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,10 @@ typedef struct s_exec
 
 typedef struct s_pipe
 {
-	int (*pipe_fds)[2];
+	int 				(*pipe_fds)[2];
 	pid_t				*pids;
 	int					cmd_idx;
+	int					global_idx;
 }						t_pipe;
 
 typedef struct s_shell
@@ -157,20 +158,20 @@ int						skip_whitespace(char *str, int i);
 int						find_word_boundaries(char *str, int *start);
 
 /* Signals*/
-void	enable_echoctl(void);
-void	disable_echoctl(void);
-void	handle_sigint(int sig);
-void	handle_sigint_heredoc(int sig);
-void	handle_sigint_cmd(int sig);
-void	handle_sigquit_cmd(int sig);
-void	init_signals(void);
-void	init_signals_child(void);
-void	signal_block(void);
-void	init_signals_cmd(void);
-void	init_signals_heredoc(void);
+void					enable_echoctl(void);
+void					disable_echoctl(void);
+void					handle_sigint(int sig);
+void					handle_sigint_heredoc(int sig);
+void					handle_sigint_cmd(int sig);
+void					handle_sigquit_cmd(int sig);
+void					init_signals(void);
+void					init_signals_child(void);
+void					signal_block(void);
+void					init_signals_cmd(void);
+void					init_signals_heredoc(void);
 
 /* Builtins */
-int						is_builtin(t_shell *shell);
+int						is_simple_builtin(t_shell *shell);
 /* export */
 int						check_export(t_shell *shell, t_token *token_ptr);
 int						export_no_args(t_shell *shell);
@@ -240,6 +241,9 @@ void					execute_pipeline_commands(t_shell *shell, int proc_i,
 							int (*pipe_fds)[2], pid_t *pids);
 void					setup_pipeline_redir(t_shell *shell, int proc_i,
 							t_pipe *pipe);
+int						is_target_builtin(t_shell *shell, t_token *target);
+int						is_cmd_a_builtin(t_shell *shell, t_pipe *pipe);
+int 					check_one_builtin(t_shell *shell);
 /* echo */
 int						check_echo(t_token *token_ptr);
 

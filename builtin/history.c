@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 17:08:23 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/15 12:45:33 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:41:31 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,5 @@ int	ft_history(t_shell *hub)
 		printf("%5d %s\n", i++, tmp->command);
 		tmp = tmp->next;
 	}
-	return (0);
+	return (1);
 }
