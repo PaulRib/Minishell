@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/16 18:38:03 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/19 18:26:02 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,7 +232,9 @@ void	initiate_heredoc(t_shell *shell);
 void	stock_all_heredoc(t_shell *shell);
 void	execute_command(t_shell *shell, char *full_cmd_str);
 void	init_signals_heredoc(void);
-void	init_signals_blocking_cmd(void);
-void	handle_sigint_noninteractive(int sig);
+void	init_signals_cmd(void);
+void	handle_sigint_cmd(int sig);
+void	signal_block(void);
+void	handle_sigquit_cmd(int sig);
 
 #endif

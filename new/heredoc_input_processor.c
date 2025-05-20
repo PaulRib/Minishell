@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:58:14 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/16 20:34:58 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:05:43 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,17 @@ static int	read_heredoc_line(t_shell *shell, t_heredoc *hd_node, char *delimiter
 	write(STDOUT_FILENO, "> ", 2);
 	init_signals_heredoc();
 	line_read = get_next_line(STDIN_FILENO);
-	init_signals();
-	if (g_exit_status == 130)
+	// init_signals(); sers a rien je pense
+	if (g_exit_status == 1)
 	{
 		if (line_read)
 			free(line_read);
+		shell->exit_status = 130;
 		return (3);
 	}
 	if (!line_read)
 	{
 		print_heredoc_eof_warning_msg_v2(delimiter);
-		g_exit_status = 0;
 		return (2);
 	}
 	if (check_delimiter_match(line_read, delimiter))

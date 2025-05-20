@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:01:44 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/16 20:21:55 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/19 17:22:49 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,4 @@ void	ft_free_exec(t_shell *shell)
 		close_fd_exec(shell);
 		shell->exec = NULL;
 	}
-}
-
-void execute_fork()
-{
-	
 }

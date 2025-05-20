@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:36:54 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/16 20:21:58 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/19 20:45:34 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ int handle_all_heredocs_globally_v2(t_shell *shell)
 {
     int process_status;
 
+    g_exit_status = 0;
     if (!shell->heredoc)
         return (0);
 
@@ -125,7 +126,7 @@ int handle_all_heredocs_globally_v2(t_shell *shell)
     {
         ft_free_heredoc(shell);
         shell->heredoc = NULL;
-        return (g_exit_status);
+        return (0); //il y avait g_exit_status
     }
     process_status = process_heredoc_inputs_loop_v2(shell);
     if (process_status == 0 || process_status == 1)

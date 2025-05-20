@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   orchestrator.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:28 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/15 19:03:09 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:47:29 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,25 @@ void	execute_parsed_line(t_shell *shell)
 	if (pid < 0)
 	{
 		perror("minishell: fork");
-		g_exit_status = 1;
+		shell->exit_status = 1;
 		return;
 	}
 	if (pid == 0)
+	{
 		run_global_child_process_v2(shell);
+	}
 	else
+	{
+		signal_block(); // bloque les signaux du parent pendant l exec du child
 		wait_for_global_child_v2(pid, shell);
+		init_signals(); // Reinitialisation des signaux
+	}
 }
 
 // Initialize execution environment for child process
 void	init_child_execution(t_shell *shell)
 {
-	init_signals_child();
+	init_signals();
 	count_process(shell);
 	initiate_exec(shell);
 	count_element(shell);
@@ -96,16 +102,17 @@ void	run_global_child_process_v2(t_shell *shell)
 {
 	init_child_execution(shell);
 	if (process_heredocs(shell))
-		exit(g_exit_status);
+		exit(shell->exit_status);
 	if (process_redirections(shell))
-		exit(g_exit_status);
+		exit(shell->exit_status);
 	execute_commands_sequence_child_v2(shell);
 	ft_free_exec(shell);
 	ft_free_heredoc(shell);
-	exit(g_exit_status);
+	exit(shell->exit_status);
 }
 
-// Parent process waits for the global child and sets exit status
+//Parent process waits for the global child and sets exit status
+//Fonction qui prend les valeurs de retour d exit ou signaux du child 
 void	wait_for_global_child_v2(pid_t child_pid, t_shell *shell)
 {
 	int	status;
@@ -113,13 +120,12 @@ void	wait_for_global_child_v2(pid_t child_pid, t_shell *shell)
 
 	(void)shell;
 	waitpid(child_pid, &status, 0);
+
 	if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
+		shell->exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 	{
 		sig = WTERMSIG(status);
-		g_exit_status = 128 + sig;
-		if (sig == SIGQUIT)
-			ft_putendl_fd("Quit (core dumped)", STDERR_FILENO);
+		shell->exit_status = 128 + sig;
 	}
 }
