@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_fd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:41:29 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/19 17:23:04 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:18:10 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ int	open_infile(t_shell *shell)
 				return (-1);
 			}
 			if (current->type == HEREDOC)
-				shell->exec->fd_in[i] = 0;
+				if (shell->exec->fd_in[i])
+				close(shell->exec->fd_in[i]);
 		}
 		if (current->type == PIPE && (current->next->type == REDIR_IN
 				|| current->next->type == HEREDOC))
@@ -83,4 +84,38 @@ void close_fd_exec(t_shell *shell)
 			close(shell->exec->fd_out[i]);
 		i++;
 	}
+}
+
+void	setup_heredoc_fds(t_shell *shell)
+{
+	int	i;
+
+	i = 0;
+	while (i < shell->exec->process)
+	{
+		if (shell->exec->prev_fd[i] > 2)
+		{
+			shell->exec->fd_in[i] = shell->exec->prev_fd[i];
+			shell->exec->prev_fd[i] = 0;
+		}
+		i++;
+	}
+}
+
+int	process_redirections(t_shell *shell)
+{
+	int	infile_status;
+
+	if (shell->count->nb_redir_out > 0 || shell->count->nb_append > 0)
+		open_outfile(shell);
+	infile_status = 0;
+	if (shell->count->nb_redir_in > 0)
+		infile_status = open_infile(shell);
+	if (infile_status == -1)
+	{
+		ft_free_exec(shell);
+		ft_free_heredoc(shell);
+		return (1);
+	}
+	return (0);
 }

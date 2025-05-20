@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/19 18:26:02 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:19:19 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
+# include <stdio.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <unistd.h>
-# include <stdio.h>
 # include <termios.h>
+# include <unistd.h>
 
 # define PATH_MAX 4096
 
@@ -94,6 +94,13 @@ typedef struct s_exec
 	int					*prev_fd;
 }						t_exec;
 
+typedef struct s_pipe
+{
+	int (*pipe_fds)[2];
+	pid_t				*pids;
+	int					cmd_idx;
+}						t_pipe;
+
 typedef struct s_shell
 {
 	char				*str;
@@ -150,8 +157,17 @@ int						skip_whitespace(char *str, int i);
 int						find_word_boundaries(char *str, int *start);
 
 /* Signals*/
-void					init_signals(void);
-void					init_signals_child(void);
+void	enable_echoctl(void);
+void	disable_echoctl(void);
+void	handle_sigint(int sig);
+void	handle_sigint_heredoc(int sig);
+void	handle_sigint_cmd(int sig);
+void	handle_sigquit_cmd(int sig);
+void	init_signals(void);
+void	init_signals_child(void);
+void	signal_block(void);
+void	init_signals_cmd(void);
+void	init_signals_heredoc(void);
 
 /* Builtins */
 int						is_builtin(t_shell *shell);
@@ -178,27 +194,52 @@ char					*ft_handle_tilde(char *dir, char *home_dir);
 char					*ft_handle_hyphen(char *dir, char *old_dir);
 
 /* Execution*/
-void					exec_hub(t_shell *shell);
-char					*give_curr_cmd(t_shell *shell, int i);
-void					execute(char *cmd, char **envp);
-char					*get_path(char *cmd, char **envp);
-void					ft_free_exec(t_shell *shell);
-void					count_process(t_shell *shell);
-void					initiate_exec(t_shell *shell);
-void					count_element(t_shell *shell);
-void					execute_pipe(t_shell *shell);
-int						open_infile(t_shell *shell);
 void					open_outfile(t_shell *shell);
+int						open_infile(t_shell *shell);
+void					close_fd_exec(t_shell *shell);
+void					setup_heredoc_fds(t_shell *shell);
+int						process_redirections(t_shell *shell);
+void					execute_parsed_line(t_shell *shell);
+int						process_heredocs(t_shell *shell);
+void					run_global_child_process_v2(t_shell *shell);
+void					execute_commands_sequence_child_v2(t_shell *shell);
+void					execute_pipeline_v2(t_shell *shell, int proc_i);
+void					count_element(t_shell *shell);
+void					initiate_exec(t_shell *shell);
+void					count_process(t_shell *shell);
+void					ft_free_exec(t_shell *shell);
+char					*give_curr_cmd(t_shell *shell, int i);
+int						get_global_cmd_idx(t_shell *shell, int target_proc_i,
+							int cmd_in_target_proc_i);
+char					*get_path(char *cmd, char **envp);
+void					execute_command(t_shell *shell, char *full_cmd_str);
+void					close_heredoc_fds(t_shell *shell);
+int						process_heredoc_inputs_loop_v2(t_shell *shell);
+void					print_heredoc_eof_warning_msg_v2(char *delimiter);
 int						check_end(int *i, t_shell *shell, t_heredoc **curr);
-void					create_new_hrd(t_shell *shell, t_heredoc *tmp);
-void					check_and_create(t_shell *shell, t_token *current, t_heredoc *tmp);
-void					check_current_type(t_token *current, t_heredoc *tmp, int process);
-void					here_doc_hub(t_shell *shell);
-void					child_process(char *cmd, t_shell *shell, int proc, int i);
+void					check_and_create(t_shell *shell, t_token *current,
+							t_heredoc *tmp);
+void					check_current_type(t_token *current, t_heredoc *tmp,
+							int process);
 void					ft_free_heredoc(t_shell *shell);
-void 					execute_one_cmd(t_shell *shell);
-int 					check_single_builtin(t_shell *shell);
-void 					close_fd_exec(t_shell *shell);
+void					stock_all_heredoc(t_shell *shell);
+void					initiate_heredoc(t_shell *shell);
+int						create_heredoc_pipes_v2(t_shell *shell);
+int						handle_all_heredocs_globally_v2(t_shell *shell);
+void					close_all_pipe_fds(t_shell *shell, int (*pipe_fds)[2],
+							int proc_i);
+int						create_pipeline_pipes(t_shell *shell,
+							int (**pipe_fds)[2], int proc_i);
+void					wait_for_all_commands(t_shell *shell, pid_t *pids,
+							int proc_i);
+void					handle_pipeline_child(t_shell *shell, int proc_i,
+							t_pipe *pipe, char *cmd_str);
+int						fork_pipeline_command(t_shell *shell, int proc_i,
+							t_pipe *pipe);
+void					execute_pipeline_commands(t_shell *shell, int proc_i,
+							int (*pipe_fds)[2], pid_t *pids);
+void					setup_pipeline_redir(t_shell *shell, int proc_i,
+							t_pipe *pipe);
 /* echo */
 int						check_echo(t_token *token_ptr);
 
@@ -209,32 +250,5 @@ int						find_env_var(char **env, char *var);
 char					*ft_get_env(char **env, char *var_name);
 int						update_env_var(t_data *data, char *var_name,
 							char *var_value);
-
-/* New*/
-int get_global_cmd_idx(t_shell *shell, int target_proc_idx, int cmd_in_target_proc_idx);
-char *get_command_path_v2(char *cmd_name, char **envp);
-void execute_external_or_builtin_v2(t_shell *shell, char *full_cmd_str, int proc_idx);
-void execute_commands_sequence_child_v2(t_shell *shell);
-int process_heredoc_inputs_loop_v2(t_shell *shell);
-void stock_heredoc_delimiters_v2(t_shell *shell);
-void initiate_heredoc_list_v2(t_shell *shell);
-int create_heredoc_pipes_v2(t_shell *shell);
-int handle_all_heredocs_globally_v2(t_shell *shell);
-void execute_parsed_line(t_shell *shell);
-void run_global_child_process_v2(t_shell *shell);
-void wait_for_global_child_v2(pid_t child_pid, t_shell *shell);
-void wait_for_pipeline_command_v2(pid_t pid, char *cmd_str);
-void setup_internal_pipe_fds_v2(t_shell *shell, int current_proc_idx,
-                                int cmd_in_segment_idx, int num_cmds_in_segment,
-                                int (*pipe_fds)[2]);
-void execute_pipeline_v2(t_shell *shell, int current_proc_idx);
-void	initiate_heredoc(t_shell *shell);
-void	stock_all_heredoc(t_shell *shell);
-void	execute_command(t_shell *shell, char *full_cmd_str);
-void	init_signals_heredoc(void);
-void	init_signals_cmd(void);
-void	handle_sigint_cmd(int sig);
-void	signal_block(void);
-void	handle_sigquit_cmd(int sig);
 
 #endif

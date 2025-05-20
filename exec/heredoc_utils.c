@@ -6,11 +6,22 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:39:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/20 15:08:23 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:16:21 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	print_heredoc_eof_warning_msg_v2(char *delimiter)
+{
+	ft_putstr_fd("minishell: warning: ", 2);
+	ft_putstr_fd("here-document delimited by end-of-file (wanted `", 2);
+	if (delimiter)
+		ft_putstr_fd(delimiter, 2);
+	else
+		ft_putstr_fd("unknown", 2);
+	ft_putstr_fd("`)\n", 2);
+}
 
 int	check_end(int *i, t_shell *shell, t_heredoc **curr)
 {

@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:36:54 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/20 15:08:27 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:26:19 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,6 @@ int handle_all_heredocs_globally_v2(t_shell *shell)
     g_exit_status = 0;
     if (!shell->heredoc)
         return (0);
-
     if (create_heredoc_pipes_v2(shell) != 0)
     {
         ft_free_heredoc(shell);
