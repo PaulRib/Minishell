@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/20 14:30:41 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:43:17 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,6 @@ void	initiate_all(t_shell *shell)
 
 void	ft_hub_parsing(t_shell *shell, char *line)
 {
-	t_token	*tmp;
-
-	tmp = shell->token;
 	shell->token->str = line;
 	shell->token->type = WORD;
 	handling_quotes(shell);
@@ -44,15 +41,12 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 	expand_all_tokens(shell);
 	second_token(shell);
 	associate_options_commands(shell);
-	while (tmp)
-	{
-		printf("\033[34;01mType de token : \033[00m-%i-\n", tmp->type);
-		printf("\033[34;01mContenu du token : \033[00m-%s-\n", tmp->str);
-		tmp = tmp->next;
-	}
-	//exec_hub(shell);
-	is_builtin(shell);
-	execute_parsed_line(shell);
+	count_process(shell);
+	initiate_exec(shell);
+	count_element(shell);
+	if (!check_one_builtin(shell))
+		execute_parsed_line(shell);
+	ft_free_exec(shell);
 }
 
 void	ft_free_node(t_shell *shell)
@@ -97,9 +91,7 @@ void	shell_loop(t_shell *shell)
 			add_to_history(shell, line);
 			ft_hub_parsing(shell, line);
 		}
-		//free(line);
 		ft_free_node(shell);
-		// printf("%d\n", shell->exit_status);
 		ft_memset(shell->count, 0, sizeof(t_count));
 	}
 }

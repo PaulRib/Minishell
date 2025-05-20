@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:28 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/20 17:18:31 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:14:25 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@ void	execute_parsed_line(t_shell *shell)
 		return;
 	}
 	if (pid == 0)
-	{
 		run_global_child_process_v2(shell);
-	}
 	else
 	{
 		signal_block();
@@ -54,9 +52,6 @@ int	process_heredocs(t_shell *shell)
 void	run_global_child_process_v2(t_shell *shell)
 {
 	init_signals();
-	count_process(shell);
-	initiate_exec(shell);
-	count_element(shell);
 	if (shell->count->nb_heredoc > 0)
 		if (process_heredocs(shell))
 			exit(shell->exit_status);

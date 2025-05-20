@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:10:09 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/07 17:36:58 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:41:50 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	print_env(t_shell *hub)
 		printf("%s\n", hub->data->new_env[i]);
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
 char	**build_env(t_data *data)

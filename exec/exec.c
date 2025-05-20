@@ -6,11 +6,29 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/20 16:24:35 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:46:19 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int is_cmd_a_builtin(t_shell *shell, t_pipe *pipe)
+{
+	int		i;
+	t_token	*current;
+
+	current = shell->token;
+	i = pipe->global_idx;
+	while (current && i)
+	{
+		if (current->type == PIPE)
+			i--;
+		current = current->next;
+	}
+	if (is_target_builtin(shell, current) > 0)
+		return (1);
+	return (0);
+}
 
 char	*give_curr_cmd(t_shell *shell, int i)
 {
