@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:25:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/20 17:21:31 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:02:46 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	wait_for_all_commands(t_shell *shell, pid_t *pids, int proc_i)
 	{
 		if (pids[i] > 0)
 		{
-			if (i == shell->exec->nb_cmd[proc_i])
+			if (i == shell->exec->nb_cmd[proc_i] - 1)
 				is_last = shell->exec->nb_cmd[proc_i];
 			else
 				is_last = 0;

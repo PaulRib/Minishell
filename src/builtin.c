@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/20 18:43:07 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:45:56 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int check_one_builtin(t_shell *shell)
 	current = shell->token;
 	if (shell->exec->process == 1 && shell->count->nb_pipe == 0)
 	{
-	while (current)
+		while (current)
 		{
 			if (ft_strcmp(current->str, "cd") == 0)
 			{
