@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/09 16:44:54 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/21 17:30:52 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,10 @@ int	execute_cd(t_data *data, char *path_name, char *home_dir, char *old_dir)
 		return (result);
 	ft_strlcpy(data->old_dir, data->cur_dir, PATH_MAX);
 	if (update_cur_dir(data, path_name, old_dir) != 0)
-		return (1);
+		return (-1);
 	update_env_var(data, "OLDPWD", data->old_dir);
 	update_env_var(data, "PWD", data->cur_dir);
-	return (0);
+	return (1);
 }
 
 int	ft_cd(t_data *data, char *path_name)
