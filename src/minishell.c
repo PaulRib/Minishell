@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/20 18:43:17 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/21 17:14:57 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 {
 	shell->token->str = line;
 	shell->token->type = WORD;
-	handling_quotes(shell);
+	if (handling_quotes(shell) == -1)
+		return ;
 	ft_split_word(shell);
 	get_type(shell);
 	expand_all_tokens(shell);
@@ -44,6 +45,12 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 	count_process(shell);
 	initiate_exec(shell);
 	count_element(shell);
+	t_token *tmp = shell->token;
+	while(tmp)
+	{
+		printf("Contenu du token : %s\n", tmp->str);
+		tmp = tmp->next;
+	}
 	if (!check_one_builtin(shell))
 		execute_parsed_line(shell);
 	ft_free_exec(shell);
@@ -106,6 +113,7 @@ int	main(int ac, char **av, char **env)
 	initiate_all(shell);
 	env_exists(env, shell);
 	shell_loop(shell);
+	free_all(shell);
 	//free_tab(env);
 	return (0);
 }

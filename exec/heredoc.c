@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:36:54 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/20 16:26:19 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:54:50 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	stock_all_heredoc(t_shell *shell)
 		i = 0;
 		tmp->eof_heredoc = malloc(sizeof(char *)
 				* tmp->nb_heredoc);
+		if (!tmp->eof_heredoc)
+			free_all(shell);
 		while (current)
 		{
 			if (current->type == END)
@@ -51,7 +53,7 @@ void	initiate_heredoc(t_shell *shell)
 	current = shell->token;
 	shell->heredoc = malloc(sizeof(t_heredoc));
 	if (!shell->heredoc)
-		return ;
+		free_all(shell);
 	ft_memset(shell->heredoc, 0, sizeof(t_heredoc));
 	shell->heredoc->next = NULL;
 	tmp = shell->heredoc;
@@ -126,7 +128,7 @@ int handle_all_heredocs_globally_v2(t_shell *shell)
     {
         ft_free_heredoc(shell);
         shell->heredoc = NULL;
-        return (0); //il y avait g_exit_status
+		free_all(shell);
     }
     process_status = process_heredoc_inputs_loop_v2(shell);
     if (process_status == 0 || process_status == 1)

@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:25:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/21 14:02:46 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/21 17:21:24 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	create_pipeline_pipes(t_shell *shell, int (**pipe_fds)[2], int proc_i)
 
 	*pipe_fds = malloc(sizeof(int[2]) * (shell->exec->nb_cmd[proc_i] - 1));
 	if (!(*pipe_fds))
-		return (0);
+		free_all(shell);
 	i = 0;
 	while (i < shell->exec->nb_cmd[proc_i] - 1)
 	{
@@ -49,7 +49,7 @@ int	create_pipeline_pipes(t_shell *shell, int (**pipe_fds)[2], int proc_i)
 			}
 			free(*pipe_fds);
 			*pipe_fds = NULL;
-			return (0);
+			free_all(shell);
 		}
 		i++;
 	}

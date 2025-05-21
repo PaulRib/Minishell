@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:41:29 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/20 17:51:12 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/21 17:14:17 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,12 @@ void close_fd_exec(t_shell *shell)
 	i = 0;
 	while (i < shell->exec->process)
 	{
-		if (shell->exec->fd_in[i] != 0)
+		if (shell->exec->fd_in[i] > 2)
 			close(shell->exec->fd_in[i]);
-		if (shell->exec->fd_out[i] != 1)
+		if (shell->exec->fd_out[i] > 2)
 			close(shell->exec->fd_out[i]);
+		if (shell->exec->prev_fd[i] > 2)
+			close(shell->exec->prev_fd[i]);
 		i++;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:01:44 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/19 17:22:49 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/21 17:15:03 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	initiate_exec(t_shell *shell)
 	shell->exec->prev_fd = malloc(sizeof(int) * shell->exec->process);
 	if (!shell->exec->fd_in || !shell->exec->fd_out || !shell->exec->nb_cmd
 		|| !shell->exec->prev_fd)
-		exit(0);
+		free_all (shell);
 	while (i < shell->exec->process)
 	{
 		shell->exec->prev_fd[i] = 0;
@@ -68,6 +68,8 @@ void	count_process(t_shell *shell)
 	t_token	*current;
 
 	shell->exec = malloc(sizeof(t_exec));
+	if (!shell->exec)
+		free_all(shell);
 	ft_memset(shell->exec, 0, sizeof(t_exec));
 	current = shell->token;
 	shell->exec->process = 1;
@@ -92,7 +94,7 @@ void	ft_free_exec(t_shell *shell)
 			free(shell->exec->fd_out);
 		if (shell->exec->prev_fd)
 			free(shell->exec->prev_fd);
-		close_fd_exec(shell);
+		//close_fd_exec(shell);
 		shell->exec = NULL;
 	}
 }

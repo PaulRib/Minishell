@@ -6,13 +6,13 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:40:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/09 16:51:38 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:28:00 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void ft_free_history(t_shell *shell)
+static void ft_free_history(t_shell *shell)
 {
 	t_history	*tmp;
 
@@ -30,10 +30,12 @@ void ft_free_history(t_shell *shell)
 	}
 }
 
-void ft_free_data(t_shell *shell)
+static void ft_free_data(t_shell *shell)
 {
 	if (shell->data->new_env)
 		free_tab(shell->data->new_env);
+	free(shell->data->old_dir);
+	free(shell->data->cur_dir);
 	free(shell->data->new_env);
 }
 

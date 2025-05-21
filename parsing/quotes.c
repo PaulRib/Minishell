@@ -6,18 +6,25 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 13:19:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/15 17:18:32 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:26:16 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	after_quote(t_token *current, t_token *new, int end)
+void	after_quote(t_token *current, t_token *new, int end, t_shell *shell)
 {
 	t_token	*after;
 
 	after = malloc(sizeof(t_token));
+	if (!after)
+		free_all(shell);
 	after->str = ft_strdup(&current->str[end]);
+	if (!after->str)
+	{
+		free(after);
+		free_all(shell);
+	}
 	if (after->str && after->str[0] != '\0' && is_empty(after, 2147483647))
 	{
 		after->next = new->next;
@@ -36,55 +43,66 @@ void	after_quote(t_token *current, t_token *new, int end)
 	}
 }
 
-static void	extract_quote(t_token *current, int start, int end, char c)
+static void	extract_quote(t_token *current, t_quote qte, t_shell *shell)
 {
 	t_token	*new_token;
 
 	new_token = malloc(sizeof(t_token));
-	new_token->str = ft_substr(current->str, start, end - start);
-	if (is_empty(current, start - 1))
+	if (!new_token)
+		free_all(shell);
+	new_token->str = ft_substr(current->str, qte.start, qte.end - qte.start);
+	if (!new_token->str)
+	{
+		free(new_token);
+		free_all(shell);
+	}
+	if (is_empty(current, qte.start - 1))
 	{
 		new_token->next = current->next;
 		if (current->next)
 			current->next->prev = new_token;
 		new_token->prev = current;
 		current->next = new_token;
-		if (c == '"')
+		if (qte.c == '"')
 			new_token->type = D_QUOTE;
-		else if (c == '\'')
+		else if (qte.c == '\'')
 			new_token->type = S_QUOTE;
-		if (current->str[end + 1] == ' '
-			|| current->str[end + 1] == '\t')
+		if (current->str[qte.end + 1] == ' '
+			|| current->str[qte.end + 1] == '\t')
 			new_token->last_space = true;
-		if (current->str[start - 2] == ' '
-			|| current->str[start - 2] == '\t')
+		if (current->str[qte.start - 2] == ' '
+			|| current->str[qte.start - 2] == '\t')
 			new_token->first_space = true;
-		if (current->str[end + 1])
-			after_quote(current, new_token, end + 1);
-		before_quote(current, start);
+		if (current->str[qte.end + 1])
+			after_quote(current, new_token, qte.end + 1, shell);
+		before_quote(current, qte.start, shell);
 	}
 	else
-		empty_quote_before(current, new_token, end, c);
+		empty_quote_before(current, new_token, qte, shell);
 }
 
-static int	process_quote2(t_token *current, int end, int i, char c)
+static int	process_quote2(t_token *current, int i, char c, t_shell *shell)
 {
-	int	start;
+	t_quote	quote;
 
-	start = i + 1;
-	end = is_closed(current, i + 1, c);
-	if (end != 0)
+	quote.start = i + 1;
+	quote.c = c;
+	quote.end = is_closed(current, i + 1, quote.c);
+	if (quote.end != 0)
 	{
-		start = i + 1;
-		extract_quote(current, start, end, c);
-		i = end;
+		quote.start = i + 1;
+		extract_quote(current, quote, shell);
+		i = quote.end;
 	}
-	else if (end == 0)
+	else if (quote.end == 0)
+	{
 		ft_putstr_fd("Quotes are not closed\n", 2);
+		return (-1);
+	}
 	return (i);
 }
 
-static void	process_quote(t_token *current)
+static int	process_quote(t_token *current, t_shell *shell)
 {
 	int	i;
 
@@ -93,19 +111,20 @@ static void	process_quote(t_token *current)
 	{
 		if (current->str[i] == '"')
 		{
-			i = process_quote2(current, 0, i, '"');
-			return ;
+			i = process_quote2(current, i, '"', shell);
+			return (i);
 		}
 		else if (current->str[i] == '\'')
 		{
-			i = process_quote2(current, 0, i, '\'');
-			return ;
+			i = process_quote2(current, i, '\'', shell);
+			return (i);
 		}
 		i++;
 	}
+	return (1);
 }
 
-void	handling_quotes(t_shell *shell)
+int	handling_quotes(t_shell *shell)
 {
 	t_token	*tmp;
 
@@ -113,7 +132,9 @@ void	handling_quotes(t_shell *shell)
 	while (tmp)
 	{
 		if (tmp->type == WORD)
-			process_quote(tmp);
+			if (process_quote(tmp, shell) == -1)
+				return (-1);
 		tmp = tmp->next;
 	}
+	return (1);
 }

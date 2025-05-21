@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:39:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/20 15:16:21 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:52:46 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	check_and_create(t_shell *shell, t_token *current, t_heredoc *tmp)
 		{
 			new = malloc(sizeof(t_heredoc));
 			if (!new)
-				return ;
+				free_all(shell);
 			ft_memset(new, 0, sizeof(t_heredoc));
 			while (tmp->next)
 				tmp = tmp->next;
