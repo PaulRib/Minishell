@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:58:14 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/20 16:15:28 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:56:25 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ static int	process_heredoc_line(t_shell *shell, t_heredoc *hd_node,
 		ft_putstr_fd(line_to_write, hd_node->p_fd[1]);
 		free(line_to_write);
 	}
-	else
-		ft_putstr_fd(line_read, hd_node->p_fd[1]);
 	return (0);
 }
 
@@ -46,6 +44,8 @@ static int	read_heredoc_line(t_shell *shell, t_heredoc *hd_node, char *delimiter
 	write(STDOUT_FILENO, "> ", 2);
 	init_signals_heredoc();
 	line_read = get_next_line(STDIN_FILENO);
+	if (!line_read)
+		free_all(shell);
 	if (g_exit_status == 1)
 	{
 		if (line_read)
@@ -54,10 +54,7 @@ static int	read_heredoc_line(t_shell *shell, t_heredoc *hd_node, char *delimiter
 		return (3);
 	}
 	if (!line_read)
-	{
-		print_heredoc_eof_warning_msg_v2(delimiter);
-		return (2);
-	}
+		return(print_heredoc_eof_warning_msg_v2(delimiter), 2);
 	if (check_delimiter_match(line_read, delimiter))
 	{
 		free(line_read);

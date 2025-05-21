@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:56:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/04/08 18:14:27 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:27:44 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,21 @@ int	is_empty(t_token *current, int start)
 	return (0);
 }
 
-void	empty_quote_before(t_token *current, t_token *new, int end, char c)
+void	empty_quote_before(t_token *current, t_token *new, t_quote qte,
+		t_shell *shell)
 {
-	if (c == '"')
+	if (qte.c == '"')
 		current->type = D_QUOTE;
-	else if (c == '\'')
+	else if (qte.c == '\'')
 		current->type = S_QUOTE;
-	if (current->str[end + 1])
-		after_mult_quote(current, end + 1);
+	if (current->str[qte.end + 1])
+		after_mult_quote(current, qte.end + 1, shell);
 	free(current->str);
 	current->str = new->str;
 	free(new);
 }
 
-void	before_quote(t_token *current, int start)
+void	before_quote(t_token *current, int start, t_shell *shell)
 {
 	char	*rest;
 
@@ -61,17 +62,26 @@ void	before_quote(t_token *current, int start)
 	if (start > 0)
 	{
 		rest = ft_substr(current->str, 0, start - 1);
+		if (!rest)
+			free_all(shell);
 		free(current->str);
 		current->str = rest;
 	}
 }
 
-void	after_mult_quote(t_token *current, int end)
+void	after_mult_quote(t_token *current, int end, t_shell *shell)
 {
 	t_token	*after;
 
 	after = malloc(sizeof(t_token));
+	if (!after)
+		free_all(shell);
 	after->str = ft_strdup(&current->str[end]);
+	if (!after->str)
+	{
+		free(after);
+		free_all(shell);
+	}
 	if (after->str && after->str[0] != '\0' && is_empty(after, 2147483647))
 	{
 		after->next = current->next;

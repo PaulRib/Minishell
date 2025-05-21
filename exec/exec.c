@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/20 17:46:19 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/21 17:04:59 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	get_global_cmd_idx(t_shell *shell, int target_proc_i, int cmd_in_target_proc
 	return (global_idx);
 }
 
-char	*get_path(char *cmd, char **envp)
+char	*get_path(char *cmd, char **envp, t_shell *shell)
 {
 	int		i;
 	char	**path;
@@ -88,13 +88,15 @@ char	*get_path(char *cmd, char **envp)
 	{
 		temp = ft_strjoin(path[i], "/");
 		good_path = ft_strjoin(temp, cmd);
+		if (!good_path)
+			free_all(shell);
 		free(temp);
 		if (access(good_path, X_OK) == 0)
 			return (free_tab(path), good_path);
 		i++;
 		free(good_path);
 	}
-	return (NULL);
+	return (free_tab(path), NULL);
 }
 
 void	execute_command(t_shell *shell, char *full_cmd_str)
@@ -104,8 +106,8 @@ void	execute_command(t_shell *shell, char *full_cmd_str)
 
 	exec_args = ft_split(full_cmd_str, ' ');
 	if (!exec_args || !exec_args[0])
-		exit(127);
-	cmd_path = get_path(exec_args[0], shell->data->new_env);
+		free_all(shell);
+	cmd_path = get_path(exec_args[0], shell->data->new_env, shell);
 	if (!cmd_path)
 	{
 		ft_putstr_fd("minishell: ", 2);
@@ -113,6 +115,7 @@ void	execute_command(t_shell *shell, char *full_cmd_str)
 		ft_putstr_fd(": command not found (path error)\n", 2);
 		free_tab(exec_args);
 		exit(127);
+		//ft_exit avec sortie 127
 	}
 	if (execve(cmd_path, exec_args, shell->data->new_env) == -1)
 	{

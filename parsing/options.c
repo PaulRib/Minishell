@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 16:13:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/05 15:11:44 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:04:24 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static char	*clean_string(const char *str)
 	return (result[j] = '\0', result);
 }
 
-static bool	combine_tokens(t_token *command, t_token *option)
+static bool	combine_tokens(t_token *command, t_token *option, t_shell *shell)
 {
 	char	*temp;
 	char	*combined;
@@ -68,15 +68,15 @@ static bool	combine_tokens(t_token *command, t_token *option)
 
 	temp = ft_strjoin(command->str, " ");
 	if (!temp)
-		return (false);
+		free_all(shell);
 	combined = ft_strjoin(temp, option->str);
 	free(temp);
 	if (!combined)
-		return (false);
+		free_all(shell);
 	cleaned = clean_string(combined);
 	free(combined);
 	if (!cleaned)
-		return (false);
+		free_all(shell);
 	free(command->str);
 	command->str = cleaned;
 	return (true);
@@ -115,7 +115,7 @@ void	associate_options_commands(t_shell *shell)
 			last_command = current;
 		else if (check_token_type(current, 1) && last_command)
 		{
-			if (combine_tokens(last_command, current))
+			if (combine_tokens(last_command, current, shell))
 				next = remove_token(current);
 			else
 				next = current->next;
