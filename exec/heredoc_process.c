@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_process.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:58:14 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/21 16:56:25 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/21 18:13:21 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	read_heredoc_line(t_shell *shell, t_heredoc *hd_node, char *delimiter
 		return (3);
 	}
 	if (!line_read)
-		return(print_heredoc_eof_warning_msg_v2(delimiter), 2);
+		return(handle_heredoc_eof(shell, delimiter));
 	if (check_delimiter_match(line_read, delimiter))
 	{
 		free(line_read);
@@ -84,7 +84,7 @@ void	close_heredoc_fds(t_shell *shell)
 	}
 }
 
-int	process_heredoc_inputs_loop_v2(t_shell *shell)
+int	process_heredoc_inputs_loop(t_shell *shell)
 {
 	t_heredoc	*current;
 	int			i;

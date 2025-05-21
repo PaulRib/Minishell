@@ -3,24 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:39:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/21 16:52:46 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/21 18:09:01 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	print_heredoc_eof_warning_msg_v2(char *delimiter)
+int	handle_heredoc_eof(t_shell *shell, char *delimiter)
 {
-	ft_putstr_fd("minishell: warning: ", 2);
-	ft_putstr_fd("here-document delimited by end-of-file (wanted `", 2);
-	if (delimiter)
-		ft_putstr_fd(delimiter, 2);
-	else
-		ft_putstr_fd("unknown", 2);
-	ft_putstr_fd("`)\n", 2);
+	print_heredoc_eof_warning_msg(delimiter);
+	shell->exit_status = 0;
+	return (2);
 }
 
 int	check_end(int *i, t_shell *shell, t_heredoc **curr)

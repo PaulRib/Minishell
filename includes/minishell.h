@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/21 17:05:23 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/21 18:46:37 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,8 +229,9 @@ int						get_global_cmd_idx(t_shell *shell, int target_proc_i,
 char					*get_path(char *cmd, char **envp, t_shell *shell);
 void					execute_command(t_shell *shell, char *full_cmd_str);
 void					close_heredoc_fds(t_shell *shell);
-int						process_heredoc_inputs_loop_v2(t_shell *shell);
-void					print_heredoc_eof_warning_msg_v2(char *delimiter);
+int						process_heredoc_inputs_loop(t_shell *shell);
+int						handle_heredoc_eof(t_shell *shell, char *delimiter);
+void					print_heredoc_eof_warning_msg(char *delimiter);
 int						check_end(int *i, t_shell *shell, t_heredoc **curr);
 void					check_and_create(t_shell *shell, t_token *current,
 							t_heredoc *tmp);
@@ -263,6 +264,7 @@ int						check_echo(t_token *token_ptr);
 
 /* Utils */
 
+void					handle_sigint_status(t_shell *shell);
 char					**add_env_var(char **env, char *new_var);
 int						find_env_var(char **env, char *var);
 char					*ft_get_env(char **env, char *var_name);

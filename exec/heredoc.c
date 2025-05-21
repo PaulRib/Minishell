@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:36:54 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/21 16:54:50 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/21 18:13:30 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int handle_all_heredocs_globally_v2(t_shell *shell)
         shell->heredoc = NULL;
 		free_all(shell);
     }
-    process_status = process_heredoc_inputs_loop_v2(shell);
+    process_status = process_heredoc_inputs_loop(shell);
     if (process_status == 0 || process_status == 1)
         return (0);
     else 
