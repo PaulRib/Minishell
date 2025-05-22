@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:14:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/21 15:58:36 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:32:29 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ void	second_token(t_shell *shell)
 	tmp = shell->token;
 	while (tmp->next)
 	{
-		if (tmp->type == REDIR_IN)
+		if (tmp->type == REDIR_IN && tmp->next->type == WORD)
 			tmp->next->type = FILE_IN;
-		if (tmp->type == REDIR_OUT)
+		if (tmp->type == REDIR_OUT && tmp->next->type == WORD)
 			tmp->next->type = FILE_OUT;
-		if (tmp->type == HEREDOC)
+		if (tmp->type == HEREDOC && tmp->next->type == WORD)
 			tmp->next->type = END;
-		if (tmp->type == APPEND)
+		if (tmp->type == APPEND && tmp->next->type == WORD)
 			tmp->next->type = FILE_OUT;
 		if (tmp->type == PIPE && tmp->next->type != REDIR_IN
 			&& tmp->next->type == WORD)
