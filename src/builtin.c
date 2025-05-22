@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/20 18:45:56 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:36:27 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,33 @@ int	is_simple_builtin(t_shell *shell)
 	return (-1);
 }
 
+static int	do_solo_redir(t_shell *shell, t_token *current, int type)
+{
+	if (shell->count->nb_redir_in > 0)
+		open_infile(shell);
+	if (shell->count->nb_redir_out > 0)
+		open_outfile(shell);
+	if (shell->exec->fd_in[0] > 2)
+	{
+		dup2(shell->exec->fd_in[0], STDIN_FILENO);
+		close(shell->exec->fd_in[0]);
+	}
+	if (shell->exec->fd_out[0] > 2)
+	{
+		dup2(shell->exec->fd_out[0], STDOUT_FILENO);
+		close(shell->exec->fd_out[0]);
+	}
+	if (type == 1)
+		check_cd(shell, current);
+	if (type == 2)
+		check_unset(shell, current);
+	if (type == 3)
+		check_export(shell, current);
+	dup2(STDIN_FILENO, 0);
+	dup2(STDOUT_FILENO, 1);
+	return (1);
+}
+
 int check_one_builtin(t_shell *shell)
 {
 	t_token	*current;
@@ -48,23 +75,11 @@ int check_one_builtin(t_shell *shell)
 		while (current)
 		{
 			if (ft_strcmp(current->str, "cd") == 0)
-			{
-				if (shell->count->nb_redir_in > 0)
-					open_infile(shell);
-				return (check_cd(shell, current));
-			}
+				return (do_solo_redir(shell, current, 1));
 			else if (ft_strcmp(current->str, "unset") == 0)
-			{
-				if (shell->count->nb_redir_in > 0)
-					open_infile(shell);
-				return (check_unset(shell, current));
-			}
+				return (do_solo_redir(shell, current, 2));
 			else if (ft_strcmp(current->str, "export") == 0)
-			{
-				if (shell->count->nb_redir_in > 0)
-					open_infile(shell);
-				return (check_export(shell, current));
-			}
+				return (do_solo_redir(shell, current, 3));
 			current = current->next;
 		}
 	}
