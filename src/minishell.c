@@ -45,13 +45,13 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 	count_process(shell);
 	initiate_exec(shell);
 	count_element(shell);
-	t_token *tmp = shell->token;
-	while(tmp)
-	{
-		printf("Type du token : %d\n", tmp->type);
-		printf("Contenu du token : %s\n", tmp->str);
-		tmp = tmp->next;
-	}
+	// t_token *tmp = shell->token;
+	// while(tmp)
+	// {
+	// 	printf("Type du token : %d\n", tmp->type);
+	// 	printf("Contenu du token : %s\n", tmp->str);
+	// 	tmp = tmp->next;
+	// }
 	if (syntax_hub(shell) == -1)
 		return ;
 	if (!check_one_builtin(shell))
