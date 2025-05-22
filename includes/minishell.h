@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/21 18:46:37 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:09:43 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
+# include <limits.h>
 
 # define PATH_MAX 4096
 
@@ -270,6 +271,6 @@ int						find_env_var(char **env, char *var);
 char					*ft_get_env(char **env, char *var_name);
 int						update_env_var(t_data *data, char *var_name,
 							char *var_value);
-void					free_all(t_shell *shell);
+void					free_all(t_shell *shell, int status);
 void					ft_free_node(t_shell *shell);
 #endif
