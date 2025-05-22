@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:38:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 15:30:14 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:54:39 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static int syntax_double_redir(t_token *current)
 		return (-1);
 	}
 	if (current->type == HEREDOC && current->next->type != WORD
-		&& current->next->type != EOF)
+		&& current->next->type != END)
 	{
 		ft_putstr_fd("bash: syntax error near unexpected token '<<'\n", 2);
 		return (-1);

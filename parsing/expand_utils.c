@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 17:41:46 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/05 15:18:25 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:53:19 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,9 @@
 void	append_normal_char(char **result, char *str, int *i)
 {
 	char	c[2];
-	char	*tmp;
 
 	c[0] = str[*i];
 	c[1] = '\0';
-	tmp = *result;
 	*result = ft_strjoin(*result, c);
-	free(tmp);
 	(*i)++;
 }

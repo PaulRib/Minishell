@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 15:30:34 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:54:23 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 	t_token *tmp = shell->token;
 	while(tmp)
 	{
+		printf("Type du token : %d\n", tmp->type);
 		printf("Contenu du token : %s\n", tmp->str);
 		tmp = tmp->next;
 	}
