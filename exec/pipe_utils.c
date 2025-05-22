@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:25:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/21 18:30:51 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:23:34 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	create_pipeline_pipes(t_shell *shell, int (**pipe_fds)[2], int proc_i)
 
 	*pipe_fds = malloc(sizeof(int[2]) * (shell->exec->nb_cmd[proc_i] - 1));
 	if (!(*pipe_fds))
-		free_all(shell);
+		free_all(shell, 1);
 	i = 0;
 	while (i < shell->exec->nb_cmd[proc_i] - 1)
 	{
@@ -49,7 +49,7 @@ int	create_pipeline_pipes(t_shell *shell, int (**pipe_fds)[2], int proc_i)
 			}
 			free(*pipe_fds);
 			*pipe_fds = NULL;
-			free_all(shell);
+			free_all(shell, 1);
 		}
 		i++;
 	}

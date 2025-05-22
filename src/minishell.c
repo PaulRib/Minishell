@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/21 18:45:58 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:20:14 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	main(int ac, char **av, char **env)
 	initiate_all(shell);
 	env_exists(env, shell);
 	shell_loop(shell);
-	free_all(shell);
+	free_all(shell, 0);
 	//free_tab(env);
 	return (0);
 }

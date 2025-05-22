@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 16:13:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/21 16:04:24 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:20:51 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,15 @@ static bool	combine_tokens(t_token *command, t_token *option, t_shell *shell)
 
 	temp = ft_strjoin(command->str, " ");
 	if (!temp)
-		free_all(shell);
+		free_all(shell, 1);
 	combined = ft_strjoin(temp, option->str);
 	free(temp);
 	if (!combined)
-		free_all(shell);
+		free_all(shell, 1);
 	cleaned = clean_string(combined);
 	free(combined);
 	if (!cleaned)
-		free_all(shell);
+		free_all(shell, 1);
 	free(command->str);
 	command->str = cleaned;
 	return (true);

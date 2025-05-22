@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/21 16:57:55 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:23:45 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ int	fork_pipeline_command(t_shell *shell, int proc_i, t_pipe *pipe)
 	if (!cmd_str)
 	{
 		shell->exit_status = 1;
-		free_all(shell);
+		free_all(shell, 1);
 	}
 	pipe->pids[pipe->cmd_idx] = fork();
 	if (pipe->pids[pipe->cmd_idx] < 0)
 	{
 		free(cmd_str);
 		shell->exit_status = 1;
-		free_all(shell);
+		free_all(shell, 1);
 	}
 	if (pipe->pids[pipe->cmd_idx] == 0)
 		handle_pipeline_child(shell, proc_i, pipe, cmd_str);

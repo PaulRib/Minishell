@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:01:44 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/21 17:15:03 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:24:07 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	initiate_exec(t_shell *shell)
 	shell->exec->prev_fd = malloc(sizeof(int) * shell->exec->process);
 	if (!shell->exec->fd_in || !shell->exec->fd_out || !shell->exec->nb_cmd
 		|| !shell->exec->prev_fd)
-		free_all (shell);
+		free_all (shell, 1);
 	while (i < shell->exec->process)
 	{
 		shell->exec->prev_fd[i] = 0;
@@ -69,7 +69,7 @@ void	count_process(t_shell *shell)
 
 	shell->exec = malloc(sizeof(t_exec));
 	if (!shell->exec)
-		free_all(shell);
+		free_all(shell, 1);
 	ft_memset(shell->exec, 0, sizeof(t_exec));
 	current = shell->token;
 	shell->exec->process = 1;

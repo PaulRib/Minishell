@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:39:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/21 18:09:01 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:27:05 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	check_and_create(t_shell *shell, t_token *current, t_heredoc *tmp)
 		{
 			new = malloc(sizeof(t_heredoc));
 			if (!new)
-				free_all(shell);
+				free_all(shell, 1);
 			ft_memset(new, 0, sizeof(t_heredoc));
 			while (tmp->next)
 				tmp = tmp->next;

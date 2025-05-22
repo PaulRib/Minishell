@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:56:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/21 15:27:44 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:21:28 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	before_quote(t_token *current, int start, t_shell *shell)
 	{
 		rest = ft_substr(current->str, 0, start - 1);
 		if (!rest)
-			free_all(shell);
+			free_all(shell, 1);
 		free(current->str);
 		current->str = rest;
 	}
@@ -75,12 +75,12 @@ void	after_mult_quote(t_token *current, int end, t_shell *shell)
 
 	after = malloc(sizeof(t_token));
 	if (!after)
-		free_all(shell);
+		free_all(shell, 1);
 	after->str = ft_strdup(&current->str[end]);
 	if (!after->str)
 	{
 		free(after);
-		free_all(shell);
+		free_all(shell, 1);
 	}
 	if (after->str && after->str[0] != '\0' && is_empty(after, 2147483647))
 	{

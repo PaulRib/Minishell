@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:59:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/21 15:44:06 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:21:14 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	create_and_insert_token(t_token *current, char *remainder,
 	{
 		free(first_word);
 		free(remainder);
-		free_all(shell);
+		free_all(shell, 1);
 	}
 	new_token = ft_memset(new_token, 0, sizeof(t_token));
 	new_token->str = remainder;
@@ -55,12 +55,12 @@ static void	handle_regular_split(t_token *current, int word_start, t_parse prs,
 
 	first_word = ft_substr(current->str, word_start, prs.w_end - word_start);
 	if (!first_word)
-		free_all(shell);
+		free_all(shell, 1);
 	rest_str = ft_strdup(&current->str[prs.next_word]);
 	if (!rest_str)
 	{
 		free(first_word);
-		free_all(shell);
+		free_all(shell, 1);
 	}
 	create_and_insert_token(current, rest_str, shell, first_word);
 	free(current->str);
@@ -84,7 +84,7 @@ static void	process_token(t_token *current, t_shell *shell)
 	{
 		first_word = ft_substr(current->str, w_start, prs.w_end - w_start);
 		if (!first_word)
-			free_all(shell);
+			free_all(shell, 1);
 		free(current->str);
 		current->str = first_word;
 		return ;

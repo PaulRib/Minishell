@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:28 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/21 17:11:53 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:22:17 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,13 @@ void	execute_pipeline_v2(t_shell *shell, int proc_i)
 	pipe_fds = NULL;
 	if (shell->exec->nb_cmd[proc_i] > 1)
 		if (!create_pipeline_pipes(shell, &pipe_fds, proc_i))
-			free_all(shell);
+			free_all(shell, 1);
 	pids = malloc(sizeof(pid_t) * shell->exec->nb_cmd[proc_i]);
 	if (!pids)
 	{
 		close_all_pipe_fds(shell, pipe_fds, proc_i);
 		free(pipe_fds);
-		free_all(shell);
+		free_all(shell, 1);
 	}
 	execute_pipeline_commands(shell, proc_i, pipe_fds, pids);
 	close_all_pipe_fds(shell, pipe_fds, proc_i);

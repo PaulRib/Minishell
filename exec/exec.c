@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/21 17:04:59 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:24:24 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	*get_path(char *cmd, char **envp, t_shell *shell)
 		temp = ft_strjoin(path[i], "/");
 		good_path = ft_strjoin(temp, cmd);
 		if (!good_path)
-			free_all(shell);
+			free_all(shell, 1);
 		free(temp);
 		if (access(good_path, X_OK) == 0)
 			return (free_tab(path), good_path);
@@ -106,7 +106,7 @@ void	execute_command(t_shell *shell, char *full_cmd_str)
 
 	exec_args = ft_split(full_cmd_str, ' ');
 	if (!exec_args || !exec_args[0])
-		free_all(shell);
+		free_all(shell, 1);
 	cmd_path = get_path(exec_args[0], shell->data->new_env, shell);
 	if (!cmd_path)
 	{
