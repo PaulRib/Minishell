@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 15:37:53 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:39:19 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ static int	do_solo_redir(t_shell *shell, t_token *current, int type)
 		check_unset(shell, current);
 	if (type == 3)
 		check_export(shell, current);
+	if (type == 4)
+		ft_exit(shell, current);
 	dup2(STDIN_FILENO, 0);
 	dup2(STDOUT_FILENO, 1);
 	return (1);
@@ -82,6 +84,8 @@ int check_one_builtin(t_shell *shell)
 				return (do_solo_redir(shell, current, 2));
 			else if (ft_strcmp(current->str, "export") == 0)
 				return (do_solo_redir(shell, current, 3));
+			else if (ft_strcmp(current->str, exit) == 0)
+				return (do_solo_redir(shell, current, 4));
 			current = current->next;
 		}
 	}
