@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 15:39:19 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:46:09 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int check_one_builtin(t_shell *shell)
 				return (do_solo_redir(shell, current, 2));
 			else if (ft_strcmp(current->str, "export") == 0)
 				return (do_solo_redir(shell, current, 3));
-			else if (ft_strcmp(current->str, exit) == 0)
+			else if (ft_strcmp(current->str, "exit") == 0)
 				return (do_solo_redir(shell, current, 4));
 			current = current->next;
 		}
