@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:40:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 14:08:05 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:13:10 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,7 @@ static void ft_free_data(t_shell *shell)
 {
 	if (shell->data->new_env)
 		free_tab(shell->data->new_env);
-	free(shell->data->old_dir);
-	free(shell->data->cur_dir);
-	free(shell->data->new_env);
+	free(shell->data);
 }
 
 void	free_all(t_shell *shell, int status)

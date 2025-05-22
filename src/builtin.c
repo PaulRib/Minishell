@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/20 18:45:56 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:08:42 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	is_simple_builtin(t_shell *shell)
 			return (1);
 		if (check_export(shell, token_ptr) != -1)
 			return (1);
+		if (ft_exit(shell, token_ptr) != -1)
+			return(1);
 		token_ptr = token_ptr->next;
 	}
 	return (-1);
@@ -65,6 +67,8 @@ int check_one_builtin(t_shell *shell)
 					open_infile(shell);
 				return (check_export(shell, current));
 			}
+			else if (ft_strcmp(current->str, "exit") == 0)
+				return(ft_exit(shell, current));
 			current = current->next;
 		}
 	}
@@ -87,5 +91,7 @@ int is_target_builtin(t_shell *shell, t_token *target)
 		return (1);
 	if (check_export(shell, target) != -1)
 		return (1);
+	if (ft_exit(shell, target) != -1)
+		return(1);
 	return (-1);
 }

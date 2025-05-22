@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:49:30 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/22 14:16:18 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:02:50 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	validate_exit_args(t_token *token_ptr)
 	return (exit_value);
 }
 
-void	check_exit(t_shell *shell, t_token *token_ptr)
+int	ft_exit(t_shell *shell, t_token *token_ptr)
 {
 	int	exit_value;
 
@@ -74,14 +74,15 @@ void	check_exit(t_shell *shell, t_token *token_ptr)
 	ft_putstr_fd("exit\n", 1);
 	exit_value = validate_exit_args(token_ptr);
 	if (exit_value == -1)
-		free_all(shell, shell);
-	if (exit_value = -2)
+		free_all(shell, shell->exit_status);
+	if (exit_value == -2)
 		free_all(shell, 2);
 	if (exit_value == 1)
 	{
 		shell->exit_status = 1;
-		return ;
+		return (1); ;
 	}
 	shell->exit_status = exit_value;
 	free_all(shell, shell->exit_status);
+	return(1);
 }

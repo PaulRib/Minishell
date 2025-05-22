@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 14:09:43 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:56:20 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,8 @@ int						ft_pwd(t_shell *shell);
 int						check_pwd(t_shell *shell, t_token *token_ptr);
 char					*ft_handle_tilde(char *dir, char *home_dir);
 char					*ft_handle_hyphen(char *dir, char *old_dir);
-
+/* exit */
+int					ft_exit(t_shell *shell, t_token *token_ptr);
 /* Execution*/
 void					open_outfile(t_shell *shell);
 int						open_infile(t_shell *shell);
