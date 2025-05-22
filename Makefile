@@ -1,6 +1,6 @@
 NAME = minishell
 
-SRC = src/minishell.c src/env.c parsing/parser.c src/builtin.c src/signals.c \
+SRC = src/minishell.c src/env.c parsing/parser.c src/builtin.c src/signals.c src/signals2.c \
 		parsing/token.c parsing/parser_utils.c builtin/history.c parsing/options.c parsing/quotes.c\
 		parsing/quotes_utils.c parsing/expand.c parsing/expand_utils.c parsing/syntax.c\
 		exec/exec_fd.c exec/exec_hub.c exec/exec_utils.c exec/exec.c exec/heredoc_process.c exec/heredoc_utils.c\
