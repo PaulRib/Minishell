@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:34:47 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/19 19:47:55 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:58:11 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char	*expand_variables(t_shell *shell, char *str)
 			free(var);
 		}
 		else
-			append_normal_char(&result, str, &i);
+			result = append_normal_char(result, str, &i);
 	}
 	return (result);
 }
