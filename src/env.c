@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:10:09 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/20 17:41:50 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/24 17:04:29 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,18 @@ char	**build_env(t_data *data)
 {
 	char	**new_env;
 	char	*temp;
+	char	pwd[PATH_MAX];
 
-	new_env = malloc(2 * sizeof(char *));
+	new_env = malloc(4 * sizeof(char *));
 	if (!new_env)
 		return (NULL);
-	new_env[0] = ft_strdup("SHLVL=");
 	temp = ft_itoa(data->shlvl);
 	new_env[0] = ft_strjoin("SHLVL=", temp);
-	new_env[1] = NULL;
 	free(temp);
+	getcwd(pwd, PATH_MAX);
+	new_env[1] = ft_strjoin("PWD=", pwd);
+	new_env[2] = ft_strdup("_=/usr/bin/env");
+	new_env[3] = NULL;
 	return (new_env);
 }
 

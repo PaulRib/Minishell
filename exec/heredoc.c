@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:36:54 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 14:23:26 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/24 17:09:42 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int create_heredoc_pipes_v2(t_shell *shell)
             if (pipe(current->p_fd) == -1)
             {
                 perror("minishell: pipe for heredoc");
-                g_exit_status = 1;
+                shell->exit_status = 1;
                 close_all_heredoc_fds(shell->heredoc);
                 return (1);
             }
