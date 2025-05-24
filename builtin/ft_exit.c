@@ -16,7 +16,6 @@ static int	atoi_exit_code(char *str, int *error)
 {
 	unsigned long long	result;
 	int					i;
-	int					digits_start;
 	int					sign;
 
 	result = 0;
@@ -30,13 +29,12 @@ static int	atoi_exit_code(char *str, int *error)
 			sign = -1;
 		i++;
 	}
-	digits_start = i;
 	while (str[i] >= '0' && str[i] <= '9')
 		result = result * 10 + (str[i++] - '0');
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
-		i++;
-	if (str[i] != '\0' || i - digits_start > 20 || (sign == -1 && result
-			- 1 > LONG_MAX) || (sign == 1 && result > LONG_MAX))
+	if (str[i] != '\0')
+		*error = 1;
+	if ((sign == 1 && result > LONG_MAX)
+		|| (sign == -1 && result > (unsigned long long)LONG_MAX + 1))
 		*error = 1;
 	return ((int)((result * sign) % 256));
 }
