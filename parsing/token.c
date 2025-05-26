@@ -14,11 +14,9 @@
 
 void	get_type(t_shell *shell)
 {
-	int			i;
 	t_token		*tmp;
 
 	tmp = shell->token;
-	i = 0;
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->str, "|") == 0)
