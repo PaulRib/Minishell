@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 15:57:44 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:43:32 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,8 +169,9 @@ void					ft_unified_split(t_shell *shell);
 int						is_delimiter(char c);
 int						is_special_operator(char *str, int i);
 int						skip_whitespace(char *str, int i);
-int						find_word_boundaries(char *str, int *start);
+int						find_word_limit(char *str, int *start);
 int 					syntax_hub(t_shell *shell);
+void					join_quote(t_shell *shell);
 
 /* Signals*/
 void					enable_echoctl(void);

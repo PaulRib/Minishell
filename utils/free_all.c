@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:40:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 15:13:10 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:19:03 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,6 @@ void	free_all(t_shell *shell, int status)
 		if (shell->data)
 			ft_free_data(shell);
 	}
+	free(shell);
 	exit(status);
 }

@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:38:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 15:54:39 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:49:49 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static int syntax_pipe(t_token *current)
 	}
 	if (current->type == PIPE && current->next->type != WORD
 		&& current->prev->type != WORD && current->next->type != CMD
-		&& current->prev->type != CMD && current->next->type != REDIR_IN)
+		&& current->prev->type != CMD && current->next->type != REDIR_IN
+		&& current->next->type != HEREDOC)
 	{
 		ft_putstr_fd("bash: syntax error near ", 2);
 		ft_putstr_fd("unexpected token '|'\n", 2);

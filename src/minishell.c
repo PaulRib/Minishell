@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 15:54:23 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:19:44 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ void	initiate_all(t_shell *shell)
 	shell->count = malloc(sizeof(t_count));
 	ft_memset(shell->count, 0, sizeof(t_count));
 	shell->history = NULL;
-	shell->count = malloc(sizeof(t_count));
-	ft_memset(shell->count, 0, sizeof(t_count));
 	ft_memset(shell->data, 0, sizeof(t_data));
 	ft_memset(shell->history, 0, sizeof(t_history));
 	getcwd(shell->data->old_dir, PATH_MAX);
@@ -37,14 +35,8 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 	shell->token->type = WORD;
 	if (handling_quotes(shell) == -1)
 		return ;
-	ft_split_word(shell);
-	get_type(shell);
 	expand_all_tokens(shell);
-	second_token(shell);
-	associate_options_commands(shell);
-	count_process(shell);
-	initiate_exec(shell);
-	count_element(shell);
+	join_quote(shell);
 	// t_token *tmp = shell->token;
 	// while(tmp)
 	// {
@@ -52,6 +44,13 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 	// 	printf("Contenu du token : %s\n", tmp->str);
 	// 	tmp = tmp->next;
 	// }
+	ft_split_word(shell);
+	get_type(shell);
+	second_token(shell);
+	associate_options_commands(shell);
+	count_process(shell);
+	initiate_exec(shell);
+	count_element(shell);
 	if (syntax_hub(shell) == -1)
 		return ;
 	if (!check_one_builtin(shell))
@@ -113,6 +112,7 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	shell = malloc(sizeof(t_shell));
+	ft_memset(shell, 0, sizeof(t_shell));
 	initiate_all(shell);
 	env_exists(env, shell);
 	shell_loop(shell);
