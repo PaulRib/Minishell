@@ -6,33 +6,12 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:38:15 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/26 20:07:05 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:34:04 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	is_valid_identifier(char *var)
-{
-	int	i;
-	int	len;
-
-	len = 0;
-	i = 1;
-	if (!var || !*var)
-		return (0);
-	while (var[len] && var[len] != '=' && var[len] != '+')
-		len++;
-	if (len == 0 || (!ft_isalpha(var[0]) && var[0] != '_'))
-		return (invalid_identifier_export(var));
-	while (i < len)
-	{
-		if (!ft_isalnum(var[i]) && var[i] != '_')
-			return (invalid_identifier_export(var));
-		i++;
-	}
-	return (-1);
-}
 static int	handle_plus_equal(t_shell *shell, char *var, char *equal_sign,
 		char **var_name, char **var_value)
 {
@@ -58,6 +37,38 @@ static int	handle_plus_equal(t_shell *shell, char *var, char *equal_sign,
 	return (1);
 }
 
+static int	add_to_export_list(t_data *data, char *var_name, t_shell *shell)
+{
+	int		i;
+	int		env_size;
+	char	**new_sorted_env;
+	char	*var_copy;
+
+	if (find_env_var(data->new_env, var_name) != -1)
+		return (0);
+	if (var_exists_in_sorted_export(data->sorted_env, var_name))
+		return (0);
+	env_size = 0;
+	while (data->sorted_env && data->sorted_env[env_size])
+		env_size++;
+	new_sorted_env = malloc(sizeof(char *) * (env_size + 2));
+	if (!new_sorted_env)
+		free_all(shell, 1);
+	i = 0;
+	while (i < env_size)
+	{
+		new_sorted_env[i] = data->sorted_env[i];
+		i++;
+	}
+	var_copy = safe_strdup(var_name, shell);
+	new_sorted_env[env_size] = var_copy;
+	new_sorted_env[env_size + 1] = NULL;
+	if (data->sorted_env)
+		free(data->sorted_env);
+	data->sorted_env = new_sorted_env;
+	return (0);
+}
+
 static int	export_var(t_data *data, char *var, t_shell *shell)
 {
 	char	*var_name;
@@ -68,7 +79,12 @@ static int	export_var(t_data *data, char *var, t_shell *shell)
 		return (-1);
 	equal_sign = ft_strchr(var, '=');
 	if (!equal_sign)
+	{
+		var_name = safe_strdup(var, shell);
+		add_to_export_list(data, var, shell);
+		free(var_name);
 		return (0);
+	}
 	if (!handle_plus_equal(shell, var, equal_sign, &var_name, &var_value))
 	{
 		var_name = ft_substr(var, 0, equal_sign - var);

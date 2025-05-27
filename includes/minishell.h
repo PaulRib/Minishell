@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/26 20:03:09 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:46:45 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_data
 	char				old_dir[PATH_MAX];
 	char				**new_env;
 	int					shlvl;
+	char				**sorted_env;
 }						t_data;
 
 typedef struct s_history
@@ -193,6 +194,10 @@ int						is_simple_builtin(t_shell *shell);
 /* export */
 int						check_export(t_shell *shell, t_token *token_ptr);
 int						export_no_args(t_shell *shell);
+int						is_valid_identifier(char *var);
+int						var_exists_in_sorted_export(char **sorted_env,
+							char *var_name);
+void					print_export_value(char *env_var, int equal_sign);
 /* cd */
 int						check_cd(t_shell *shell, t_token *token_ptr);
 int						handle_directory(char *dir, char *home_dir,

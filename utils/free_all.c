@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:40:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/26 20:02:56 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:41:35 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static void	ft_free_data(t_shell *shell)
 {
 	if (shell->data->new_env)
 		free_tab(shell->data->new_env);
+	if(shell->data->sorted_env)
+		free_tab(shell->data->sorted_env);
 	free(shell->data);
 }
 
