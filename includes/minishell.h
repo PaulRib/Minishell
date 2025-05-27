@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 16:18:11 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:52:54 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,8 @@ typedef struct s_parse
 
 typedef struct s_export
 {
-	char	*var_name;
-	char	*var_value;
+	char				*var_name;
+	char				*var_value;
 }						t_export;
 
 typedef struct s_shell
@@ -180,7 +180,7 @@ int						is_delimiter(char c);
 int						is_special_operator(char *str, int i);
 int						skip_whitespace(char *str, int i);
 int						find_word_limit(char *str, int *start);
-int 					syntax_hub(t_shell *shell);
+int						syntax_hub(t_shell *shell);
 void					join_quote(t_shell *shell);
 
 /* Signals*/
@@ -202,9 +202,10 @@ int						is_simple_builtin(t_shell *shell);
 int						check_export(t_shell *shell, t_token *token_ptr);
 int						export_no_args(t_shell *shell);
 int						is_valid_identifier(char *var);
-int						var_exists_in_sorted_export(char **sorted_env,
+int						check_var_export(char **sorted_env,
 							char *var_name);
 void					print_export_value(char *env_var, int equal_sign);
+void					print_export_format(char *env_var);
 /* cd */
 int						check_cd(t_shell *shell, t_token *token_ptr);
 int						handle_directory(char *dir, char *home_dir,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:38:15 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/27 16:27:47 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:52:42 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	add_to_export_list(t_data *data, char *var_name, t_shell *shell)
 
 	if (find_env_var(data->new_env, var_name) != -1)
 		return (0);
-	if (var_exists_in_sorted_export(data->sorted_env, var_name))
+	if (check_var_export(data->sorted_env, var_name))
 		return (0);
 	env_size = 0;
 	while (data->sorted_env && data->sorted_env[env_size])
@@ -54,12 +54,9 @@ static int	add_to_export_list(t_data *data, char *var_name, t_shell *shell)
 	new_sorted_env = malloc(sizeof(char *) * (env_size + 2));
 	if (!new_sorted_env)
 		free_all(shell, 1);
-	i = 0;
-	while (i < env_size)
-	{
+	i = -1;
+	while (++i < env_size)
 		new_sorted_env[i] = data->sorted_env[i];
-		i++;
-	}
 	var_copy = safe_strdup(var_name, shell);
 	new_sorted_env[env_size] = var_copy;
 	new_sorted_env[env_size + 1] = NULL;
@@ -74,7 +71,8 @@ static int	export_var(t_data *data, char *var, t_shell *shell)
 	t_export	xpr;
 	char		*equal_sign;
 
-	ft_memset(xpr, 0, sizeof(t_export));
+	xpr.var_name = NULL;
+	xpr.var_value = NULL;
 	if (!is_valid_identifier(var))
 		return (-1);
 	equal_sign = ft_strchr(var, '=');

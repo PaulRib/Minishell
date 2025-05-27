@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:31:06 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/27 14:36:00 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:52:19 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	is_valid_identifier(char *var)
 	return (-1);
 }
 
-int	var_exists_in_sorted_export(char **sorted_env, char *var_name)
+int	check_var_export(char **sorted_env, char *var_name)
 {
 	int	i;
 	int	len;
@@ -67,4 +67,29 @@ void	print_export_value(char *env_var, int equal_sign)
 		i++;
 	}
 	ft_printf("\"");
+}
+
+void	print_export_format(char *env_var)
+{
+	int	i;
+	int	equal_sign;
+
+	equal_sign = -1;
+	i = 0;
+	while (env_var[i])
+	{
+		if (env_var[i] == '=')
+		{
+			equal_sign = i;
+			break ;
+		}
+		i++;
+	}
+	ft_printf("declare -x ");
+	i = 0;
+	while (i < equal_sign || (equal_sign == -1 && env_var[i]))
+		ft_printf("%c", env_var[i++]);
+	if (equal_sign != -1)
+		print_export_value(env_var, equal_sign);
+	ft_printf("\n");
 }
