@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:38:15 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/27 16:23:17 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:27:47 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static int	export_var(t_data *data, char *var, t_shell *shell)
 	t_export	xpr;
 	char		*equal_sign;
 
+	ft_memset(xpr, 0, sizeof(t_export));
 	if (!is_valid_identifier(var))
 		return (-1);
 	equal_sign = ft_strchr(var, '=');
