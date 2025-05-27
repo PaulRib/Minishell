@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:21:23 by meel-war          #+#    #+#             */
-/*   Updated: 2025/04/30 15:11:33 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/26 19:59:18 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void	sort_env(char **sorted_env, int env_size)
 	}
 }
 
-static char	**create_env_copy(char **env, int env_size)
+static char	**create_env_copy(char **env, int env_size, t_shell *shell)
 {
 	char	**sorted_env;
 	int		i;
@@ -85,16 +85,16 @@ static char	**create_env_copy(char **env, int env_size)
 	i = 0;
 	sorted_env = malloc(sizeof(char *) * (env_size + 1));
 	if (!sorted_env)
-		return (NULL);
+		free_all(shell, 1);
 	while (i < env_size)
 	{
-		sorted_env[i] = ft_strdup(env[i]);
+		sorted_env[i] = safe_strdup(env[i], shell);
 		if (!sorted_env[i])
 		{
 			while (--i >= 0)
-				free(sorted_env);
+				free(sorted_env[i]);
 			free(sorted_env);
-			return (NULL);
+			free_all(shell, 1);
 		}
 		i++;
 	}
@@ -112,9 +112,7 @@ int	export_no_args(t_shell *shell)
 	i = 0;
 	while (shell->data->new_env[env_size])
 		env_size++;
-	sorted_env = create_env_copy(shell->data->new_env, env_size);
-	if (!sorted_env)
-		return (0);
+	sorted_env = create_env_copy(shell->data->new_env, env_size, shell);
 	sort_env(sorted_env, env_size);
 	while (sorted_env[i])
 		print_export_format(sorted_env[i++]);

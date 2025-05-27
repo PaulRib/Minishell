@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 21:46:14 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/22 21:51:04 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/26 17:57:30 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	handle_sigquit_cmd(int sig)
 
 void	signal_block(void)
 {
-	struct sigaction sa_ignore;
+	struct sigaction	sa_ignore;
 
 	sa_ignore.sa_handler = SIG_IGN;
 	sigemptyset(&sa_ignore.sa_mask);

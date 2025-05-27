@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_hub.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:28 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 14:22:17 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:02:33 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	execute_parsed_line(t_shell *shell)
 	if (pid < 0)
 	{
 		shell->exit_status = 1;
-		return;
+		return ;
 	}
 	if (pid == 0)
 		run_global_child_process_v2(shell);
@@ -77,9 +77,9 @@ void	execute_commands_sequence_child_v2(t_shell *shell)
 
 void	execute_pipeline_v2(t_shell *shell, int proc_i)
 {
-	int		(*pipe_fds)[2];
 	pid_t	*pids;
 
+	int(*pipe_fds)[2];
 	pipe_fds = NULL;
 	if (shell->exec->nb_cmd[proc_i] > 1)
 		if (!create_pipeline_pipes(shell, &pipe_fds, proc_i))

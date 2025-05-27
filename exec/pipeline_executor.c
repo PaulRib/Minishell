@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_executor.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 14:23:45 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:01:43 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 void	handle_pipeline_child(t_shell *shell, int proc_i, t_pipe *pipe,
-	char *cmd_str)
+		char *cmd_str)
 {
 	init_signals_cmd();
 	setup_pipeline_redir(shell, proc_i, pipe);
 	close_all_pipe_fds(shell, pipe->pipe_fds, proc_i);
-	if	(!is_cmd_a_builtin(shell, pipe))
+	if (!is_cmd_a_builtin(shell, pipe))
 		execute_command(shell, cmd_str);
 	else
 		exit(0);
@@ -65,8 +65,7 @@ void	execute_pipeline_commands(t_shell *shell, int proc_i,
 	}
 }
 
-void	setup_pipeline_redir(t_shell *shell, int proc_i,
-		t_pipe *pipe)
+void	setup_pipeline_redir(t_shell *shell, int proc_i, t_pipe *pipe)
 {
 	if (pipe->cmd_idx == 0)
 	{

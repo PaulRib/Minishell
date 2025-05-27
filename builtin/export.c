@@ -6,19 +6,11 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:38:15 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/22 20:56:24 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/26 20:07:05 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-static int	invalid_identifier(char *var)
-{
-	ft_putstr_fd("minishell: export: `", 2);
-	ft_putstr_fd(var, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
-	return (0);
-}
 
 static int	is_valid_identifier(char *var)
 {
@@ -32,16 +24,16 @@ static int	is_valid_identifier(char *var)
 	while (var[len] && var[len] != '=' && var[len] != '+')
 		len++;
 	if (len == 0 || (!ft_isalpha(var[0]) && var[0] != '_'))
-		return (invalid_identifier(var));
+		return (invalid_identifier_export(var));
 	while (i < len)
 	{
 		if (!ft_isalnum(var[i]) && var[i] != '_')
-			return (invalid_identifier(var));
+			return (invalid_identifier_export(var));
 		i++;
 	}
 	return (-1);
 }
-static int	handle_plus_equal(t_data *data, char *var, char *equal_sign,
+static int	handle_plus_equal(t_shell *shell, char *var, char *equal_sign,
 		char **var_name, char **var_value)
 {
 	char	*plus_sign;
@@ -52,31 +44,21 @@ static int	handle_plus_equal(t_data *data, char *var, char *equal_sign,
 	if (!plus_sign || plus_sign[1] != '=' || plus_sign >= equal_sign)
 		return (0);
 	*var_name = ft_substr(var, 0, plus_sign - var);
-	if(!*var_name)
-		return(0); //free_all
-	*var_value = ft_strdup(equal_sign + 1);
-	if(!*var_value)
-	{
-		free(*var_name);
-		//free_all
-	}
-	old_value = ft_get_env(data->new_env, *var_name);
+	if (!*var_name)
+		free_all(shell, 1);
+	*var_value = safe_strdup(equal_sign + 1, shell);
+	old_value = ft_get_env(shell->data->new_env, *var_name);
 	if (old_value)
 	{
-		new_value = ft_strjoin(old_value, *var_value);
-		if(!new_value)
-		{
+		new_value = safe_strjoin(old_value, *var_value, shell, 0, 1);
+		if (!new_value)
 			free(*var_name);
-			free(*var_value);
-			//free_all;
-		}
-		free(*var_value);
 		*var_value = new_value;
 	}
 	return (1);
 }
 
-static int	export_var(t_data *data, char *var)
+static int	export_var(t_data *data, char *var, t_shell *shell)
 {
 	char	*var_name;
 	char	*var_value;
@@ -87,17 +69,12 @@ static int	export_var(t_data *data, char *var)
 	equal_sign = ft_strchr(var, '=');
 	if (!equal_sign)
 		return (0);
-	if (!handle_plus_equal(data, var, equal_sign, &var_name, &var_value))
+	if (!handle_plus_equal(shell, var, equal_sign, &var_name, &var_value))
 	{
 		var_name = ft_substr(var, 0, equal_sign - var);
 		if (!var_name)
-			return (-1); //free_all peut etre
-		var_value = ft_strdup(equal_sign + 1);
-		if(!var_value)
-		{
-			free(var_name);
-			return(-1); //free_all
-		}
+			free_all(shell, 1);
+		var_value = safe_strdup(equal_sign + 1, shell);
 	}
 	update_env_var(data, var_name, var_value);
 	free(var_name);
@@ -123,10 +100,10 @@ int	check_export(t_shell *shell, t_token *token_ptr)
 		{
 			if (token_ptr->next->type == S_QUOTE
 				|| token_ptr->next->type == D_QUOTE)
-				token_ptr->str = ft_strjoin(token_ptr->str,
-						token_ptr->next->str);
+				token_ptr->str = safe_strjoin(token_ptr->str,
+						token_ptr->next->str, shell, 1, 0);
 		}
-		if (!export_var(shell->data, token_ptr->str))
+		if (!export_var(shell->data, token_ptr->str, shell))
 			return (-1);
 		token_ptr = token_ptr->next;
 	}

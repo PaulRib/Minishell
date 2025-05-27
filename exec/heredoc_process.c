@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_process.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:58:14 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 14:25:17 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:02:10 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ static int	process_heredoc_line(t_shell *shell, t_heredoc *hd_node,
 	return (0);
 }
 
-static int	read_heredoc_line(t_shell *shell, t_heredoc *hd_node, char *delimiter)
+static int	read_heredoc_line(t_shell *shell, t_heredoc *hd_node,
+		char *delimiter)
 {
 	char	*line_read;
 
@@ -52,7 +53,7 @@ static int	read_heredoc_line(t_shell *shell, t_heredoc *hd_node, char *delimiter
 		return (3);
 	}
 	if (!line_read)
-		return(handle_heredoc_eof(shell, delimiter));
+		return (handle_heredoc_eof(shell, delimiter));
 	if (check_delimiter_match(line_read, delimiter))
 	{
 		free(line_read);
@@ -95,7 +96,7 @@ int	process_heredoc_inputs_loop(t_shell *shell)
 		if (i >= current->nb_heredoc)
 		{
 			if (check_end(&i, shell, &current) == -1)
-				break;
+				break ;
 		}
 		if (!current->eof_heredoc || !current->eof_heredoc[i])
 		{
@@ -106,7 +107,7 @@ int	process_heredoc_inputs_loop(t_shell *shell)
 		if (status == 1)
 			i++;
 		else if (status == 2 || status == 3)
-			return(status);
+			return (status);
 	}
 	return (0);
 }

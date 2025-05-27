@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:39:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 14:27:05 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:01:59 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	check_end(int *i, t_shell *shell, t_heredoc **curr)
 
 void	check_and_create(t_shell *shell, t_token *current, t_heredoc *tmp)
 {
-	t_heredoc *new;
+	t_heredoc	*new;
 
 	(void)shell;
 	while (current)

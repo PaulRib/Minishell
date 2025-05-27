@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 15:57:44 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/26 20:03:09 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
+# include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
@@ -23,7 +24,6 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
-# include <limits.h>
 
 # define PATH_MAX 4096
 
@@ -97,7 +97,7 @@ typedef struct s_exec
 
 typedef struct s_pipe
 {
-	int 				(*pipe_fds)[2];
+	int (*pipe_fds)[2];
 	pid_t				*pids;
 	int					cmd_idx;
 	int					global_idx;
@@ -112,9 +112,9 @@ typedef struct s_quote
 
 typedef struct s_parse
 {
-	int 				w_end;
-	int 				next_word;
-	int 				op_len;
+	int					w_end;
+	int					next_word;
+	int					op_len;
 }						t_parse;
 
 typedef struct s_shell
@@ -158,9 +158,12 @@ int						is_empty(t_token *current, int start);
 int						is_closed(t_token *current, int i, char c);
 void					empty_quote_before(t_token *current, t_token *new,
 							t_quote qte, t_shell *shell);
-void					after_quote(t_token *current, t_token *new, int end, t_shell *shell);
-void					before_quote(t_token *current, int start, t_shell *shell);
-void					after_mult_quote(t_token *current, int end, t_shell *shell);
+void					after_quote(t_token *current, t_token *new, int end,
+							t_shell *shell);
+void					before_quote(t_token *current, int start,
+							t_shell *shell);
+void					after_mult_quote(t_token *current, int end,
+							t_shell *shell);
 int						check_for_more_words(char *str, int i);
 void					expand_all_tokens(t_shell *shell);
 char					*expand_variables(t_shell *shell, char *str);
@@ -170,7 +173,7 @@ int						is_delimiter(char c);
 int						is_special_operator(char *str, int i);
 int						skip_whitespace(char *str, int i);
 int						find_word_boundaries(char *str, int *start);
-int 					syntax_hub(t_shell *shell);
+int						syntax_hub(t_shell *shell);
 
 /* Signals*/
 void					enable_echoctl(void);
@@ -209,7 +212,7 @@ int						check_pwd(t_shell *shell, t_token *token_ptr);
 char					*ft_handle_tilde(char *dir, char *home_dir);
 char					*ft_handle_hyphen(char *dir, char *old_dir);
 /* exit */
-int					ft_exit(t_shell *shell, t_token *token_ptr);
+int						ft_exit(t_shell *shell, t_token *token_ptr);
 /* Execution*/
 void					open_outfile(t_shell *shell);
 int						open_infile(t_shell *shell);
@@ -260,12 +263,15 @@ void					setup_pipeline_redir(t_shell *shell, int proc_i,
 							t_pipe *pipe);
 int						is_target_builtin(t_shell *shell, t_token *target);
 int						is_cmd_a_builtin(t_shell *shell, t_pipe *pipe);
-int 					check_one_builtin(t_shell *shell);
+int						check_one_builtin(t_shell *shell);
 /* echo */
 int						check_echo(t_token *token_ptr);
 
 /* Utils */
-
+int						invalid_identifier_export(char *var);
+char					*safe_strdup(char *s, t_shell *shell);
+char					*safe_strjoin(char *s1, char *s2, t_shell *shell,
+							int free_s1, int free_s2);
 void					handle_sigint_status(t_shell *shell);
 char					**add_env_var(char **env, char *new_var);
 int						find_env_var(char **env, char *var);

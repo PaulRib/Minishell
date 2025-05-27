@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:01:44 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 14:24:07 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:02:26 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	initiate_exec(t_shell *shell)
 	shell->exec->prev_fd = malloc(sizeof(int) * shell->exec->process);
 	if (!shell->exec->fd_in || !shell->exec->fd_out || !shell->exec->nb_cmd
 		|| !shell->exec->prev_fd)
-		free_all (shell, 1);
+		free_all(shell, 1);
 	while (i < shell->exec->process)
 	{
 		shell->exec->prev_fd[i] = 0;
@@ -94,7 +94,7 @@ void	ft_free_exec(t_shell *shell)
 			free(shell->exec->fd_out);
 		if (shell->exec->prev_fd)
 			free(shell->exec->prev_fd);
-		//close_fd_exec(shell);
+		// close_fd_exec(shell);
 		shell->exec = NULL;
 	}
 }

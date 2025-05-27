@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 14:24:24 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:02:56 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int is_cmd_a_builtin(t_shell *shell, t_pipe *pipe)
+int	is_cmd_a_builtin(t_shell *shell, t_pipe *pipe)
 {
 	int		i;
 	t_token	*current;
@@ -54,7 +54,8 @@ char	*give_curr_cmd(t_shell *shell, int i)
 	return (str);
 }
 
-int	get_global_cmd_idx(t_shell *shell, int target_proc_i, int cmd_in_target_proc_i)
+int	get_global_cmd_idx(t_shell *shell, int target_proc_i,
+		int cmd_in_target_proc_i)
 {
 	int	global_idx;
 	int	i;
@@ -115,7 +116,7 @@ void	execute_command(t_shell *shell, char *full_cmd_str)
 		ft_putstr_fd(": command not found (path error)\n", 2);
 		free_tab(exec_args);
 		exit(127);
-		//ft_exit avec sortie 127
+		// ft_exit avec sortie 127
 	}
 	if (execve(cmd_path, exec_args, shell->data->new_env) == -1)
 	{

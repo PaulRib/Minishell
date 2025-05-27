@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:25:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 14:23:34 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:04:58 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	wait_for_command(t_shell *shell, pid_t pid, int is_last)
 				shell->exit_status = 131;
 				handle_sigquit_cmd(sig);
 			}
-			if(sig == SIGINT)
+			if (sig == SIGINT)
 			{
 				shell->exit_status = 130;
 				handle_sigint_cmd(sig);

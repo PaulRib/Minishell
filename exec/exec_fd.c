@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_fd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:41:29 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/21 17:14:17 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:02:42 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ void	open_outfile(t_shell *shell)
 		if (current->type == FILE_OUT)
 		{
 			if (shell->exec->fd_out[i] != 1)
-				close (shell->exec->fd_out[i]);
+				close(shell->exec->fd_out[i]);
 			if (current->prev->type == REDIR_OUT)
-				shell->exec->fd_out[i] = open(current->str, O_WRONLY
-						| O_CREAT | O_TRUNC, 0777);
+				shell->exec->fd_out[i] = open(current->str,
+						O_WRONLY | O_CREAT | O_TRUNC, 0777);
 			else if (current->prev->type == APPEND)
-				shell->exec->fd_out[i] = open(current->str, O_WRONLY
-						| O_CREAT | O_APPEND, 0777);
+				shell->exec->fd_out[i] = open(current->str,
+						O_WRONLY | O_CREAT | O_APPEND, 0777);
 		}
 		if (shell->exec->fd_out[i] > 1 && current->type == PIPE)
 			i++;
@@ -50,7 +50,7 @@ int	open_infile(t_shell *shell)
 		if (current->type == FILE_IN)
 		{
 			if (shell->exec->fd_in[i])
-				close (shell->exec->fd_in[i]);
+				close(shell->exec->fd_in[i]);
 			shell->exec->fd_in[i] = open(current->str, O_RDONLY);
 			if (shell->exec->fd_in[i] == -1)
 			{
@@ -61,7 +61,7 @@ int	open_infile(t_shell *shell)
 			}
 			if (current->type == HEREDOC)
 				if (shell->exec->fd_in[i])
-				close(shell->exec->fd_in[i]);
+					close(shell->exec->fd_in[i]);
 		}
 		if (current->type == PIPE && (current->next->type == REDIR_IN
 				|| current->next->type == HEREDOC))
@@ -71,10 +71,10 @@ int	open_infile(t_shell *shell)
 	return (0);
 }
 
-void close_fd_exec(t_shell *shell)
+void	close_fd_exec(t_shell *shell)
 {
 	int	i;
-	
+
 	i = 0;
 	while (i < shell->exec->process)
 	{

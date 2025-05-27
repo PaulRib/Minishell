@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:49:30 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/22 15:02:50 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:03:10 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static int	atoi_exit_code(char *str, int *error)
 		result = result * 10 + (str[i++] - '0');
 	if (str[i] != '\0')
 		*error = 1;
-	if ((sign == 1 && result > LONG_MAX)
-		|| (sign == -1 && result > (unsigned long long)LONG_MAX + 1))
+	if ((sign == 1 && result > LONG_MAX) || (sign == -1
+			&& result > (unsigned long long)LONG_MAX + 1))
 		*error = 1;
 	return ((int)((result * sign) % 256));
 }
@@ -78,9 +78,10 @@ int	ft_exit(t_shell *shell, t_token *token_ptr)
 	if (exit_value == 1)
 	{
 		shell->exit_status = 1;
-		return (1); ;
+		return (1);
+		;
 	}
 	shell->exit_status = exit_value;
 	free_all(shell, shell->exit_status);
-	return(1);
+	return (1);
 }

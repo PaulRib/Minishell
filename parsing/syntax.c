@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:38:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 15:54:39 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/26 17:59:29 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int syntax_pipe(t_token *current)
+static int	syntax_pipe(t_token *current)
 {
 	if (current->type == PIPE && (!current->prev || !current->next))
 	{
@@ -31,7 +31,7 @@ static int syntax_pipe(t_token *current)
 	return (0);
 }
 
-static int syntax_simple_redir(t_token *current)
+static int	syntax_simple_redir(t_token *current)
 {
 	if (current->type == REDIR_IN && !current->next)
 	{
@@ -58,7 +58,7 @@ static int syntax_simple_redir(t_token *current)
 	return (0);
 }
 
-static int syntax_double_redir(t_token *current)
+static int	syntax_double_redir(t_token *current)
 {
 	if (current->type == HEREDOC && !current->next)
 	{
@@ -85,9 +85,9 @@ static int syntax_double_redir(t_token *current)
 	return (0);
 }
 
-int syntax_hub(t_shell *shell)
+int	syntax_hub(t_shell *shell)
 {
-	t_token *current;
+	t_token	*current;
 
 	current = shell->token;
 	while (current->next)

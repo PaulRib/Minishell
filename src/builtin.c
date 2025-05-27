@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 15:46:09 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/26 17:59:14 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	is_simple_builtin(t_shell *shell)
 		if (check_export(shell, token_ptr) != -1)
 			return (1);
 		if (ft_exit(shell, token_ptr) != -1)
-			return(1);
+			return (1);
 		token_ptr = token_ptr->next;
 	}
 	return (-1);
@@ -69,7 +69,7 @@ static int	do_solo_redir(t_shell *shell, t_token *current, int type)
 	return (1);
 }
 
-int check_one_builtin(t_shell *shell)
+int	check_one_builtin(t_shell *shell)
 {
 	t_token	*current;
 
@@ -92,7 +92,7 @@ int check_one_builtin(t_shell *shell)
 	return (0);
 }
 
-int is_target_builtin(t_shell *shell, t_token *target)
+int	is_target_builtin(t_shell *shell, t_token *target)
 {
 	if (check_cd(shell, target) != -1)
 		return (1);
@@ -109,6 +109,6 @@ int is_target_builtin(t_shell *shell, t_token *target)
 	if (check_export(shell, target) != -1)
 		return (1);
 	if (ft_exit(shell, target) != -1)
-		return(1);
+		return (1);
 	return (-1);
 }

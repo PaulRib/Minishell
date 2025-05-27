@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:58:09 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/22 21:51:09 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/26 17:58:27 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ void	init_signals_child(void)
 
 void	init_signals_heredoc(void)
 {
-	struct sigaction sa_int;
-	struct sigaction sa_quit;
+	struct sigaction	sa_int;
+	struct sigaction	sa_quit;
 
 	disable_echoctl();
 	sa_int.sa_handler = handle_sigint_heredoc;
