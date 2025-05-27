@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:36:54 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/24 17:09:42 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:19:10 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ int handle_all_heredocs_globally_v2(t_shell *shell)
 {
     int process_status;
 
-    g_exit_status = 0;
     if (!shell->heredoc)
         return (0);
     if (create_heredoc_pipes_v2(shell) != 0)

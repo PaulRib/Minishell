@@ -6,13 +6,13 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:44:26 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/09 16:22:24 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:31:31 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	handle_directory(char *dir, char *home_dir, char *old_dir)
+int	handle_directory(char *dir, char *home_dir, char *old_dir, t_shell *shell)
 {
 	if (!ft_strncmp(dir, "-", 2))
 	{
@@ -24,10 +24,10 @@ int	handle_directory(char *dir, char *home_dir, char *old_dir)
 		dir = ft_handle_tilde(dir, home_dir);
 	if (access(dir, F_OK) != 0)
 	{
-		ft_putstr_fd("minishell: cd: no such file or directory", 2);
+		ft_putstr_fd("minishell: cd: no such file or directory ", 2);
 		ft_putstr_fd(dir, 2);
 		ft_putstr_fd("\n", 2);
-		g_exit_status = 1;
+		shell->exit_status = 1;
 		return (1);
 	}
 	if (chdir(dir) != 0)

@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/21 17:30:52 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:29:24 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ int	check_cd(t_shell *shell, t_token *token_ptr)
 	if (is_valid != 0)
 		return (is_valid);
 	if (token_ptr->next)
-		return (ft_cd(shell->data, token_ptr->next->str));
+		return (ft_cd(shell, token_ptr->next->str));
 	else
-		return (ft_cd(shell->data, NULL));
+		return (ft_cd(shell, NULL));
 }
 
 static int	update_cur_dir(t_data *data, char *path_name, char *old_dir)
@@ -66,7 +66,7 @@ static int	update_cur_dir(t_data *data, char *path_name, char *old_dir)
 	return (0);
 }
 
-int	execute_cd(t_data *data, char *path_name, char *home_dir, char *old_dir)
+int	execute_cd(t_shell *shell, char *path_name, char *home_dir, char *old_dir)
 {
 	int	result;
 
@@ -77,31 +77,31 @@ int	execute_cd(t_data *data, char *path_name, char *home_dir, char *old_dir)
 			ft_putstr_fd("bash: cd: HOME not set\n", 2);
 			return (1);
 		}
-		result = handle_directory(home_dir, NULL, NULL);
+		result = handle_directory(home_dir, NULL, NULL, shell);
 	}
 	else
-		result = handle_directory(path_name, home_dir, old_dir);
+		result = handle_directory(path_name, home_dir, old_dir, shell);
 	if (result != 0)
 		return (result);
-	ft_strlcpy(data->old_dir, data->cur_dir, PATH_MAX);
-	if (update_cur_dir(data, path_name, old_dir) != 0)
+	ft_strlcpy(shell->data->old_dir, shell->data->cur_dir, PATH_MAX);
+	if (update_cur_dir(shell->data, path_name, old_dir) != 0)
 		return (-1);
-	update_env_var(data, "OLDPWD", data->old_dir);
-	update_env_var(data, "PWD", data->cur_dir);
+	update_env_var(shell->data, "OLDPWD", shell->data->old_dir);
+	update_env_var(shell->data, "PWD", shell->data->cur_dir);
 	return (1);
 }
 
-int	ft_cd(t_data *data, char *path_name)
+int	ft_cd(t_shell *shell, char *path_name)
 {
 	char	*home_dir;
 	char	*old_dir;
 
-	home_dir = ft_get_env(data->new_env, "HOME");
-	old_dir = ft_get_env(data->new_env, "OLDPWD");
-	if (getcwd(data->old_dir, PATH_MAX) == NULL)
+	home_dir = ft_get_env(shell->data->new_env, "HOME");
+	old_dir = ft_get_env(shell->data->new_env, "OLDPWD");
+	if (getcwd(shell->data->old_dir, PATH_MAX) == NULL)
 	{
 		ft_putstr_fd("bash: cd: getcwd error\n", 2);
 		return (1);
 	}
-	return (execute_cd(data, path_name, home_dir, old_dir));
+	return (execute_cd(shell, path_name, home_dir, old_dir));
 }

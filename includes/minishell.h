@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 17:32:26 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:28:52 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,8 +209,8 @@ int						invalid_identifier_export(char *var);
 /* cd */
 int						check_cd(t_shell *shell, t_token *token_ptr);
 int						handle_directory(char *dir, char *home_dir,
-							char *old_dir);
-int						ft_cd(t_data *data, char *path_name);
+							char *old_dir, t_shell *shell);
+int						ft_cd(t_shell *shell, char *path_name);
 char					*ft_handle_tilde(char *dir, char *home_dir);
 
 /* history */
