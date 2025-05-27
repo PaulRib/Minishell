@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 15:55:29 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:58:46 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ char	*give_curr_cmd(t_shell *shell, int i)
 	while (current && current->type != PIPE)
 	{
 		if (current->type == WORD || current->type == CMD)
-			str = ft_strjoin(str, current->str);
+			str = safe_strjoin(str, current->str, shell, 1);
 		if (current->next && current->next->type == WORD)
-			str = ft_strjoin(str, " ");
+			str = safe_strjoin(str, " ", shell, 1);
 		current = current->next;
 	}
 	return (str);

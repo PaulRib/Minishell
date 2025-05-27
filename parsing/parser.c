@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:59:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 15:34:07 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:05:28 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,6 @@ static void	process_token(t_token *current, t_shell *shell)
 	w_start = 0;
 	prs.w_end = find_word_limit(current->str, &w_start);
 	prs.next_word = 0;
-	printf("%d\n", prs.w_end);
-	printf("%d\n", w_start);
 	if (current->str[prs.w_end] && is_delimiter(current->str[prs.w_end]))
 		prs.next_word = check_for_more_words(current->str, prs.w_end);
 	else if (current->str[prs.w_end])

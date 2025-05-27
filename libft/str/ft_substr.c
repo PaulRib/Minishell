@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:38:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 15:32:54 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:11:58 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		len = ft_strlen(s) - start;
 	if (ft_strlen(s) < len)
 		len = ft_strlen(s) - start;
-	sub = (char *)malloc(sizeof(char) * (len + 1));
+	sub = malloc(sizeof(char) * (len + 1));
 	if (!sub)
 		return (NULL);
 	while (i < len && s[start + i])

@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:40:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 15:56:06 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:58:05 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,7 @@ char	*safe_strdup(char *s, t_shell *shell)
 	return (dup);
 }
 
-char	*safe_strjoin(char *s1, char *s2, t_shell *shell, int free_s1,
-		int free_s2)
+char	*safe_strjoin(char *s1, char *s2, t_shell *shell, int free_s1)
 {
 	char	*result;
 
@@ -80,7 +79,5 @@ char	*safe_strjoin(char *s1, char *s2, t_shell *shell, int free_s1,
 		free_all(shell, 1);
 	if (free_s1 && s1)
 		free(s1);
-	if (free_s2 && s2)
-		free(s2);
 	return (result);
 }

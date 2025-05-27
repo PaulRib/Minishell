@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 15:55:59 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:18:11 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,12 @@ typedef struct s_parse
 	int					next_word;
 	int					op_len;
 }						t_parse;
+
+typedef struct s_export
+{
+	char	*var_name;
+	char	*var_value;
+}						t_export;
 
 typedef struct s_shell
 {
@@ -277,7 +283,7 @@ int						check_echo(t_token *token_ptr);
 int						invalid_identifier_export(char *var);
 char					*safe_strdup(char *s, t_shell *shell);
 char					*safe_strjoin(char *s1, char *s2, t_shell *shell,
-							int free_s1, int free_s2);
+							int free_s1);
 void					handle_sigint_status(t_shell *shell);
 char					**add_env_var(char **env, char *new_var);
 int						find_env_var(char **env, char *var);

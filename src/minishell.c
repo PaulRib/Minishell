@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 14:19:44 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:10:59 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	initiate_all(t_shell *shell)
 {
 	shell->data = malloc(sizeof(t_data));
 	shell->count = malloc(sizeof(t_count));
+	if (!shell->data || !shell->count)
+		free_all(shell, 1);
 	ft_memset(shell->count, 0, sizeof(t_count));
 	shell->history = NULL;
 	ft_memset(shell->data, 0, sizeof(t_data));
@@ -112,6 +114,8 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	shell = malloc(sizeof(t_shell));
+	if (!shell)
+		free_all(shell, 1);
 	ft_memset(shell, 0, sizeof(t_shell));
 	initiate_all(shell);
 	env_exists(env, shell);
