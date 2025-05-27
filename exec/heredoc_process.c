@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_process.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:58:14 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/26 18:02:10 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:55:46 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ static int	process_heredoc_line(t_shell *shell, t_heredoc *hd_node,
 	return (0);
 }
 
-static int	read_heredoc_line(t_shell *shell, t_heredoc *hd_node,
-		char *delimiter)
+static int	read_heredoc_line(t_shell *shell, t_heredoc *hd_node, char *delimiter, int i)
 {
 	char	*line_read;
 
@@ -59,7 +58,8 @@ static int	read_heredoc_line(t_shell *shell, t_heredoc *hd_node,
 		free(line_read);
 		return (1);
 	}
-	process_heredoc_line(shell, hd_node, line_read);
+	if (i == hd_node->nb_heredoc - 1)
+		process_heredoc_line(shell, hd_node, line_read);
 	free(line_read);
 	return (0);
 }
@@ -103,7 +103,7 @@ int	process_heredoc_inputs_loop(t_shell *shell)
 			g_exit_status = 1;
 			return (3);
 		}
-		status = read_heredoc_line(shell, current, current->eof_heredoc[i]);
+		status = read_heredoc_line(shell, current, current->eof_heredoc[i], i);
 		if (status == 1)
 			i++;
 		else if (status == 2 || status == 3)

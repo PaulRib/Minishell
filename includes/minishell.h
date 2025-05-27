@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 15:46:45 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:55:59 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,8 +173,9 @@ void					ft_unified_split(t_shell *shell);
 int						is_delimiter(char c);
 int						is_special_operator(char *str, int i);
 int						skip_whitespace(char *str, int i);
-int						find_word_boundaries(char *str, int *start);
-int						syntax_hub(t_shell *shell);
+int						find_word_limit(char *str, int *start);
+int 					syntax_hub(t_shell *shell);
+void					join_quote(t_shell *shell);
 
 /* Signals*/
 void					enable_echoctl(void);

@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 13:19:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 14:21:44 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/27 13:41:55 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ void	after_quote(t_token *current, t_token *new, int end, t_shell *shell)
 	}
 	else
 	{
-		if (after->str)
 			free(after->str);
-		if (after)
 			free(after);
 	}
 }
@@ -67,12 +65,6 @@ static void	extract_quote(t_token *current, t_quote qte, t_shell *shell)
 			new_token->type = D_QUOTE;
 		else if (qte.c == '\'')
 			new_token->type = S_QUOTE;
-		if (current->str[qte.end + 1] == ' '
-			|| current->str[qte.end + 1] == '\t')
-			new_token->last_space = true;
-		if (current->str[qte.start - 2] == ' '
-			|| current->str[qte.start - 2] == '\t')
-			new_token->first_space = true;
 		if (current->str[qte.end + 1])
 			after_quote(current, new_token, qte.end + 1, shell);
 		before_quote(current, qte.start, shell);
@@ -85,7 +77,6 @@ static int	process_quote2(t_token *current, int i, char c, t_shell *shell)
 {
 	t_quote	quote;
 
-	quote.start = i + 1;
 	quote.c = c;
 	quote.end = is_closed(current, i + 1, quote.c);
 	if (quote.end != 0)

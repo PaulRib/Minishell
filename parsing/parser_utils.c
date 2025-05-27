@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:14:44 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/10 18:22:50 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:43:08 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	skip_whitespace(char *str, int i)
 	return (i);
 }
 
-int	find_word_boundaries(char *str, int *start)
+int	find_word_limit(char *str, int *start)
 {
 	int	i;
 	int	op_len;
