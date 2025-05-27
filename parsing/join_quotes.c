@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:44:29 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 14:24:10 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:41:56 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ static void	change_after(t_shell *shell, t_token *current, int end)
 	}
 	else
 	{
-		current->prev->next = current->next;
+		if (current->prev)
+			current->prev->next = current->next;
 		if (current->next)
 			current->next->prev = current->prev;
 		free(current->str);
@@ -105,19 +106,25 @@ static void fix_quote_after(t_shell *shell, t_token *current)
 void	join_quote(t_shell *shell)
 {
 	t_token	*current;
+	int		len;
 
 	current = shell->token;
 	while (current)
 	{
 		if (current->prev)
+		{
 			if (current->prev->type == S_QUOTE || current->prev->type == D_QUOTE)
 				if (current->str[0] != ' ' && current->str[0] != '\t')
 					fix_quote_before(shell, current);
-		if (current->next)
+		}
+		else if (current->next)
+		{
+			len = ft_strlen(current->str);
 			if (current->next->type == S_QUOTE || current->next->type == D_QUOTE)
-				if (current->str[ft_strlen(current->str)] != ' '
-				&& current->str[ft_strlen(current->str)] != '\t')
+				if (current->str[len - 1] != ' '
+				&& current->str[len - 1] != '\t')
 					fix_quote_after(shell, current);
+		}
 		current = current->next;
 	}
 }

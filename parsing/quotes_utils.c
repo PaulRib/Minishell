@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:56:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 12:57:55 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:40:47 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,7 @@ void	after_mult_quote(t_token *current, int end, t_shell *shell)
 	}
 	else
 	{
-		if (after->str)
-			free(after->str);
-		if (after)
-			free(after);
+		free(after->str);
+		free(after);
 	}
 }
