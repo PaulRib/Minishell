@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 18:20:27 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:49:38 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 	if (handling_quotes(shell) == -1)
 		return ;
 	expand_all_tokens(shell);
+	t_token *tmp = shell->token;
+	while(tmp)
+	{
+		printf("Type du token : -%d-\n", tmp->type);
+		printf("Contenu du token : -%s-\n", tmp->str);
+		tmp = tmp->next;
+	}
 	join_quote(shell);
-	// t_token *tmp = shell->token;
-	// while(tmp)
-	// {
-	// 	printf("Type du token : %d\n", tmp->type);
-	// 	printf("Contenu du token : %s\n", tmp->str);
-	// 	tmp = tmp->next;
-	// }
 	ft_split_word(shell);
 	get_type(shell);
 	second_token(shell);
