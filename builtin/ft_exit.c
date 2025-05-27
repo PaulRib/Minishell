@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:49:30 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/26 18:03:10 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:29:34 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int	ft_exit(t_shell *shell, t_token *token_ptr)
 	{
 		shell->exit_status = 1;
 		return (1);
-		;
 	}
 	shell->exit_status = exit_value;
 	free_all(shell, shell->exit_status);

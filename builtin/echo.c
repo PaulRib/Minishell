@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:15:41 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/27 12:10:27 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:28:58 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,32 @@ static void	new_node_echo(t_token *current, int start)
 	new->prev = current;
 }
 
+static int	is_n_flag(char *str, int i, int *end)
+{
+	int	start;
+
+	start = i;
+	if (str[i] == '-' && str[i + 1] == 'n')
+	{
+		i += 2;
+		while (str[i] == 'n')
+			i++;
+		if (str[i] == '\0' || str[i] == ' ')
+		{
+			if (str[i] == ' ')
+				i++;
+			*end = i;
+			return (1);
+		}
+	}
+	return (0);
+}
+
 int	ft_count(t_token *current)
 {
 	int		i;
 	int		n;
 	t_token	*tmp;
-	int		start_pos;
 
 	tmp = current;
 	i = 0;
@@ -43,31 +63,13 @@ int	ft_count(t_token *current)
 	{
 		while (i < 4)
 			i++;
-		if (tmp->str[i] == '-' && tmp->str[i + 1] == 'n')
-		{
-			start_pos = i;
-			i += 2;
-			while (tmp->str[i] == 'n')
-				i++;
-			if (tmp->str[i] == '\0' || tmp->str[i] == ' ')
-			{
-				n++;
-				if (tmp->str[i] == ' ')
-					i++;
-			}
-			else
-			{
-				new_node_echo(tmp, start_pos);
-				return (n);
-			}
-		}
+		if (is_n_flag(tmp->str, i, &i))
+			n++;
 		else if (tmp->str[i] != '\0' && tmp->str[i] != ' ')
 		{
 			new_node_echo(tmp, i);
 			return (n);
 		}
-		else if (tmp->str[i] == ' ')
-			i++;
 		else
 			i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:31:06 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/27 16:52:19 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:31:31 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,12 @@ void	print_export_format(char *env_var)
 	if (equal_sign != -1)
 		print_export_value(env_var, equal_sign);
 	ft_printf("\n");
+}
+
+int	invalid_identifier_export(char *var)
+{
+	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(var, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+	return (0);
 }
