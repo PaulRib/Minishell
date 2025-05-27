@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:15:41 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/27 17:28:58 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:46:46 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,15 @@ int	ft_echo(t_token *token_ptr)
 	n_param = 0;
 	n_param = ft_count(token_ptr);
 	current = token_ptr->next;
-	while (current && (current->type == WORD || current->type == S_QUOTE
-			|| current->type == D_QUOTE))
+	while (current && current->type != PIPE)
 	{
-		ft_putstr_fd(current->str, 1);
-		if (current->next)
-			write(1, " ", 1);
+		if (current->type == WORD || current->type == S_QUOTE
+			|| current->type == D_QUOTE)
+		{
+			ft_putstr_fd(current->str, 1);
+			if (current->next)
+				write(1, " ", 1);
+		}
 		current = current->next;
 	}
 	if (n_param == 0)
