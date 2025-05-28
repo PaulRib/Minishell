@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:36:54 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 18:19:10 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:55:41 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	stock_all_heredoc(t_shell *shell)
 		while (current)
 		{
 			if (current->type == END)
-				tmp->eof_heredoc[i++] = current->str;
+				tmp->eof_heredoc[i++] = ft_strdup(current->str);
 			if (current->type == PIPE && current->next->type != REDIR_IN
 			&& current->next->type != HEREDOC)
 			{
@@ -124,18 +124,14 @@ int handle_all_heredocs_globally_v2(t_shell *shell)
     if (!shell->heredoc)
         return (0);
     if (create_heredoc_pipes_v2(shell) != 0)
-    {
-        ft_free_heredoc(shell);
-        shell->heredoc = NULL;
 		free_all(shell, 1);
-    }
     process_status = process_heredoc_inputs_loop(shell);
     if (process_status == 0 || process_status == 1)
         return (0);
     else 
     {
         close_all_heredoc_fds(shell->heredoc);
-        ft_free_heredoc(shell);
+    	ft_free_heredoc(&shell);
         shell->heredoc = NULL;
         if (process_status == 2)
             return (130);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_hub.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:28 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/26 18:02:33 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:55:37 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	process_heredocs(t_shell *shell)
 	if (handle_all_heredocs_globally_v2(shell) != 0)
 	{
 		ft_free_exec(shell);
-		ft_free_heredoc(shell);
+		ft_free_heredoc(&shell);
 		return (1);
 	}
 	return (0);
@@ -58,8 +58,8 @@ void	run_global_child_process_v2(t_shell *shell)
 		exit(shell->exit_status);
 	setup_heredoc_fds(shell);
 	execute_commands_sequence_child_v2(shell);
-	// ft_free_exec(shell);
-	// ft_free_heredoc(shell);
+	ft_free_exec(shell);
+	ft_free_heredoc(&shell);
 	exit(shell->exit_status);
 }
 

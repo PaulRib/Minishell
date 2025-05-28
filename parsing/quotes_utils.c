@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:56:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 16:40:47 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/28 13:11:34 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,11 @@ void	before_quote(t_token *current, int start, t_shell *shell)
 	while (start > 0 && (current->str[start] == ' '
 			|| current->str[start] == '\t' || current->str[start] == '\n'))
 		start--;
+	while (start > 0 && (current->str[start] == '\'' || current->str[start] == '"'))
+		start--;
 	if (start > 0)
 	{
-		rest = ft_substr(current->str, 0, start - 1);
+		rest = ft_substr(current->str, 0, start + 1);
 		if (!rest)
 			free_all(shell, 1);
 		free(current->str);

@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:40:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 15:58:05 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:15:38 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	free_all(t_shell *shell, int status)
 	if (shell)
 	{
 		if (shell->heredoc)
-			ft_free_heredoc(shell);
+			ft_free_heredoc(&shell);
 		if (shell->exec)
 			ft_free_exec(shell);
 		if (shell->count)

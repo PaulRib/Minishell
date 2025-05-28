@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_fd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:41:29 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/26 18:02:42 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:55:39 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	process_redirections(t_shell *shell)
 	if (infile_status == -1)
 	{
 		ft_free_exec(shell);
-		ft_free_heredoc(shell);
+		ft_free_heredoc(&shell);
 		return (1);
 	}
 	return (0);

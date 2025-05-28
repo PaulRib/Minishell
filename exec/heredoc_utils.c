@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:39:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/26 18:01:59 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:02:08 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,17 +77,19 @@ void	check_current_type(t_token *current, t_heredoc *tmp, int process)
 	}
 }
 
-void	ft_free_heredoc(t_shell *shell)
+void	ft_free_heredoc(t_shell **shell)
 {
 	t_heredoc	*hd_next;
 
-	while (shell->heredoc)
+	while ((*shell)->heredoc)
 	{
-		hd_next = shell->heredoc->next;
-		if (*shell->heredoc->eof_heredoc)
-			free_tab(shell->heredoc->eof_heredoc);
-		free(shell->heredoc);
-		shell->heredoc = hd_next;
+		hd_next = (*shell)->heredoc->next;
+		if ((*shell)->heredoc->eof_heredoc)
+		{
+			free_tab((*shell)->heredoc->eof_heredoc);
+		}
+		free((*shell)->heredoc);
+		(*shell)->heredoc = hd_next;
 	}
-	shell->heredoc = NULL;
+	(*shell)->heredoc = NULL;
 }

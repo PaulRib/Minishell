@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 18:49:38 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:44:05 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,6 @@ void	ft_free_node(t_shell *shell)
 	while (shell->token)
 	{
 		tmp = shell->token->next;
-		shell->token->first_space = false;
-		shell->token->last_space = false;
 		if (shell->token->str)
 			free(shell->token->str);
 		free(shell->token);

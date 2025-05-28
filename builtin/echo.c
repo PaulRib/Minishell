@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:15:41 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/27 18:46:46 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:00:44 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ int	ft_echo(t_token *token_ptr)
 
 int	check_echo(t_token *token_ptr)
 {
-	if (ft_strncmp(token_ptr->str, "echo", 4) != 0 && (token_ptr->str[4] != ' '
-			|| token_ptr->str[4] != '\0'))
+	if (ft_strncmp(token_ptr->str, "echo ", 5) != 0
+		|| ft_strncmp(token_ptr->str, "echo", 5)) 
 		return (-1);
 	return (ft_echo(token_ptr));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 18:28:52 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:53:36 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,7 +255,7 @@ void					check_and_create(t_shell *shell, t_token *current,
 							t_heredoc *tmp);
 void					check_current_type(t_token *current, t_heredoc *tmp,
 							int process);
-void					ft_free_heredoc(t_shell *shell);
+void					ft_free_heredoc(t_shell **shell);
 void					stock_all_heredoc(t_shell *shell);
 void					initiate_heredoc(t_shell *shell);
 int						create_heredoc_pipes_v2(t_shell *shell);
