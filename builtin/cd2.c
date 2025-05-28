@@ -72,10 +72,7 @@ char	*ft_handle_tilde(char *dir, char *home_dir, t_shell *shell)
 		tmp = ft_substr(dir, 1, ft_strlen(dir) - 1);
 		free(dir);
 		if (!tmp)
-		{
-			free(tmp);
 			free_all(shell, 1);
-		}
 		dir = ft_strjoin(home_dir, tmp);
 		free(tmp);
 		if (!dir)
