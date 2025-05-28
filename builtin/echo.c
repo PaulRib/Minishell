@@ -31,9 +31,6 @@ static void	new_node_echo(t_token *current, int start)
 
 static int	is_n_flag(char *str, int i, int *end)
 {
-	int	start;
-
-	start = i;
 	if (str[i] == '-' && str[i + 1] == 'n')
 	{
 		i += 2;
