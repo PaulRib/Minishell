@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 15:14:26 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:55:42 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	*get_path(char *cmd, char **envp, t_shell *shell)
 
 	i = 0;
 	if (access(cmd, X_OK) == 0)
-		return (cmd);
+		return (ft_strdup(cmd));
 	while (envp[i] && ft_strncmp(envp[i], "PATH", 4) != 0)
 		i++;
 	path = ft_split(envp[i] + 5, ':');

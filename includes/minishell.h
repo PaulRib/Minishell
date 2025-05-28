@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 14:53:36 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:55:47 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ void					after_mult_quote(t_token *current, int end,
 int						check_for_more_words(char *str, int i);
 void					expand_all_tokens(t_shell *shell);
 char					*expand_variables(t_shell *shell, char *str);
-char					*append_normal_char(char *result, char *str, int *i);
+char					*append_normal_char(char *result, char *str, int *i, t_shell *shell);
 void					ft_unified_split(t_shell *shell);
 int						is_delimiter(char c);
 int						is_special_operator(char *str, int i);
@@ -211,19 +211,20 @@ int						check_cd(t_shell *shell, t_token *token_ptr);
 int						handle_directory(char *dir, char *home_dir,
 							char *old_dir, t_shell *shell);
 int						ft_cd(t_shell *shell, char *path_name);
-char					*ft_handle_tilde(char *dir, char *home_dir);
+char					*ft_handle_hyphen(char *dir, char *old_dir,
+							t_shell *shell);
+char					*ft_handle_tilde(char *dir, char *home_dir,
+							t_shell *shell);
 
 /* history */
 int						ft_history(t_shell *hub);
 void					add_to_history(t_shell *shell, char *command);
 /* unset */
 int						check_unset(t_shell *shell, t_token *token_ptr);
-int						ft_unset(t_data *data, char *var_name);
+int						ft_unset(t_data *data, char *var_name, t_shell *shell);
 /* pwd */
 int						ft_pwd(t_shell *shell);
 int						check_pwd(t_shell *shell, t_token *token_ptr);
-char					*ft_handle_tilde(char *dir, char *home_dir);
-char					*ft_handle_hyphen(char *dir, char *old_dir);
 /* exit */
 int						ft_exit(t_shell *shell, t_token *token_ptr);
 /* Execution*/

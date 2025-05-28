@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 14:44:05 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:55:51 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 	if (handling_quotes(shell) == -1)
 		return ;
 	expand_all_tokens(shell);
-	t_token *tmp = shell->token;
-	while(tmp)
-	{
-		printf("Type du token : -%d-\n", tmp->type);
-		printf("Contenu du token : -%s-\n", tmp->str);
-		tmp = tmp->next;
-	}
+	// t_token *tmp = shell->token;
+	// while(tmp)
+	// {
+	// 	printf("Type du token : -%d-\n", tmp->type);
+	// 	printf("Contenu du token : -%s-\n", tmp->str);
+	// 	tmp = tmp->next;
+	// }
 	join_quote(shell);
 	ft_split_word(shell);
 	get_type(shell);

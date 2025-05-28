@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:44:26 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/27 18:31:31 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/28 13:18:11 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ int	handle_directory(char *dir, char *home_dir, char *old_dir, t_shell *shell)
 {
 	if (!ft_strncmp(dir, "-", 2))
 	{
-		dir = ft_handle_hyphen(dir, old_dir);
+		dir = ft_handle_hyphen(dir, old_dir, shell);
 		if (!dir)
 			return (1);
 	}
 	if (!ft_strncmp(dir, "~", 1))
-		dir = ft_handle_tilde(dir, home_dir);
+		dir = ft_handle_tilde(dir, home_dir, shell);
 	if (access(dir, F_OK) != 0)
 	{
 		ft_putstr_fd("minishell: cd: no such file or directory ", 2);
@@ -40,7 +40,7 @@ int	handle_directory(char *dir, char *home_dir, char *old_dir, t_shell *shell)
 	return (0);
 }
 
-char	*ft_handle_hyphen(char *dir, char *old_dir)
+char	*ft_handle_hyphen(char *dir, char *old_dir, t_shell *shell)
 {
 	if (!old_dir)
 	{
@@ -50,25 +50,41 @@ char	*ft_handle_hyphen(char *dir, char *old_dir)
 	}
 	free(dir);
 	dir = ft_strdup(old_dir);
+	if (!dir)
+	{
+		free(old_dir);
+		free(dir);
+		free_all(shell, 1);
+	}
 	ft_printf("%s\n", old_dir);
 	return (dir);
 }
 
-char	*ft_handle_tilde(char *dir, char *home_dir)
+char	*ft_handle_tilde(char *dir, char *home_dir, t_shell *shell)
 {
 	char	*tmp;
 
 	if (!ft_strcmp(dir, "~"))
 	{
 		free(dir);
-		dir = ft_strdup(home_dir);
+		dir = safe_strdup(home_dir, shell);
 	}
 	else
 	{
 		tmp = ft_substr(dir, 1, ft_strlen(dir) - 1);
 		free(dir);
+		if (!tmp)
+		{
+			free(tmp);
+			free_all(shell, 1);
+		}
 		dir = ft_strjoin(home_dir, tmp);
 		free(tmp);
+		if (!dir)
+		{
+			free(dir);
+			free_all(shell, 1);
+		}
 	}
 	return (dir);
 }
