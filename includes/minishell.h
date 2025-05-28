@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 19:24:49 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:33:43 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,8 +142,8 @@ void					shell_loop(t_shell *shell);
 
 /* Environnement */
 void					env_exists(char **env, t_shell *shell);
-char					**copy_env(char **env, t_data *data);
-char					**build_env(t_data *data);
+char					**copy_env(char **env, t_shell *shell);
+char					**build_env(t_shell *shell);
 int						print_env(t_shell *hub);
 char					*ft_get_env(char **env, char *var_name);
 int						find_env_var(char **env, char *var);
@@ -283,7 +283,7 @@ int						is_target_builtin(t_shell *shell, t_token *target);
 int						is_cmd_a_builtin(t_shell *shell, t_pipe *pipe);
 int						check_one_builtin(t_shell *shell);
 /* echo */
-int						check_echo(t_token *token_ptr);
+int						check_echo(t_token *token_ptr, t_shell *shell);
 
 /* Utils */
 char					*safe_strdup(char *s, t_shell *shell);

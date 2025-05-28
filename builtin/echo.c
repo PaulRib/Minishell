@@ -3,23 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:15:41 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/28 15:00:44 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:23:18 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	new_node_echo(t_token *current, int start)
+static void	new_node_echo(t_token *current, int start, t_shell *shell)
 {
 	t_token	*new;
 	char	*echo;
 
 	new = malloc(sizeof(t_token));
 	new->str = ft_substr(current->str, start, ft_strlen(current->str) - start);
+	if (new->str)
+	{
+		free(new);
+		free_all(shell, 1);
+	}
 	echo = ft_substr(current->str, 0, start - 1);
+	if (!echo)
+	{
+		free(new->str);
+		free(new);
+		free_all(shell, 1);
+	}
 	free(current->str);
 	new->type = WORD;
 	current->str = echo;
@@ -47,7 +58,7 @@ static int	is_n_flag(char *str, int i, int *end)
 	return (0);
 }
 
-int	ft_count(t_token *current)
+int	ft_count(t_token *current, t_shell *shell)
 {
 	int		i;
 	int		n;
@@ -64,7 +75,7 @@ int	ft_count(t_token *current)
 			n++;
 		else if (tmp->str[i] != '\0' && tmp->str[i] != ' ')
 		{
-			new_node_echo(tmp, i);
+			new_node_echo(tmp, i, shell);
 			return (n);
 		}
 		else
@@ -73,13 +84,13 @@ int	ft_count(t_token *current)
 	return (n);
 }
 
-int	ft_echo(t_token *token_ptr)
+static int	ft_echo(t_token *token_ptr, t_shell *shell)
 {
 	t_token	*current;
 	int		n_param;
 
 	n_param = 0;
-	n_param = ft_count(token_ptr);
+	n_param = ft_count(token_ptr, shell);
 	current = token_ptr->next;
 	while (current && current->type != PIPE)
 	{
@@ -97,10 +108,10 @@ int	ft_echo(t_token *token_ptr)
 	return (0);
 }
 
-int	check_echo(t_token *token_ptr)
+int	check_echo(t_token *token_ptr, t_shell *shell)
 {
 	if (ft_strncmp(token_ptr->str, "echo ", 5) != 0
-		|| ft_strncmp(token_ptr->str, "echo", 5)) 
+		|| ft_strncmp(token_ptr->str, "echo", 5))
 		return (-1);
-	return (ft_echo(token_ptr));
+	return (ft_echo(token_ptr, shell));
 }

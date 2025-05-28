@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:34:47 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/28 17:05:36 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:28:14 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,11 @@ char	*handle_dollar(t_shell *shell, char *str, int *i)
 	char	*value;
 
 	(*i)++;
+	if (str[*i] == '$')
+	{
+		(*i)++;
+		return (ft_itoa(getpid()));
+	}
 	if (!str[*i] || str[*i] == ' ' || str[*i] == '\t' || str[*i] == '\n')
 		return (safe_strdup("$", shell));
 	name = get_var_name(str, i, shell);
