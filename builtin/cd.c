@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 14:18:44 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:04:55 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int	execute_cd(t_shell *shell, char *path_name, char *home_dir, char *old_dir)
 		if (!home_dir)
 		{
 			ft_putstr_fd("bash: cd: HOME not set\n", 2);
+			shell->exit_status = 1;
 			return (1);
 		}
 		result = handle_directory(home_dir, NULL, NULL, shell);
@@ -86,8 +87,10 @@ int	execute_cd(t_shell *shell, char *path_name, char *home_dir, char *old_dir)
 	ft_strlcpy(shell->data->old_dir, shell->data->cur_dir, PATH_MAX);
 	if (update_cur_dir(shell->data, path_name, old_dir) != 0)
 		return (-1);
-	update_env_var(shell->data, "OLDPWD", shell->data->old_dir);
-	update_env_var(shell->data, "PWD", shell->data->cur_dir);
+	if (ft_get_env(shell->data->new_env, "OLDPWD"))
+		update_env_var(shell->data, "OLDPWD", shell->data->old_dir);
+	if (ft_get_env(shell->data->new_env, "PWD"))
+		update_env_var(shell->data, "PWD", shell->data->cur_dir);
 	return (1);
 }
 
