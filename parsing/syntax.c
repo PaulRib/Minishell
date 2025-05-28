@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:38:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 15:56:02 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/28 12:39:24 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,14 +91,23 @@ int	syntax_hub(t_shell *shell)
 	t_token	*current;
 
 	current = shell->token;
-	while (current->next)
+	while (current)
 	{
 		if (syntax_pipe(current) == -1)
+		{
+			shell->exit_status = 2;
 			return (-1);
+		}
 		if (syntax_double_redir(current) == -1)
+		{
+			shell->exit_status = 2;
 			return (-1);
+		}
 		if (syntax_simple_redir(current) == -1)
+		{
+			shell->exit_status = 2;
 			return (-1);
+		}
 		current = current->next;
 	}
 	return (0);
