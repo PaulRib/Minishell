@@ -22,7 +22,7 @@ static char	**remove_env_var(char **env, int index, t_shell *shell)
 	env_len = 0;
 	while (env[env_len])
 		env_len++;
-	new_env = malloc(env_len * sizeof(char *));
+	new_env = malloc((env_len) * sizeof(char *));
 	if (!new_env)
 		free_all(shell, 1);
 	i = 0;
@@ -31,7 +31,7 @@ static char	**remove_env_var(char **env, int index, t_shell *shell)
 	{
 		if (i != index)
 		{
-			new_env[j] = ft_strdup(env[i]);
+			new_env[j] = ft_strdup(env[i]); // protéger ici
 			j++;
 		}
 		i++;
