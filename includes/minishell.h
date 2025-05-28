@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 15:55:47 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:05:58 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,11 @@ void					after_mult_quote(t_token *current, int end,
 int						check_for_more_words(char *str, int i);
 void					expand_all_tokens(t_shell *shell);
 char					*expand_variables(t_shell *shell, char *str);
-char					*append_normal_char(char *result, char *str, int *i, t_shell *shell);
+char					*handle_dollar(t_shell *shell, char *str, int *i);
+char					*join_expanded_var(t_shell *shell, char *result,
+							char *str, int *i);
+char					*append_normal_char(char *result, char *str, int *i,
+							t_shell *shell);
 void					ft_unified_split(t_shell *shell);
 int						is_delimiter(char c);
 int						is_special_operator(char *str, int i);

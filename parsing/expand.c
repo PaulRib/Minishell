@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:34:47 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/28 14:53:40 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:05:36 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static char	*get_env_or_exit_status(t_shell *shell, char *name)
 	return (result);
 }
 
-static char	*handle_dollar(t_shell *shell, char *str, int *i)
+char	*handle_dollar(t_shell *shell, char *str, int *i)
 {
 	char	*name;
 	char	*value;
@@ -80,7 +80,6 @@ char	*expand_variables(t_shell *shell, char *str)
 {
 	int		i;
 	char	*result;
-	char	*var;
 
 	if (!str)
 		return (NULL);
@@ -90,14 +89,7 @@ char	*expand_variables(t_shell *shell, char *str)
 	{
 		if (str[i] == '$')
 		{
-			var = handle_dollar(shell, str, &i);
-			result = ft_strjoin(result, var);
-			if (!result)
-			{
-				free(var);
-				free_all(shell, 1);
-			}
-			free(var);
+			result = join_expanded_var(shell, result, str, &i);
 		}
 		else
 			result = append_normal_char(result, str, &i, shell);
