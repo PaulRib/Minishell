@@ -66,6 +66,11 @@ char	*ft_handle_tilde(char *dir, char *home_dir, t_shell *shell)
 	{
 		if(home_dir)
 			dir = safe_strdup(home_dir, shell);
+		else
+		{
+			ft_putstr_fd("bash: cd: HOME not set\n", 2)
+			return (NULL);
+		}
 	}
 	else
 	{
