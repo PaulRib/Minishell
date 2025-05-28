@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 15:55:42 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:23:19 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,14 @@ void	execute_command(t_shell *shell, char *full_cmd_str)
 	if (!exec_args || !exec_args[0])
 		free_all(shell, 1);
 	cmd_path = get_path(exec_args[0], shell->data->new_env, shell);
+	if (!cmd_path)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(exec_args[0], STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		free_tab(exec_args);
+		exit(127);
+	}
 	if (execve(cmd_path, exec_args, shell->data->new_env) == -1)
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 17:05:58 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:24:49 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ typedef struct s_exec
 
 typedef struct s_pipe
 {
-	int (*pipe_fds)[2];
+	int 				(*pipe_fds)[2];
 	pid_t				*pids;
 	int					cmd_idx;
 	int					global_idx;

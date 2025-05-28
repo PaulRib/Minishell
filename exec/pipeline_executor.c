@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_executor.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/26 18:01:43 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:12:25 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,8 @@ void	setup_pipeline_redir(t_shell *shell, int proc_i, t_pipe *pipe)
 		}
 	}
 	else
+	{
 		dup2(pipe->pipe_fds[pipe->cmd_idx][1], STDOUT_FILENO);
+		close(pipe->pipe_fds[pipe->cmd_idx][1]);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:28 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 14:55:37 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:05:56 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,6 @@ void	execute_pipeline_v2(t_shell *shell, int proc_i)
 	close_all_pipe_fds(shell, pipe_fds, proc_i);
 	free(pipe_fds);
 	wait_for_all_commands(shell, pids, proc_i);
-	init_signals();
 	free(pids);
+	init_signals();
 }

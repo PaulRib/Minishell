@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 16:40:35 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:16:18 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,22 +38,7 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 	if (handling_quotes(shell) == -1)
 		return ;
 	expand_all_tokens(shell);
-	// t_token *tmp = shell->token;
-	// while(tmp)
-	// {
-	// 	printf("Type du token : -%d-\n", tmp->type);
-	// 	printf("Contenu du token : -%s-\n", tmp->str);
-	// 	tmp = tmp->next;
-	// }
 	join_quote(shell);
-	// tmp = shell->token;
-	// while(tmp)
-	// {
-	// 	printf("-----------------------------\n");
-	// 	printf("Type du token : -%d-\n", tmp->type);
-	// 	printf("Contenu du token : -%s-\n", tmp->str);
-	// 	tmp = tmp->next;
-	// }
 	ft_split_word(shell);
 	get_type(shell);
 	second_token(shell);
@@ -127,6 +112,5 @@ int	main(int ac, char **av, char **env)
 	env_exists(env, shell);
 	shell_loop(shell);
 	free_all(shell, 0);
-	//free_tab(env);
 	return (0);
 }

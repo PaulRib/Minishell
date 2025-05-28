@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:58:14 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 18:49:45 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:01:38 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ void	close_heredoc_fds(t_shell *shell)
 		{
 			if (current->p_fd[1] > 2)
 				close(current->p_fd[1]);
+			if (current->p_fd[0] > 2)
+				close(current->p_fd[0]);
 			i++;
 		}
 		current = current->next;

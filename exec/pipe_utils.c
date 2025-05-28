@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:25:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/26 18:04:58 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:11:34 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	create_pipeline_pipes(t_shell *shell, int (**pipe_fds)[2], int proc_i)
 	}
 	return (1);
 }
-
+//probleme de murad ici de merde
 static void	wait_for_command(t_shell *shell, pid_t pid, int is_last)
 {
 	int	status;

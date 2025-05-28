@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join_quotes.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:44:29 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 16:32:54 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:13:18 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,14 @@ static int	find_space(t_token *current, int i)
 	return (i);
 }
 
-static void	change_after(t_shell *shell, t_token *current, int end)
+static t_token	*change_after(t_shell *shell, t_token *current, int end)
 {
 	int		len;
 	char	*tmp;
+	t_token	*next_token;
 
 	len = ft_strlen(current->str);
+	next_token = current->next;
 	if (len != end)
 	{
 		tmp = ft_substr(current->str, end + 1, len - end);
@@ -48,6 +50,7 @@ static void	change_after(t_shell *shell, t_token *current, int end)
 			free_all(shell, 1);
 		free(current->str);
 		current->str = tmp;
+		return (current);
 	}
 	else
 	{
@@ -57,11 +60,11 @@ static void	change_after(t_shell *shell, t_token *current, int end)
 			current->next->prev = current->prev;
 		free(current->str);
 		free(current);
-		current = NULL;
+		return (next_token);
 	}
 }
 
-static void	fix_quote_before(t_shell *shell, t_token *current)
+static t_token	*fix_quote_before(t_shell *shell, t_token *current)
 {
 	char	*final;
 	int		end;
@@ -77,7 +80,7 @@ static void	fix_quote_before(t_shell *shell, t_token *current)
 		free_all(shell, 1);
 	free(current->prev->str);
 	current->prev->str = final;
-	change_after(shell, current, end);
+	return (change_after(shell, current, end));
 }
 
 static void fix_quote_after(t_shell *shell, t_token *current)
@@ -115,7 +118,7 @@ void	join_quote(t_shell *shell)
 		{
 			if (current->prev->type == S_QUOTE || current->prev->type == D_QUOTE)
 				if (current->str[0] != ' ' && current->str[0] != '\t')
-					fix_quote_before(shell, current);
+					current = fix_quote_before(shell, current);
 		}
 		else if (current->next)
 		{
