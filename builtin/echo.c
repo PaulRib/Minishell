@@ -19,7 +19,7 @@ static void	new_node_echo(t_token *current, int start, t_shell *shell)
 
 	new = malloc(sizeof(t_token));
 	new->str = ft_substr(current->str, start, ft_strlen(current->str) - start);
-	if (new->str)
+	if (!new->str)
 	{
 		free(new);
 		free_all(shell, 1);
