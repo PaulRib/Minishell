@@ -6,13 +6,13 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 15:17:08 by meel-war          #+#    #+#             */
-/*   Updated: 2025/04/30 15:12:58 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/28 13:12:13 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static char	**remove_env_var(char **env, int index)
+static char	**remove_env_var(char **env, int index, t_shell *shell)
 {
 	int		i;
 	int		j;
@@ -24,7 +24,7 @@ static char	**remove_env_var(char **env, int index)
 		env_len++;
 	new_env = malloc(env_len * sizeof(char *));
 	if (!new_env)
-		return (NULL);
+		free_all(shell, 1);
 	i = 0;
 	j = 0;
 	while (env[i])
@@ -40,7 +40,7 @@ static char	**remove_env_var(char **env, int index)
 	return (new_env);
 }
 
-int	ft_unset(t_data *data, char *var_name)
+int	ft_unset(t_data *data, char *var_name, t_shell *shell)
 {
 	int		var_index;
 	char	**new_env;
@@ -50,7 +50,7 @@ int	ft_unset(t_data *data, char *var_name)
 	var_index = find_env_var(data->new_env, var_name);
 	if (var_index != -1)
 	{
-		new_env = remove_env_var(data->new_env, var_index);
+		new_env = remove_env_var(data->new_env, var_index, shell);
 		if (new_env)
 		{
 			free_tab(data->new_env);
@@ -66,5 +66,5 @@ int	check_unset(t_shell *shell, t_token *token_ptr)
 		return (-1);
 	if (!token_ptr->next)
 		return (0);
-	return (ft_unset(shell->data, token_ptr->next->str));
+	return (ft_unset(shell->data, token_ptr->next->str, shell));
 }

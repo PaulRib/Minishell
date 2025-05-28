@@ -6,13 +6,13 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 17:41:46 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/26 17:59:44 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:53:43 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*append_normal_char(char *result, char *str, int *i)
+char	*append_normal_char(char *result, char *str, int *i, t_shell *shell)
 {
 	char	c[2];
 	char	*final;
@@ -20,6 +20,11 @@ char	*append_normal_char(char *result, char *str, int *i)
 	c[0] = str[*i];
 	c[1] = '\0';
 	final = ft_strjoin(result, c);
+	if (!final)
+	{
+		free(result);
+		free_all(shell, 1);
+	}
 	free(result);
 	(*i)++;
 	return (final);
