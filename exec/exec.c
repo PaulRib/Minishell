@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 15:39:14 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 19:48:55 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,15 @@ char	**give_curr_cmd(t_shell *shell, int i)
 {
 	t_token	*current;
 	int		count;
-	t_token	*tmp;
+	t_token	*tmp; 
 
 	count = 0;
 	current = shell->token;
 	while (current && i)
 	{
 		if (current->type == PIPE)
-			i--;
+			if (command_in_pipe(current->next))
+				i--;
 		current = current->next;
 	}
 	tmp = current;
@@ -99,8 +100,9 @@ void	execute_command(t_shell *shell, char **exec_args)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(exec_args[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
+		free(cmd_path);
 		free_tab(exec_args);
-		exit(127);
+		free_all(shell, 127);
 	}
 	if (execve(cmd_path, exec_args, shell->data->new_env) == -1)
 	{
@@ -109,6 +111,6 @@ void	execute_command(t_shell *shell, char **exec_args)
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		free(cmd_path);
 		free_tab(exec_args);
-		exit(127);
+		free_all(shell, 127);
 	}
 }

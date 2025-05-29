@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:49:30 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/29 18:58:39 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/29 20:13:52 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+static void	is_only_space(char *str, int *error)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ' && str[i] != '\t')
+			return ;
+		i++;
+	}
+	*error = 1;
+}
 
 static int	atoi_exit_code(char *str, int *error)
 {
@@ -52,9 +66,8 @@ static int	validate_exit_args(t_token *token_ptr)
 	int	exit_value;
 
 	error = 0;
-	if (!token_ptr->next)
-		return (-1);
 	exit_value = atoi_exit_code(token_ptr->next->str, &error);
+	is_only_space(token_ptr->next->str, &error);
 	if (error)
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
@@ -67,6 +80,11 @@ static int	validate_exit_args(t_token *token_ptr)
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
+	if (token_ptr->next->str[0] == '\0')
+	{
+		ft_putstr_fd("minishell: exit: : numeric argument required\n", 2);
+		return (2);
+	}
 	return (exit_value);
 }
 
@@ -76,10 +94,10 @@ int	ft_exit(t_shell *shell, t_token *token_ptr)
 
 	if (ft_strcmp(token_ptr->str, "exit") != 0)
 		return (-1);
-	// ft_putstr_fd("exit\n", 1);
-	exit_value = validate_exit_args(token_ptr);
-	if (exit_value == -1)
+	ft_putstr_fd("exit\n", 1);
+	if (!token_ptr->next)
 		free_all(shell, shell->exit_status);
+	exit_value = validate_exit_args(token_ptr);
 	if (exit_value == -2)
 		free_all(shell, 2);
 	if (exit_value == 1)

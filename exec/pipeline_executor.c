@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 15:25:48 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 19:49:15 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,16 @@ void	setup_pipeline_redir(t_shell *shell, int proc_i, t_pipe *pipe)
 		dup2(pipe->pipe_fds[pipe->cmd_idx][1], STDOUT_FILENO);
 		close(pipe->pipe_fds[pipe->cmd_idx][1]);
 	}
+}
+
+int command_in_pipe(t_token *current)
+{
+	while (current && current->type != PIPE)
+	{
+		if (current->type == WORD || current->type == CMD
+			|| current->type == S_QUOTE || current->type == D_QUOTE)
+			return (1);
+		current = current->next;
+	}
+	return (0);
 }
