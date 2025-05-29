@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:49:30 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/29 20:13:52 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 20:20:49 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ static int	atoi_exit_code(char *str, int *error)
 			return(0);
 		}
 	}
+	while (str[i] == ' ' || str[i] == '\t')
+		i++;
 	if (str[i] != '\0')
 		*error = 1;
 	if ((sign == 1 && result > LONG_MAX) || (sign == -1
@@ -94,7 +96,7 @@ int	ft_exit(t_shell *shell, t_token *token_ptr)
 
 	if (ft_strcmp(token_ptr->str, "exit") != 0)
 		return (-1);
-	ft_putstr_fd("exit\n", 1);
+	//ft_putstr_fd("exit\n", 1);
 	if (!token_ptr->next)
 		free_all(shell, shell->exit_status);
 	exit_value = validate_exit_args(token_ptr);

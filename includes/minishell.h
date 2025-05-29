@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 19:49:38 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 21:57:12 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,7 +256,8 @@ char					**give_curr_cmd(t_shell *shell, int i);
 int						get_global_cmd_idx(t_shell *shell, int target_proc_i,
 							int cmd_in_target_proc_i);
 char					*get_path(char *cmd, char **envp, t_shell *shell);
-void					execute_command(t_shell *shell, char **exec_args);
+void					execute_command(t_shell *shell, char **exec_args,
+							t_pipe *pipe);
 void					close_heredoc_fds(t_shell *shell);
 int						process_heredoc_inputs_loop(t_shell *shell);
 int						handle_heredoc_eof(t_shell *shell, char *delimiter);

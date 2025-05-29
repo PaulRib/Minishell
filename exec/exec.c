@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 19:48:55 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 21:56:25 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char	*get_path(char *cmd, char **envp, t_shell *shell)
 	}
 }
 
-void	execute_command(t_shell *shell, char **exec_args)
+void	execute_command(t_shell *shell, char **exec_args, t_pipe *pipe)
 {
 	char	*cmd_path;
 
@@ -101,7 +101,8 @@ void	execute_command(t_shell *shell, char **exec_args)
 		ft_putstr_fd(exec_args[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
 		free(cmd_path);
-		free_tab(exec_args);
+		free(pipe->pids);
+		free(exec_args);
 		free_all(shell, 127);
 	}
 	if (execve(cmd_path, exec_args, shell->data->new_env) == -1)
@@ -110,7 +111,8 @@ void	execute_command(t_shell *shell, char **exec_args)
 		ft_putstr_fd(exec_args[0], STDERR_FILENO);
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		free(cmd_path);
-		free_tab(exec_args);
+		free(pipe->pids);
+		free(exec_args);
 		free_all(shell, 127);
 	}
 }

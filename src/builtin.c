@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 20:09:25 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/29 22:07:07 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,12 @@ static int	do_solo_redir(t_shell *shell, t_token *current, int type)
 		check_unset(shell, current);
 	if (type == 3)
 		check_export(shell, current);
-	if (type == 4)
-		ft_exit(shell, current);
 	dup2(save1, STDIN_FILENO);
 	dup2(save, STDOUT_FILENO);
 	close(save1);
 	close(save);
+	if (type == 4)
+		ft_exit(shell, current);
 	return (1);
 }
 
