@@ -6,15 +6,27 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:44:26 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/29 19:12:30 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/29 20:41:27 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+int	check_many_args(t_token *token_ptr)
+{
+	if (token_ptr->type == PIPE || token_ptr->next->type == PIPE)
+		return (0);
+	if (token_ptr->type == REDIR_IN || token_ptr->type == REDIR_OUT)
+		return (0);
+	if (token_ptr->next->type == REDIR_IN || token_ptr->next->type == REDIR_OUT)
+		return (0);
+	if (token_ptr->type == APPEND && token_ptr->next->type == APPEND)
+		return (0);
+	return (1);
+}
+
 static int	check_change_dir(char *dir, t_shell *shell)
 {
-	// printf("PATHMAX:%d, PATH%zu\n",PATH_MAX, ft_strlen(dir));
 	if (ft_strlen(dir) >= (size_t)256)
 	{
 		ft_putstr_fd("minishell: cd: ", 2);

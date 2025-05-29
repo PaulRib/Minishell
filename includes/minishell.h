@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 16:38:03 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/29 20:41:18 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ typedef struct s_exec
 
 typedef struct s_pipe
 {
-	int					(*pipe_fds)[2];
+	int (*pipe_fds)[2];
 	pid_t				*pids;
 	int					cmd_idx;
 	int					global_idx;
@@ -221,6 +221,7 @@ char					*ft_handle_hyphen(char *dir, char *old_dir,
 							t_shell *shell);
 char					*ft_handle_tilde(char *dir, char *home_dir,
 							t_shell *shell);
+int						check_many_args(t_token *token_ptr);
 
 /* history */
 int						ft_history(t_shell *hub);
