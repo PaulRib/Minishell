@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 19:31:59 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/29 20:09:25 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int	is_simple_builtin(t_shell *shell)
 
 static int	do_solo_redir(t_shell *shell, t_token *current, int type)
 {
+	int save1 = dup(STDIN_FILENO);
+	int save = dup(STDOUT_FILENO);
 	if (shell->count->nb_redir_in > 0)
 		open_infile(shell);
 	if (shell->count->nb_redir_out > 0)
@@ -64,8 +66,10 @@ static int	do_solo_redir(t_shell *shell, t_token *current, int type)
 		check_export(shell, current);
 	if (type == 4)
 		ft_exit(shell, current);
-	dup2(STDIN_FILENO, 0);
-	dup2(STDOUT_FILENO, 1);
+	dup2(save1, STDIN_FILENO);
+	dup2(save, STDOUT_FILENO);
+	close(save1);
+	close(save);
 	return (1);
 }
 
