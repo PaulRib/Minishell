@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 16:08:11 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:37:29 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,12 @@ int	check_cd(t_shell *shell, t_token *token_ptr)
 	if (is_valid != 0)
 		return (is_valid);
 	if (token_ptr->next && token_ptr->next->type != PIPE)
-		return (ft_cd(shell, ft_strdup(token_ptr->next->str)));
+	{
+		printf("TOKEN:%s\n", token_ptr->next->str);
+		char *str = ft_strdup(token_ptr->next->str);
+		printf("TOKEN DUP :%s\n", str);
+		return (ft_cd(shell, str));
+	}
 	else
 		return (ft_cd(shell, NULL));
 }
@@ -49,12 +54,15 @@ static int	update_cur_dir(t_data *data, char *path_name, char *old_dir)
 {
 	char	real_path[PATH_MAX];
 
+	(void)old_dir;
+	printf("PATH:%s\n", path_name);
 	if (path_name && path_name[0] == '/')
 		ft_strlcpy(data->cur_dir, path_name, PATH_MAX);
 	else if (path_name && !ft_strcmp(path_name, "-"))
 		ft_strlcpy(data->cur_dir, old_dir, PATH_MAX);
-	else if (!path_name)
-		ft_strlcpy(data->cur_dir, old_dir, PATH_MAX);
+	else if (!path_name) {
+		return (0);
+	}
 	else
 	{
 		if (getcwd(real_path, PATH_MAX) == NULL)
@@ -71,6 +79,7 @@ int	execute_cd(t_shell *shell, char *path_name, char *home_dir, char *old_dir)
 {
 	int	result;
 
+	printf("PATH HAHAH:%s\n", path_name);
 	if (!path_name)
 	{
 		if (!home_dir)
@@ -79,11 +88,13 @@ int	execute_cd(t_shell *shell, char *path_name, char *home_dir, char *old_dir)
 			shell->exit_status = 1;
 			return (1);
 		}
-		result = handle_directory(home_dir, NULL, NULL, shell);
-		path_name = ft_strdup(home_dir);
+		result = handle_directory(&home_dir, NULL, NULL, shell);
+		ft_strlcpy(shell->data->cur_dir, home_dir, PATH_MAX);
+		return (0);
 	}
 	else
-		result = handle_directory(path_name, home_dir, old_dir, shell);
+		result = handle_directory(&path_name, home_dir, old_dir, shell);
+	printf("PATH BG:%s\n", path_name);
 	if (result != 0)
 		return (result);
 	ft_strlcpy(shell->data->old_dir, shell->data->cur_dir, PATH_MAX);
@@ -93,7 +104,7 @@ int	execute_cd(t_shell *shell, char *path_name, char *home_dir, char *old_dir)
 		update_env_var(shell->data, "OLDPWD", shell->data->old_dir);
 	if (ft_get_env(shell->data->new_env, "PWD"))
 		update_env_var(shell->data, "PWD", shell->data->cur_dir);
-	return ((free(path_name), 1);
+	return ((free(path_name), 1));
 }
 
 int	ft_cd(t_shell *shell, char *path_name)

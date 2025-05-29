@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 15:39:36 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:38:03 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ void					print_export_format(char *env_var);
 int						invalid_identifier_export(char *var);
 /* cd */
 int						check_cd(t_shell *shell, t_token *token_ptr);
-int						handle_directory(char *dir, char *home_dir,
+int						handle_directory(char **dir, char *home_dir,
 							char *old_dir, t_shell *shell);
 int						ft_cd(t_shell *shell, char *path_name);
 char					*ft_handle_hyphen(char *dir, char *old_dir,

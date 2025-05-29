@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:44:26 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/29 16:04:41 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:38:20 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,24 +31,29 @@ static int	check_change_dir(char *dir, t_shell *shell)
 		free(dir);
 		return (1);
 	}
+	printf("DIR:%s\n", dir);
 	return (0);
 }
 
-int	handle_directory(char *dir, char *home_dir, char *old_dir, t_shell *shell)
+int	handle_directory(char **dir, char *home_dir, char *old_dir, t_shell *shell)
 {
-	if (!ft_strncmp(dir, "-", 2))
+	int result;
+
+	if (!ft_strncmp(*dir, "-", 2))
 	{
-		dir = ft_handle_hyphen(dir, old_dir, shell);
-		if (!dir)
+		*dir = ft_handle_hyphen(*dir, old_dir, shell);
+		if (!*dir)
 			return (1);
 	}
-	if (!ft_strncmp(dir, "~", 1))
+	if (!ft_strncmp(*dir, "~", 2))
 	{
-		dir = ft_handle_tilde(dir, home_dir, shell);
-		if (!dir)
+		*dir = ft_handle_tilde(*dir, home_dir, shell);
+		if (!*dir)
 			return (1);
 	}
-	return (check_change_dir(dir, shell));
+	result = check_change_dir(*dir, shell);
+	printf("PATH AFTER SHIT:%s\n", *dir);
+	return (result);
 }
 
 char	*ft_handle_hyphen(char *dir, char *old_dir, t_shell *shell)
