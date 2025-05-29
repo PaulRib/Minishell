@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 14:22:38 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:39:14 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,29 +74,19 @@ char	*get_path(char *cmd, char **envp, t_shell *shell)
 {
 	int		i;
 	char	**path;
-	char	*good_path;
-	char	*temp;
 
 	i = 0;
 	if (access(cmd, X_OK) == 0)
 		return (ft_strdup(cmd));
 	while (envp[i] && ft_strncmp(envp[i], "PATH", 4) != 0)
 		i++;
-	path = ft_split(envp[i] + 5, ':');
-	i = 0;
-	while (path[i])
+	if (!envp[i])
+		return (NULL);
+	else
 	{
-		temp = ft_strjoin(path[i], "/");
-		good_path = ft_strjoin(temp, cmd);
-		if (!good_path)
-			free_all(shell, 1);
-		free(temp);
-		if (access(good_path, X_OK) == 0)
-			return (free_tab(path), good_path);
-		i++;
-		free(good_path);
+		path = ft_split(envp[i] + 5, ':');
+		return (path_util(shell, path, cmd));
 	}
-	return (free_tab(path), NULL);
 }
 
 void	execute_command(t_shell *shell, char **exec_args)
@@ -106,9 +96,9 @@ void	execute_command(t_shell *shell, char **exec_args)
 	cmd_path = get_path(exec_args[0], shell->data->new_env, shell);
 	if (!cmd_path)
 	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(exec_args[0], STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(exec_args[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
 		free_tab(exec_args);
 		exit(127);
 	}

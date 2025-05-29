@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 14:50:22 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:45:26 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ static int	validate_tokens(t_token *token_ptr)
 {
 	if (!token_ptr->next)
 		return (0);
-	if (token_ptr->next->type != WORD)
+	if (token_ptr->next->type != WORD && token_ptr->next->type != S_QUOTE
+		&& token_ptr->next->type != D_QUOTE)
 	{
 		ft_putstr_fd("bash: syntax error near unexpected token 'newline'\n", 2);
 		return (1);

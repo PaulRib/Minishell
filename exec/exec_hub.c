@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:28 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 11:47:26 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:20:52 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void	run_global_child_process_v2(t_shell *shell)
 {
 	init_signals();
 	if (shell->count->nb_heredoc > 0)
-		if (process_heredocs(shell))
-			exit(shell->exit_status);
+	if (process_heredocs(shell))
+		exit(shell->exit_status);
 	if (process_redirections(shell))
 		exit(shell->exit_status);
 	setup_heredoc_fds(shell);

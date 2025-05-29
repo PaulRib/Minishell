@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:01:33 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/12 15:50:43 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:45:38 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_pwd(t_shell *shell)
 {
-	printf("%s \n", shell->data->cur_dir);
+	printf("%s\n", shell->data->cur_dir);
 	return (0);
 }
 

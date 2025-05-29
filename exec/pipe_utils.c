@@ -6,11 +6,38 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:25:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 15:04:40 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:39:39 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+char	*path_util(t_shell *shell, char **path, char *cmd)
+{
+	char	*good_path;
+	char	*temp;
+	int		i;
+
+	i = 0;
+	i = 0;
+	while (path[i])
+	{
+		temp = ft_strjoin(path[i], "/");
+		good_path = ft_strjoin(temp, cmd);
+		if (!good_path)
+			free_all(shell, 1);
+		free(temp);
+		if (access(good_path, X_OK) == 0)
+		{
+			free_tab(path);
+			return (good_path);
+		}
+		i++;
+		free(good_path);
+	}
+	free_tab(path);
+	return (NULL);
+}
 
 void	close_all_pipe_fds(t_shell *shell, int (*pipe_fds)[2], int proc_i)
 {
@@ -32,7 +59,7 @@ int	create_pipeline_pipes(t_shell *shell, int (**pipe_fds)[2], int proc_i)
 	int	i;
 	int	j;
 
-	*pipe_fds = malloc(sizeof(int [2]) * (shell->exec->nb_cmd[proc_i] - 1));
+	*pipe_fds = malloc(sizeof(int[2]) * (shell->exec->nb_cmd[proc_i] - 1));
 	if (!(*pipe_fds))
 		free_all(shell, 1);
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 14:21:39 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:39:36 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,6 +287,7 @@ int						is_target_builtin(t_shell *shell, t_token *target);
 int						is_cmd_a_builtin(t_shell *shell, t_pipe *pipe);
 int						check_one_builtin(t_shell *shell);
 int						infile_warning_msg(char *str);
+char					*path_util(t_shell *shell, char **path, char *cmd);
 /* echo */
 int						check_echo(t_token *token_ptr, t_shell *shell);
 

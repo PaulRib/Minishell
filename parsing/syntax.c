@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:38:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 13:37:06 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:45:49 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	syntax_pipe(t_token *current)
 		return (-1);
 	}
 	if (current->type == PIPE && (current->next->type == REDIR_OUT
-			|| current->next->type == APPEND))
+			|| current->next->type == APPEND || current->next->type == PIPE))
 	{
 		ft_putstr_fd("bash: syntax error near ", 2);
 		ft_putstr_fd("unexpected token '|'\n", 2);
