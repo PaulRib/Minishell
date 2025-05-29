@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 22:07:07 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 23:21:06 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,13 @@ static int	do_solo_redir(t_shell *shell, t_token *current, int type)
 		open_infile(shell);
 	if (shell->count->nb_redir_out > 0)
 		open_outfile(shell);
+	if (shell->count->nb_heredoc > 0)
+	{
+		initiate_heredoc(shell);
+		stock_all_heredoc(shell);
+		if (handle_all_heredocs_globally_v2(shell) != 0)
+			free_all(shell, 1);
+	}
 	if (shell->exec->fd_in[0] > 2)
 	{
 		dup2(shell->exec->fd_in[0], STDIN_FILENO);

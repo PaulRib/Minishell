@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:44:26 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/29 23:17:30 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 23:25:04 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ int	check_many_args(t_token *token_ptr)
 		return (0);
 	if (token_ptr->next->type == REDIR_IN || token_ptr->next->type == REDIR_OUT)
 		return (0);
-	if (token_ptr->type == APPEND && token_ptr->next->type == APPEND)
+	if (token_ptr->type == APPEND || token_ptr->next->type == APPEND)
+		return (0);
+	if (token_ptr->type == HEREDOC || token_ptr->next->type == HEREDOC)
 		return (0);
 	return (1);
 }

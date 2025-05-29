@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:08:27 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/29 18:52:24 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 23:19:16 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	infile_warning_msg(t_shell *shell, char *str)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": No such file or directory\n", 2);
+	(void)shell;
 	free_all(shell, 1);
 }
 
@@ -36,6 +37,7 @@ void print_access_error(t_shell *shell, t_token *current)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(current->str, 2);
 	ft_putstr_fd(": Permission denied\n", 2);
+	(void)shell;
 	free_all(shell, 1);
 }
 
@@ -44,6 +46,7 @@ void print_directory_error(t_shell *shell, t_token *current)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(current->str, 2);
 	ft_putstr_fd(": Is a directory\n", 2);
+	(void)shell;
 	free_all(shell, 1);
 }
 
