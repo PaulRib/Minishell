@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:38:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 15:45:49 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 23:10:00 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ static int	syntax_simple_redir(t_token *current)
 		return (-1);
 	}
 	if (current->type == REDIR_IN && current->next->type != WORD
-		&& current->next->type != FILE_IN)
+		&& current->next->type != FILE_IN && current->next->type != S_QUOTE
+		&& current->next->type != D_QUOTE)
 	{
 		ft_putstr_fd("bash: syntax error near unexpected token '<'\n", 2);
 		return (-1);
@@ -49,7 +50,8 @@ static int	syntax_simple_redir(t_token *current)
 		return (-1);
 	}
 	if (current->type == REDIR_OUT && current->next->type != WORD
-		&& current->next->type != FILE_OUT)
+		&& current->next->type != FILE_OUT && current->next->type != S_QUOTE
+		&& current->next->type != D_QUOTE)
 	{
 		ft_putstr_fd("bash: syntax error near unexpected token '>'\n", 2);
 		return (-1);
@@ -65,7 +67,8 @@ static int	syntax_double_redir(t_token *current)
 		return (-1);
 	}
 	if (current->type == HEREDOC && current->next->type != WORD
-		&& current->next->type != END)
+		&& current->next->type != END && current->next->type != S_QUOTE
+		&& current->next->type != D_QUOTE)
 	{
 		ft_putstr_fd("bash: syntax error near unexpected token '<<'\n", 2);
 		return (-1);
@@ -76,7 +79,8 @@ static int	syntax_double_redir(t_token *current)
 		return (-1);
 	}
 	if (current->type == APPEND && current->next->type != WORD
-		&& current->next->type != FILE_OUT)
+		&& current->next->type != FILE_OUT && current->next->type != D_QUOTE
+		&& current->next->type != S_QUOTE)
 	{
 		ft_putstr_fd("bash: syntax error near unexpected token '>>'\n", 2);
 		return (-1);
