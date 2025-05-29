@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:14:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 12:08:15 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 23:12:00 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ void	second_token(t_shell *shell)
 	tmp = shell->token;
 	while (tmp->next)
 	{
-		if (tmp->type == REDIR_IN && tmp->next->type == WORD)
+		if (tmp->type == REDIR_IN && tmp->next->type != PIPE)
 			tmp->next->type = FILE_IN;
-		if (tmp->type == REDIR_OUT && tmp->next->type == WORD)
+		if (tmp->type == REDIR_OUT && tmp->next->type != PIPE)
 			tmp->next->type = FILE_OUT;
-		if (tmp->type == HEREDOC && tmp->next->type == WORD)
+		if (tmp->type == HEREDOC && tmp->next->type != PIPE)
 			tmp->next->type = END;
-		if (tmp->type == APPEND && tmp->next->type == WORD)
+		if (tmp->type == APPEND && tmp->next->type != PIPE)
 			tmp->next->type = FILE_OUT;
 		if (tmp->type == PIPE && tmp->next->type != REDIR_IN
 			&& tmp->next->type == WORD)
