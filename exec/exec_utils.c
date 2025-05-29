@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:01:44 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 18:07:04 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:21:50 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,27 @@ void	ft_free_exec(t_shell *shell)
 		free(shell->exec);
 		shell->exec = NULL;
 	}
+}
+
+char	**extract_cmd(t_shell *shell, t_token *current, int count)
+{
+	int		i;
+	char	**cmd;
+
+	cmd = malloc(sizeof(char *) * (count + 1));
+	i = 0;
+	while (current && current->type != PIPE)
+	{
+		if (current->type == WORD || current->type == CMD
+			|| current->type == S_QUOTE || current->type == D_QUOTE)
+		{
+			cmd[i] = current->str;
+			if (!cmd[i])
+				free_all(shell, 1);
+			i++;
+		}
+		current = current->next;
+	}
+	cmd[i] = NULL;
+	return (cmd);
 }

@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:14:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/22 15:32:29 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 12:08:15 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,19 @@ void	get_type(t_shell *shell)
 			tmp->type = WORD;
 		tmp = tmp->next;
 	}
+}
+
+void	insert_new_token(t_quote qte, t_token *new_token, t_token *current)
+{
+	new_token->next = current->next;
+	if (current->next)
+		current->next->prev = new_token;
+	new_token->prev = current;
+	current->next = new_token;
+	if (qte.c == '"')
+		new_token->type = D_QUOTE;
+	else if (qte.c == '\'')
+		new_token->type = S_QUOTE;
 }
 
 void	second_token(t_shell *shell)

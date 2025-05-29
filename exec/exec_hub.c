@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:28 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 19:05:56 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 11:47:26 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ void	execute_commands_sequence_child_v2(t_shell *shell)
 void	execute_pipeline_v2(t_shell *shell, int proc_i)
 {
 	pid_t	*pids;
+	int		(*pipe_fds)[2];
 
-	int(*pipe_fds)[2];
 	pipe_fds = NULL;
 	if (shell->exec->nb_cmd[proc_i] > 1)
 		if (!create_pipeline_pipes(shell, &pipe_fds, proc_i))

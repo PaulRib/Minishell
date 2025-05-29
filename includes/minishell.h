@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 19:33:43 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:21:39 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,6 @@ typedef struct s_token
 {
 	int					type;
 	char				*str;
-	bool				first_space;
-	bool				last_space;
 	struct s_token		*next;
 	struct s_token		*prev;
 }						t_token;
@@ -98,7 +96,7 @@ typedef struct s_exec
 
 typedef struct s_pipe
 {
-	int 				(*pipe_fds)[2];
+	int					(*pipe_fds)[2];
 	pid_t				*pids;
 	int					cmd_idx;
 	int					global_idx;
@@ -186,7 +184,11 @@ int						skip_whitespace(char *str, int i);
 int						find_word_limit(char *str, int *start);
 int						syntax_hub(t_shell *shell);
 void					join_quote(t_shell *shell);
-
+void					insert_new_token(t_quote qte, t_token *new_token,
+							t_token *current);
+int						find_space(t_token *current, int i);
+t_token					*change_after(t_shell *shell, t_token *current,
+							int end);
 /* Signals*/
 void					enable_echoctl(void);
 void					disable_echoctl(void);
@@ -246,11 +248,13 @@ void					count_element(t_shell *shell);
 void					initiate_exec(t_shell *shell);
 void					count_process(t_shell *shell);
 void					ft_free_exec(t_shell *shell);
-char					*give_curr_cmd(t_shell *shell, int i);
+char					**extract_cmd(t_shell *shell, t_token *current,
+							int count);
+char					**give_curr_cmd(t_shell *shell, int i);
 int						get_global_cmd_idx(t_shell *shell, int target_proc_i,
 							int cmd_in_target_proc_i);
 char					*get_path(char *cmd, char **envp, t_shell *shell);
-void					execute_command(t_shell *shell, char *full_cmd_str);
+void					execute_command(t_shell *shell, char **exec_args);
 void					close_heredoc_fds(t_shell *shell);
 int						process_heredoc_inputs_loop(t_shell *shell);
 int						handle_heredoc_eof(t_shell *shell, char *delimiter);
@@ -272,7 +276,7 @@ int						create_pipeline_pipes(t_shell *shell,
 void					wait_for_all_commands(t_shell *shell, pid_t *pids,
 							int proc_i);
 void					handle_pipeline_child(t_shell *shell, int proc_i,
-							t_pipe *pipe, char *cmd_str);
+							t_pipe *pipe, char **cmd_str);
 int						fork_pipeline_command(t_shell *shell, int proc_i,
 							t_pipe *pipe);
 void					execute_pipeline_commands(t_shell *shell, int proc_i,
@@ -282,6 +286,7 @@ void					setup_pipeline_redir(t_shell *shell, int proc_i,
 int						is_target_builtin(t_shell *shell, t_token *target);
 int						is_cmd_a_builtin(t_shell *shell, t_pipe *pipe);
 int						check_one_builtin(t_shell *shell);
+int						infile_warning_msg(char *str);
 /* echo */
 int						check_echo(t_token *token_ptr, t_shell *shell);
 

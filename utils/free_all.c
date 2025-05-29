@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:40:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 15:15:38 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 11:51:40 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	ft_free_data(t_shell *shell)
 {
 	if (shell->data->new_env)
 		free_tab(shell->data->new_env);
-	if(shell->data->sorted_env)
+	if (shell->data->sorted_env)
 		free_tab(shell->data->sorted_env);
 	free(shell->data);
 }

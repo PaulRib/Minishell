@@ -6,14 +6,14 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 18:12:25 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 13:56:31 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 void	handle_pipeline_child(t_shell *shell, int proc_i, t_pipe *pipe,
-		char *cmd_str)
+		char **cmd_str)
 {
 	init_signals_cmd();
 	setup_pipeline_redir(shell, proc_i, pipe);
@@ -26,7 +26,7 @@ void	handle_pipeline_child(t_shell *shell, int proc_i, t_pipe *pipe,
 
 int	fork_pipeline_command(t_shell *shell, int proc_i, t_pipe *pipe)
 {
-	char	*cmd_str;
+	char	**cmd_str;
 
 	pipe->global_idx = get_global_cmd_idx(shell, proc_i, pipe->cmd_idx);
 	cmd_str = give_curr_cmd(shell, pipe->global_idx);

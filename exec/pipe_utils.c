@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:25:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 19:11:34 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 11:48:50 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	create_pipeline_pipes(t_shell *shell, int (**pipe_fds)[2], int proc_i)
 	int	i;
 	int	j;
 
-	*pipe_fds = malloc(sizeof(int[2]) * (shell->exec->nb_cmd[proc_i] - 1));
+	*pipe_fds = malloc(sizeof(int [2]) * (shell->exec->nb_cmd[proc_i] - 1));
 	if (!(*pipe_fds))
 		free_all(shell, 1);
 	i = 0;
@@ -55,7 +55,8 @@ int	create_pipeline_pipes(t_shell *shell, int (**pipe_fds)[2], int proc_i)
 	}
 	return (1);
 }
-//probleme de murad ici de merde
+// probleme de murad ici de merde
+
 static void	wait_for_command(t_shell *shell, pid_t pid, int is_last)
 {
 	int	status;

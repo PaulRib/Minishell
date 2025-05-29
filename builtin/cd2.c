@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:44:26 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/28 18:07:50 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/29 11:42:24 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@ char	*ft_handle_tilde(char *dir, char *home_dir, t_shell *shell)
 
 	if (!ft_strcmp(dir, "~"))
 	{
-		if(home_dir)
+		if (home_dir)
 			dir = safe_strdup(home_dir, shell);
 		else
 		{
-			ft_putstr_fd("bash: cd: HOME not set\n", 2)
+			ft_putstr_fd("bash: cd: HOME not set\n", 2);
 			return (NULL);
 		}
 	}

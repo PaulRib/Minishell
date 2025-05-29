@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:36:54 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 19:23:57 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 11:45:07 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,7 @@ void	stock_all_heredoc(t_shell *shell)
 				tmp->eof_heredoc[i++] = ft_strdup(current->str);
 			if (current->type == PIPE && (current->next->type == REDIR_IN
 					|| current->next->type == HEREDOC))
-			{
-				current = current->next;
 				break ;
-			}
 			current = current->next;
 		}
 		tmp->eof_heredoc[i] = NULL;

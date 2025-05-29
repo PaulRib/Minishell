@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 18:23:19 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:22:38 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,13 @@ int	is_cmd_a_builtin(t_shell *shell, t_pipe *pipe)
 	return (0);
 }
 
-char	*give_curr_cmd(t_shell *shell, int i)
+char	**give_curr_cmd(t_shell *shell, int i)
 {
-	char	*str;
 	t_token	*current;
+	int		count;
+	t_token	*tmp;
 
-	str = ft_calloc(1, 1);
+	count = 0;
 	current = shell->token;
 	while (current && i)
 	{
@@ -43,18 +44,13 @@ char	*give_curr_cmd(t_shell *shell, int i)
 			i--;
 		current = current->next;
 	}
-	while (current && current->type != PIPE)
+	tmp = current;
+	while (tmp && tmp->type != PIPE)
 	{
-		if (current->type == WORD || current->type == CMD
-			|| current->type == S_QUOTE || current->type == D_QUOTE)
-			str = safe_strjoin(str, current->str, shell, 1);
-		if (current->next && (current->next->type == WORD
-				|| current->next->type == S_QUOTE
-				|| current->next->type == D_QUOTE))
-			str = safe_strjoin(str, " ", shell, 1);
-		current = current->next;
+		count++;
+		tmp = tmp->next;
 	}
-	return (str);
+	return (extract_cmd(shell, current, count));
 }
 
 int	get_global_cmd_idx(t_shell *shell, int target_proc_i,
@@ -103,14 +99,10 @@ char	*get_path(char *cmd, char **envp, t_shell *shell)
 	return (free_tab(path), NULL);
 }
 
-void	execute_command(t_shell *shell, char *full_cmd_str)
+void	execute_command(t_shell *shell, char **exec_args)
 {
-	char	**exec_args;
 	char	*cmd_path;
 
-	exec_args = ft_split(full_cmd_str, ' ');
-	if (!exec_args || !exec_args[0])
-		free_all(shell, 1);
 	cmd_path = get_path(exec_args[0], shell->data->new_env, shell);
 	if (!cmd_path)
 	{

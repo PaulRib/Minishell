@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 18:16:18 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:20:48 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 	ft_split_word(shell);
 	get_type(shell);
 	second_token(shell);
-	associate_options_commands(shell);
 	count_process(shell);
 	initiate_exec(shell);
 	count_element(shell);

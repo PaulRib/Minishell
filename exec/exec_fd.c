@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:41:29 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 14:55:39 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 11:42:43 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,7 @@ int	open_infile(t_shell *shell)
 				close(shell->exec->fd_in[i]);
 			shell->exec->fd_in[i] = open(current->str, O_RDONLY);
 			if (shell->exec->fd_in[i] == -1)
-			{
-				ft_putstr_fd("minishell: ", 2);
-				ft_putstr_fd(current->str, 2);
-				ft_putstr_fd(": No such file or directory\n", 2);
-				return (-1);
-			}
+				return (infile_warning_msg(current->str));
 			if (current->type == HEREDOC)
 				if (shell->exec->fd_in[i])
 					close(shell->exec->fd_in[i]);

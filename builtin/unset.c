@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 15:17:08 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/28 13:12:13 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:22:48 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static char	**remove_env_var(char **env, int index, t_shell *shell)
 	{
 		if (i != index)
 		{
-			new_env[j] = ft_strdup(env[i]); // protéger ici
+			new_env[j] = ft_strdup(env[i]);
 			j++;
 		}
 		i++;

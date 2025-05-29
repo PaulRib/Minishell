@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_warning_msg.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:08:27 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/21 18:08:49 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/29 11:41:17 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	infile_warning_msg(char *str)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
+	return (-1);
+}
 
 void	print_heredoc_eof_warning_msg(char *delimiter)
 {
