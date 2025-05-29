@@ -6,11 +6,33 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:44:26 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/29 11:42:24 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:24:09 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+static int	check_change_dir(char *dir, t_shell *shell)
+{
+	if (access(dir, F_OK) != 0)
+	{
+		ft_putstr_fd("minishell: cd: no such file or directory ", 2);
+		ft_putstr_fd(dir, 2);
+		ft_putstr_fd("\n", 2);
+		shell->exit_status = 1;
+		free(dir);
+		return (1);
+	}
+	if (chdir(dir) != 0)
+	{
+		ft_putstr_fd("minishell: cd: permission denied: ", 2);
+		ft_putstr_fd(dir, 2);
+		ft_putstr_fd("\n", 2);
+		free(dir);
+		return (1);
+	}
+	return (0);
+}
 
 int	handle_directory(char *dir, char *home_dir, char *old_dir, t_shell *shell)
 {
@@ -21,23 +43,12 @@ int	handle_directory(char *dir, char *home_dir, char *old_dir, t_shell *shell)
 			return (1);
 	}
 	if (!ft_strncmp(dir, "~", 1))
+	{
 		dir = ft_handle_tilde(dir, home_dir, shell);
-	if (access(dir, F_OK) != 0)
-	{
-		ft_putstr_fd("minishell: cd: no such file or directory ", 2);
-		ft_putstr_fd(dir, 2);
-		ft_putstr_fd("\n", 2);
-		shell->exit_status = 1;
-		return (1);
+		if (!dir)
+			return (1);
 	}
-	if (chdir(dir) != 0)
-	{
-		ft_putstr_fd("minishell: cd: permission denied: ", 2);
-		ft_putstr_fd(dir, 2);
-		ft_putstr_fd("\n", 2);
-		return (1);
-	}
-	return (0);
+	return (check_change_dir(dir, shell));
 }
 
 char	*ft_handle_hyphen(char *dir, char *old_dir, t_shell *shell)
