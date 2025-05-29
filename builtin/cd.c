@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 16:37:29 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:41:47 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static int	validate_tokens(t_token *token_ptr)
 int	check_cd(t_shell *shell, t_token *token_ptr)
 {
 	int	is_valid;
+	char *str;
 
 	if (ft_strcmp(token_ptr->str, "cd") != 0)
 		return (-1);
@@ -41,9 +42,7 @@ int	check_cd(t_shell *shell, t_token *token_ptr)
 		return (is_valid);
 	if (token_ptr->next && token_ptr->next->type != PIPE)
 	{
-		printf("TOKEN:%s\n", token_ptr->next->str);
-		char *str = ft_strdup(token_ptr->next->str);
-		printf("TOKEN DUP :%s\n", str);
+		str = ft_strdup(token_ptr->next->str);
 		return (ft_cd(shell, str));
 	}
 	else
@@ -55,7 +54,6 @@ static int	update_cur_dir(t_data *data, char *path_name, char *old_dir)
 	char	real_path[PATH_MAX];
 
 	(void)old_dir;
-	printf("PATH:%s\n", path_name);
 	if (path_name && path_name[0] == '/')
 		ft_strlcpy(data->cur_dir, path_name, PATH_MAX);
 	else if (path_name && !ft_strcmp(path_name, "-"))
@@ -79,7 +77,6 @@ int	execute_cd(t_shell *shell, char *path_name, char *home_dir, char *old_dir)
 {
 	int	result;
 
-	printf("PATH HAHAH:%s\n", path_name);
 	if (!path_name)
 	{
 		if (!home_dir)
@@ -94,7 +91,6 @@ int	execute_cd(t_shell *shell, char *path_name, char *home_dir, char *old_dir)
 	}
 	else
 		result = handle_directory(&path_name, home_dir, old_dir, shell);
-	printf("PATH BG:%s\n", path_name);
 	if (result != 0)
 		return (result);
 	ft_strlcpy(shell->data->old_dir, shell->data->cur_dir, PATH_MAX);
