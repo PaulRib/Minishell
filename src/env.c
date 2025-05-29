@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:10:09 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/28 19:27:50 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/29 18:47:57 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ static int	fill_env(char **env, char **new_env, t_shell *shell, int size)
 		if (ft_strncmp(env[j], "SHLVL=", 6) == 0)
 		{
 			shell->data->shlvl = ft_atoi(env[j] + 6) + 1;
+			if (shell->data->shlvl > 1000)
+				shell->data->shlvl = 1;
 			tmp = ft_itoa(shell->data->shlvl);
 			if (!tmp)
 				free_all(shell, 1);

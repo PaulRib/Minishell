@@ -6,14 +6,20 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 16:41:47 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/29 19:52:46 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	validate_tokens(t_token *token_ptr)
+int	validate_tokens(t_shell *shell, t_token *token_ptr)
 {
+	// t_token *tmp = token_ptr;
+	// while (tmp)
+	// {
+	// 	printf("STR:%s, TYPE:%d\n", tmp->str, tmp->type);
+	// 	tmp = tmp->next;
+	// }
 	if (!token_ptr->next)
 		return (0);
 	if (token_ptr->next->type != WORD && token_ptr->next->type != S_QUOTE
@@ -22,13 +28,22 @@ static int	validate_tokens(t_token *token_ptr)
 		ft_putstr_fd("bash: syntax error near unexpected token 'newline'\n", 2);
 		return (1);
 	}
-	else if (token_ptr->next && token_ptr->next->next && token_ptr->next->type != PIPE)
+	else if (token_ptr->next && token_ptr->next->next &&
+		(token_ptr->next->type != PIPE && token_ptr->next->type != REDIR_IN
+			&& token_ptr->next->type != REDIR_OUT && token_ptr->next->type != APPEND)
+			&& (token_ptr->next->next->type != PIPE && token_ptr->next->next->type != REDIR_IN
+			&& token_ptr->next->next->type != REDIR_OUT && token_ptr->next->next->type != APPEND))
 	{
+		// ft_putstr_fd(token_ptr->next->next->str, 2);
+		// ft_putstr_fd("\n", 2);
+		// printf("STR:%s, TYPE:%d\n", token_ptr->str, token_ptr->type);
 		ft_putstr_fd("bash: cd: too many arguments\n", 2);
+		shell->exit_status = 1;
 		return (1);
 	}
 	return (0);
 }
+//Si token next et si token next next et <- est = different de | et < > 
 
 int	check_cd(t_shell *shell, t_token *token_ptr)
 {
@@ -37,7 +52,7 @@ int	check_cd(t_shell *shell, t_token *token_ptr)
 
 	if (ft_strcmp(token_ptr->str, "cd") != 0)
 		return (-1);
-	is_valid = validate_tokens(token_ptr);
+	is_valid = validate_tokens(shell, token_ptr);
 	if (is_valid != 0)
 		return (is_valid);
 	if (token_ptr->next && token_ptr->next->type != PIPE)
@@ -53,6 +68,7 @@ static int	update_cur_dir(t_data *data, char *path_name, char *old_dir)
 {
 	char	real_path[PATH_MAX];
 
+	// printf("PATHNAME:%s\n", path_name);
 	(void)old_dir;
 	if (path_name && path_name[0] == '/')
 		ft_strlcpy(data->cur_dir, path_name, PATH_MAX);
@@ -86,16 +102,15 @@ int	execute_cd(t_shell *shell, char *path_name, char *home_dir, char *old_dir)
 			return (1);
 		}
 		result = handle_directory(&home_dir, NULL, NULL, shell);
-		ft_strlcpy(shell->data->cur_dir, home_dir, PATH_MAX);
-		return (0);
+		path_name = ft_strdup(home_dir);
 	}
 	else
 		result = handle_directory(&path_name, home_dir, old_dir, shell);
 	if (result != 0)
-		return (result);
+		return (free(path_name), result);
 	ft_strlcpy(shell->data->old_dir, shell->data->cur_dir, PATH_MAX);
 	if (update_cur_dir(shell->data, path_name, old_dir) != 0)
-		return (-1);
+		return (free(path_name),-1);
 	if (ft_get_env(shell->data->new_env, "OLDPWD"))
 		update_env_var(shell->data, "OLDPWD", shell->data->old_dir);
 	if (ft_get_env(shell->data->new_env, "PWD"))

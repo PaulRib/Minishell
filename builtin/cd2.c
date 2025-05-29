@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:44:26 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/29 19:16:03 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 20:14:04 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,29 @@
 
 static int	check_change_dir(char *dir, t_shell *shell)
 {
+	// printf("PATHMAX:%d, PATH%zu\n",PATH_MAX, ft_strlen(dir));
+	if (ft_strlen(dir) >= (size_t)256)
+	{
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd(dir, 2);
+		ft_putstr_fd(": File name too long\n", 2);
+		shell->exit_status = 1;
+		return (1);
+	}
 	if (access(dir, F_OK) != 0)
 	{
-		ft_putstr_fd("minishell: cd: no such file or directory ", 2);
+		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(dir, 2);
-		ft_putstr_fd("\n", 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 		shell->exit_status = 1;
-		free(dir);
 		return (1);
 	}
 	if (chdir(dir) != 0)
 	{
-		ft_putstr_fd("minishell: cd: permission denied: ", 2);
+		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(dir, 2);
-		ft_putstr_fd("\n", 2);
-		free(dir);
+		ft_putstr_fd(": Not a directory\n", 2);
+		shell->exit_status = 1;
 		return (1);
 	}
 	return (0);
@@ -51,7 +59,6 @@ int	handle_directory(char **dir, char *home_dir, char *old_dir, t_shell *shell)
 			return (1);
 	}
 	result = check_change_dir(*dir, shell);
-	printf("PATH AFTER SHIT:%s\n", *dir);
 	return (result);
 }
 
@@ -79,6 +86,7 @@ char	*ft_handle_tilde(char *dir, char *home_dir, t_shell *shell)
 
 	if (!ft_strcmp(dir, "~"))
 	{
+		free(dir);
 		if (home_dir)
 			dir = safe_strdup(home_dir, shell);
 		else

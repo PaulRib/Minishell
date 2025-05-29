@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:49:30 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/29 18:10:47 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 20:13:52 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,14 @@ static int	atoi_exit_code(char *str, int *error)
 		i++;
 	}
 	while (str[i] >= '0' && str[i] <= '9')
+	{
+		unsigned long long before = result;
 		result = result * 10 + (str[i++] - '0');
-	while (str[i] == ' ' || str[i] == '\t')
-		i++;
+		if (before > result) {
+			*error = 1;
+			return(0);
+		}
+	}
 	if (str[i] != '\0')
 		*error = 1;
 	if ((sign == 1 && result > LONG_MAX) || (sign == -1
