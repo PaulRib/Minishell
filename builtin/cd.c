@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 18:04:55 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/29 13:43:59 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	check_cd(t_shell *shell, t_token *token_ptr)
 	if (is_valid != 0)
 		return (is_valid);
 	if (token_ptr->next)
-		return (ft_cd(shell, token_ptr->next->str));
+		return (ft_cd(shell, ft_strdup(token_ptr->next->str)));
 	else
 		return (ft_cd(shell, NULL));
 }
@@ -91,6 +91,7 @@ int	execute_cd(t_shell *shell, char *path_name, char *home_dir, char *old_dir)
 		update_env_var(shell->data, "OLDPWD", shell->data->old_dir);
 	if (ft_get_env(shell->data->new_env, "PWD"))
 		update_env_var(shell->data, "PWD", shell->data->cur_dir);
+	free(path_name);
 	return (1);
 }
 
@@ -101,10 +102,10 @@ int	ft_cd(t_shell *shell, char *path_name)
 
 	home_dir = ft_get_env(shell->data->new_env, "HOME");
 	old_dir = ft_get_env(shell->data->new_env, "OLDPWD");
-	if (getcwd(shell->data->old_dir, PATH_MAX) == NULL)
-	{
-		ft_putstr_fd("bash: cd: getcwd error\n", 2);
-		return (1);
-	}
+	// if (getcwd(shell->data->old_dir, PATH_MAX) == NULL)
+	// {
+	// 	ft_putstr_fd("bash: cd: getcwd error\n", 2);
+	// 	return (1);
+	// }
 	return (execute_cd(shell, path_name, home_dir, old_dir));
 }

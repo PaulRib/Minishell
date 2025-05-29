@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:38:15 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/27 18:49:35 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:10:27 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static int	handle_plus_equal(t_shell *shell, char *var, char *equal_sign,
 		new_value = safe_strjoin(old_value, xpr->var_value, shell, 0);
 		if (!new_value)
 			free(xpr->var_name);
+		free(xpr->var_value);
 		xpr->var_value = new_value;
 	}
 	return (1);
