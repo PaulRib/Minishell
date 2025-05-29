@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 15:45:26 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:54:32 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ static int	validate_tokens(t_token *token_ptr)
 	if (!token_ptr->next)
 		return (0);
 	if (token_ptr->next->type != WORD && token_ptr->next->type != S_QUOTE
-		&& token_ptr->next->type != D_QUOTE)
+		&& token_ptr->next->type != D_QUOTE && token_ptr->next->type != PIPE)
 	{
 		ft_putstr_fd("bash: syntax error near unexpected token 'newline'\n", 2);
 		return (1);
 	}
-	else if (token_ptr->next && token_ptr->next->next)
+	else if (token_ptr->next && token_ptr->next->type != PIPE)
 	{
 		ft_putstr_fd("bash: cd: too many arguments\n", 2);
 		return (1);
@@ -39,7 +39,7 @@ int	check_cd(t_shell *shell, t_token *token_ptr)
 	is_valid = validate_tokens(token_ptr);
 	if (is_valid != 0)
 		return (is_valid);
-	if (token_ptr->next)
+	if (token_ptr->next && token_ptr->next->type != PIPE)
 		return (ft_cd(shell, ft_strdup(token_ptr->next->str)));
 	else
 		return (ft_cd(shell, NULL));
