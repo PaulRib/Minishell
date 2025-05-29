@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 15:17:08 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/29 14:24:04 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:50:07 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static char	**remove_env_var(char **env, int index, t_shell *shell)
 	{
 		if (i != index)
 		{
-			new_env[j] = safe_strdup(env[i], shell); // protéger ici
+			new_env[j] = safe_strdup(env[i], shell);
 			j++;
 		}
 		i++;
@@ -66,5 +66,10 @@ int	check_unset(t_shell *shell, t_token *token_ptr)
 		return (-1);
 	if (!token_ptr->next)
 		return (0);
-	return (ft_unset(shell->data, token_ptr->next->str, shell));
+	while (token_ptr && token_ptr->next && token_ptr->next->type != PIPE)
+	{
+		ft_unset(shell->data, token_ptr->next->str, shell);
+		token_ptr = token_ptr->next;
+	}
+	return (0);
 }

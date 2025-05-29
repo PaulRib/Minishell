@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 13:43:59 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:50:22 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,5 @@ int	ft_cd(t_shell *shell, char *path_name)
 
 	home_dir = ft_get_env(shell->data->new_env, "HOME");
 	old_dir = ft_get_env(shell->data->new_env, "OLDPWD");
-	// if (getcwd(shell->data->old_dir, PATH_MAX) == NULL)
-	// {
-	// 	ft_putstr_fd("bash: cd: getcwd error\n", 2);
-	// 	return (1);
-	// }
 	return (execute_cd(shell, path_name, home_dir, old_dir));
 }
