@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 15:54:32 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:08:11 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	validate_tokens(t_token *token_ptr)
 		ft_putstr_fd("bash: syntax error near unexpected token 'newline'\n", 2);
 		return (1);
 	}
-	else if (token_ptr->next && token_ptr->next->type != PIPE)
+	else if (token_ptr->next && token_ptr->next->next && token_ptr->next->type != PIPE)
 	{
 		ft_putstr_fd("bash: cd: too many arguments\n", 2);
 		return (1);
@@ -80,6 +80,7 @@ int	execute_cd(t_shell *shell, char *path_name, char *home_dir, char *old_dir)
 			return (1);
 		}
 		result = handle_directory(home_dir, NULL, NULL, shell);
+		path_name = ft_strdup(home_dir);
 	}
 	else
 		result = handle_directory(path_name, home_dir, old_dir, shell);
@@ -92,8 +93,7 @@ int	execute_cd(t_shell *shell, char *path_name, char *home_dir, char *old_dir)
 		update_env_var(shell->data, "OLDPWD", shell->data->old_dir);
 	if (ft_get_env(shell->data->new_env, "PWD"))
 		update_env_var(shell->data, "PWD", shell->data->cur_dir);
-	free(path_name);
-	return (1);
+	return ((free(path_name), 1);
 }
 
 int	ft_cd(t_shell *shell, char *path_name)
