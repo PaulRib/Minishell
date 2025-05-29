@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 16:38:03 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/29 19:49:38 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
+#include <sys/stat.h>
 
 # define PATH_MAX 4096
 
@@ -234,11 +235,12 @@ int						check_pwd(t_shell *shell, t_token *token_ptr);
 /* exit */
 int						ft_exit(t_shell *shell, t_token *token_ptr);
 /* Execution*/
+void					verify_access_fd(t_shell *shell);
 void					open_outfile(t_shell *shell);
-int						open_infile(t_shell *shell);
+void					open_infile(t_shell *shell);
 void					close_fd_exec(t_shell *shell);
 void					setup_heredoc_fds(t_shell *shell);
-int						process_redirections(t_shell *shell);
+void						process_redirections(t_shell *shell);
 void					execute_parsed_line(t_shell *shell);
 int						process_heredocs(t_shell *shell);
 void					run_global_child_process_v2(t_shell *shell);
@@ -286,8 +288,11 @@ void					setup_pipeline_redir(t_shell *shell, int proc_i,
 int						is_target_builtin(t_shell *shell, t_token *target);
 int						is_cmd_a_builtin(t_shell *shell, t_pipe *pipe);
 int						check_one_builtin(t_shell *shell);
-int						infile_warning_msg(char *str);
+void						infile_warning_msg(t_shell *shell, char *str);
 char					*path_util(t_shell *shell, char **path, char *cmd);
+void 					print_access_error(t_shell *shell, t_token *current);
+void 					print_directory_error(t_shell *shell, t_token *current);
+int 					command_in_pipe(t_token *current);
 /* echo */
 int						check_echo(t_token *token_ptr, t_shell *shell);
 
