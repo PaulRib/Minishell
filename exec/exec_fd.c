@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:41:29 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 11:42:43 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:02:01 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	open_infile(t_shell *shell)
 
 	current = shell->token;
 	i = 0;
-	while (current->next)
+	while (current)
 	{
 		if (current->type == FILE_IN)
 		{
