@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 14:59:58 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:04:28 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,6 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 	count_process(shell);
 	initiate_exec(shell);
 	count_element(shell);
-	// t_token *tmp = shell->token;
-	// while (tmp)
-	// {
-	// 	printf("Type -%d-\nContenu -%s-\n", tmp->type, tmp->str);
-	// 	tmp = tmp->next;
-	// }
 	if (syntax_hub(shell) == -1)
 		return ;
 	if (!check_one_builtin(shell))
