@@ -6,25 +6,29 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:44:26 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/30 16:01:43 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:14:47 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	check_many_args(t_token *token_ptr)
+static int	change_dir_utils(char *dir, t_shell *shell)
 {
-	if (token_ptr->type == PIPE || token_ptr->next->type == PIPE)
-		return (0);
-	if (token_ptr->type == REDIR_IN || token_ptr->type == REDIR_OUT)
-		return (0);
-	if (token_ptr->next->type == REDIR_IN || token_ptr->next->type == REDIR_OUT)
-		return (0);
-	if (token_ptr->type == APPEND || token_ptr->next->type == APPEND)
-		return (0);
-	if (token_ptr->type == HEREDOC || token_ptr->next->type == HEREDOC)
-		return (0);
+	if (access(dir, R_OK | X_OK) == -1)
+	{
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd(dir, 2);
+		ft_putstr_fd(": Permission denied\n", 2);
+	}
+	else
+	{
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd(dir, 2);
+		ft_putstr_fd(": Not a directory\n", 2);
+	}
+	shell->exit_status = 1;
 	return (1);
+	
 }
 
 static int	check_change_dir(char *dir, t_shell *shell)
@@ -46,13 +50,7 @@ static int	check_change_dir(char *dir, t_shell *shell)
 		return (1);
 	}
 	if (chdir(dir) != 0)
-	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		ft_putstr_fd(dir, 2);
-		ft_putstr_fd(": Not a directory\n", 2);
-		shell->exit_status = 1;
-		return (1);
-	}
+		return(change_dir_utils(dir, shell));
 	return (0);
 }
 

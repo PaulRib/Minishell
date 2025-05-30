@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:10:09 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/29 22:19:49 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:27:53 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,62 +27,41 @@ int	print_env(t_shell *hub)
 	return (1);
 }
 
-char	**build_env(t_shell *shell)
+static char	*handle_shlvl(char *env_var, t_shell *shell)
 {
-	char	**new_env;
-	char	*temp;
-	char	pwd[PATH_MAX];
+	char	*tmp;
+	char	*shlvl_str;
+	char	*result;
 
-	new_env = malloc(4 * sizeof(char *));
-	if (!new_env)
-		free_all(shell, 1);
-	temp = ft_itoa(shell->data->shlvl);
-	if (!temp)
+	shell->data->shlvl = ft_atoi(env_var + 6) + 1;
+	if (shell->data->shlvl >= 999)
 	{
-		free(new_env);
-		free_all(shell, 1);
+		ft_putstr_fd("bash: warning: shell level ", 2);
+		shlvl_str = ft_itoa(shell->data->shlvl);
+		ft_putstr_fd(shlvl_str, 2);
+		free(shlvl_str);
+		ft_putstr_fd(" too high, resetting to 1\n", 2);
+		shell->data->shlvl = 1;
 	}
-	new_env[1] = ft_strjoin("SHLVL=", temp);
-	free(temp);
-	if (!getcwd(pwd, PATH_MAX))
+	tmp = ft_itoa(shell->data->shlvl);
+	if (!tmp)
 		free_all(shell, 1);
-	new_env[0] = ft_strjoin("PWD=", pwd);
-	new_env[2] = ft_strdup("_=/usr/bin/env");
-	if (!new_env[0] || !new_env[1] || !new_env[2])
-	{
-		free_tab(new_env);
+	result = ft_strjoin("SHLVL=", tmp);
+	free(tmp);
+	if (!result)
 		free_all(shell, 1);
-	}
-	return (new_env[3] = NULL, new_env);
+	return (result);
 }
 
 static int	fill_env(char **env, char **new_env, t_shell *shell, int size)
 {
 	int		j;
-	char	*tmp;
-	char	*shlvl;
 
 	j = 0;
 	while (j < size)
 	{
 		if (ft_strncmp(env[j], "SHLVL=", 6) == 0)
-		{
-			shell->data->shlvl = ft_atoi(env[j] + 6) + 1;
-			if (shell->data->shlvl >= 999)
-			{
-				ft_putstr_fd("bash: warning: shell level ", 2);
-				ft_putstr_fd(shlvl = ft_itoa(shell->data->shlvl), 2);
-				ft_putstr_fd(" too high, resetting to 1\n", 2);
-				shell->data->shlvl = 1;
-			}
-			tmp = ft_itoa(shell->data->shlvl);
-			if (!tmp)
-				free_all(shell, 1);
-			new_env[j] = ft_strjoin("SHLVL=", tmp);
-			free(tmp);
-			if (!new_env[j])
-				free_all(shell, 1);
-		}
+			new_env[j] = handle_shlvl(env[j], shell);
 		else
 			new_env[j] = ft_strdup(env[j]);
 		if (!new_env[j])
