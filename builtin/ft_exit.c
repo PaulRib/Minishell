@@ -6,24 +6,48 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:49:30 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/29 20:20:49 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:56:19 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	is_only_space(char *str, int *error)
+static void	is_only_space_or_sign(char *str, int *error)
 {
 	int	i;
 
 	i = 0;
 	while (str[i])
 	{
+		if ((str[i] == '+' || str[i] == '-') && str[i + 1] == '\0')
+			*error = 1;
 		if (str[i] != ' ' && str[i] != '\t')
 			return ;
 		i++;
 	}
 	*error = 1;
+}
+
+static unsigned long long	check_overflow(char *str, int *error, int i,
+										unsigned long long result)
+{
+	unsigned long long	before;
+
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		before = result;
+		result = result * 10 + (str[i++] - '0');
+		if (before > result)
+		{
+			*error = 1;
+			return (result);
+		}
+	}
+	if (str[i] != '\0')
+		*error = 1;
+	while (str[i] == ' ' || str[i] == '\t')
+		i++;
+	return (result);
 }
 
 static int	atoi_exit_code(char *str, int *error)
@@ -43,19 +67,7 @@ static int	atoi_exit_code(char *str, int *error)
 			sign = -1;
 		i++;
 	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		unsigned long long before = result;
-		result = result * 10 + (str[i++] - '0');
-		if (before > result) {
-			*error = 1;
-			return(0);
-		}
-	}
-	while (str[i] == ' ' || str[i] == '\t')
-		i++;
-	if (str[i] != '\0')
-		*error = 1;
+	result = check_overflow(str, error, i, result);
 	if ((sign == 1 && result > LONG_MAX) || (sign == -1
 			&& result > (unsigned long long)LONG_MAX + 1))
 		*error = 1;
@@ -69,7 +81,7 @@ static int	validate_exit_args(t_token *token_ptr)
 
 	error = 0;
 	exit_value = atoi_exit_code(token_ptr->next->str, &error);
-	is_only_space(token_ptr->next->str, &error);
+	is_only_space_or_sign(token_ptr->next->str, &error);
 	if (error)
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
@@ -96,7 +108,7 @@ int	ft_exit(t_shell *shell, t_token *token_ptr)
 
 	if (ft_strcmp(token_ptr->str, "exit") != 0)
 		return (-1);
-	//ft_putstr_fd("exit\n", 1);
+	ft_putstr_fd("exit\n", 1);
 	if (!token_ptr->next)
 		free_all(shell, shell->exit_status);
 	exit_value = validate_exit_args(token_ptr);

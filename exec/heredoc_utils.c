@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:39:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 19:39:44 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:43:54 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	handle_heredoc_eof(t_shell *shell, char *delimiter)
 {
 	print_heredoc_eof_warning_msg(delimiter);
 	shell->exit_status = 0;
+	close_heredoc_fds(shell);
+	free_all(shell, shell->exit_status);
 	return (2);
 }
 
@@ -41,7 +43,6 @@ void	check_and_create(t_shell *shell, t_token *current, t_heredoc *tmp)
 {
 	t_heredoc	*new;
 
-	(void)shell;
 	while (current)
 	{
 		if (current->type == END)

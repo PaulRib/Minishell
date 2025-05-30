@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:44:26 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/30 15:58:08 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:01:43 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,17 @@ int	handle_directory(char **dir, char *home_dir, char *old_dir, t_shell *shell)
 	char *tmp;
 
 	tmp = *dir;
+	tmp = *dir;
 	if (!ft_strncmp(*dir, "-", 2))
 	{
 		*dir = ft_handle_hyphen(*dir, old_dir, shell);
 		if (!*dir)
 		{
 			free(tmp);
+		{
+			free(tmp);
 			return (1);
+		}
 		}
 	}
 	if (!ft_strncmp(*dir, "~", 2))

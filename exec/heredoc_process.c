@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:58:14 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/28 19:01:38 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:44:40 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ static int	read_heredoc_line(t_shell *shell, t_heredoc *hd_node,
 		if (line_read)
 			free(line_read);
 		shell->exit_status = 130;
-		return (3);
+		close_heredoc_fds(shell);
+		free_all(shell, 130);
 	}
 	if (!line_read)
 		return (handle_heredoc_eof(shell, delimiter));
@@ -109,8 +110,6 @@ int	process_heredoc_inputs_loop(t_shell *shell)
 		status = read_heredoc_line(shell, current, current->eof_heredoc[i], i);
 		if (status == 1)
 			i++;
-		else if (status == 2 || status == 3)
-			return (status);
 	}
 	return (0);
 }

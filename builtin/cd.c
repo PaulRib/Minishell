@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/30 15:44:58 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:01:27 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	execute_cd(t_shell *shell, char *path_name, char *home_dir, char *old_dir)
 	else
 		result = handle_directory(&path_name, home_dir, old_dir, shell);
 	if (result != 0)
-		return (free(path_name), result);
+		return (result);
 	ft_strlcpy(shell->data->old_dir, shell->data->cur_dir, PATH_MAX);
 	if (update_cur_dir(shell->data, path_name) != 0)
 		return (free(path_name), -1);

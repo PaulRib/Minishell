@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_update_env_var.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 16:39:34 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/30 14:56:25 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:02:13 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+int	update_env_var(t_shell *shell, char *var_name, char *var_value)
 int	update_env_var(t_shell *shell, char *var_name, char *var_value)
 {
 	int		var_index;

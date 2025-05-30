@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:38:15 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/30 14:50:09 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:01:55 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,6 @@ static int	export_var(t_data *data, char *var, t_shell *shell)
 
 int	check_export(t_shell *shell, t_token *token_ptr)
 {
-	t_token	*tmp;
-
 	if (ft_strcmp(token_ptr->str, "export") != 0)
 		return (-1);
 	if (token_ptr && !token_ptr->next)
@@ -109,7 +107,6 @@ int	check_export(t_shell *shell, t_token *token_ptr)
 		return (0);
 	}
 	token_ptr = token_ptr->next;
-	tmp = token_ptr;
 	while (token_ptr && (token_ptr->type == WORD || token_ptr->type == S_QUOTE
 			|| token_ptr->type == D_QUOTE))
 	{

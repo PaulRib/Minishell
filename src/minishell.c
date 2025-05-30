@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 19:07:28 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:59:02 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	shell_loop(t_shell *shell)
 		if (!line)
 		{
 			printf("exit\n");
-			free_all(shell, shell->exit_status) ;
+			free_all(shell, shell->exit_status);
 		}
 		if (*line && line[0] != '\0')
 		{
