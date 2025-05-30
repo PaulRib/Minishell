@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/30 16:02:24 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:07:08 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -353,7 +353,7 @@ char					*safe_strdup(char *s, t_shell *shell);
 void					free_all(t_shell *shell, int status);
 
 /*Env var*/
-char					**add_env_var(char **env, char *new_var);
+char					**add_env_var(char **env, char *new_var, t_shell *shell);
 int						find_env_var(char **env, char *var);
 char					*ft_get_env(char **env, char *var_name);
 int						update_env_var(t_shell *shell, char *var_name,

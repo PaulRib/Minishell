@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 15:59:09 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/30 15:59:59 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:03:28 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static void	allocate_heredoc_eof(t_shell *shell)
 	}
 }
 
-static void	add_eof_to_heredoc(t_shell *shell, t_token *current, t_heredoc *tmp, int *i)
+static void	add_eof_to_heredoc(t_shell *shell, t_token *current, t_heredoc *tmp,
+		int *i)
 {
 	char	*dup;
 

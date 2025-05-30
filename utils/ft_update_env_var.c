@@ -6,13 +6,12 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 16:39:34 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/30 16:02:13 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:03:44 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	update_env_var(t_shell *shell, char *var_name, char *var_value)
 int	update_env_var(t_shell *shell, char *var_name, char *var_value)
 {
 	int		var_index;
