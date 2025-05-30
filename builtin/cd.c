@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/30 13:08:14 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:44:58 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	validate_tokens(t_shell *shell, t_token *token_ptr)
 		&& token_ptr->next->type != D_QUOTE && token_ptr->next->type != PIPE)
 	{
 		ft_putstr_fd("bash: syntax error near unexpected token 'newline'\n", 2);
+		shell->exit_status = 2;
 		return (1);
 	}
 	else if (token_ptr->next && token_ptr->next->next
@@ -44,21 +45,19 @@ int	check_cd(t_shell *shell, t_token *token_ptr)
 		return (is_valid);
 	if (token_ptr->next && token_ptr->next->type != PIPE)
 	{
-		str = ft_strdup(token_ptr->next->str);
+		str = safe_strdup(token_ptr->next->str, shell);
 		return (ft_cd(shell, str));
 	}
 	else
 		return (ft_cd(shell, NULL));
 }
 
-static int	update_cur_dir(t_data *data, char *path_name, char *old_dir)
+static int	update_cur_dir(t_data *data, char *path_name)
 {
 	char	real_path[PATH_MAX];
-
+	
 	if (path_name && path_name[0] == '/')
 		ft_strlcpy(data->cur_dir, path_name, PATH_MAX);
-	else if (path_name && !ft_strcmp(path_name, "-"))
-		ft_strlcpy(data->cur_dir, old_dir, PATH_MAX);
 	else if (!path_name)
 	{
 		return (0);
@@ -95,12 +94,12 @@ int	execute_cd(t_shell *shell, char *path_name, char *home_dir, char *old_dir)
 	if (result != 0)
 		return (free(path_name), result);
 	ft_strlcpy(shell->data->old_dir, shell->data->cur_dir, PATH_MAX);
-	if (update_cur_dir(shell->data, path_name, old_dir) != 0)
+	if (update_cur_dir(shell->data, path_name) != 0)
 		return (free(path_name), -1);
 	if (ft_get_env(shell->data->new_env, "OLDPWD"))
-		update_env_var(shell->data, "OLDPWD", shell->data->old_dir);
+		update_env_var(shell, "OLDPWD", shell->data->old_dir);
 	if (ft_get_env(shell->data->new_env, "PWD"))
-		update_env_var(shell->data, "PWD", shell->data->cur_dir);
+		update_env_var(shell, "PWD", shell->data->cur_dir);
 	return ((free(path_name), 1));
 }
 

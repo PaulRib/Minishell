@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:38:15 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/29 18:02:42 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:50:09 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static int	export_var(t_data *data, char *var, t_shell *shell)
 			free_all(shell, 1);
 		xpr.var_value = safe_strdup(equal_sign + 1, shell);
 	}
-	update_env_var(data, xpr.var_name, xpr.var_value);
+	update_env_var(shell, xpr.var_name, xpr.var_value);
 	free(xpr.var_name);
 	free(xpr.var_value);
 	shell->exit_status = 0;
@@ -110,11 +110,6 @@ int	check_export(t_shell *shell, t_token *token_ptr)
 	}
 	token_ptr = token_ptr->next;
 	tmp = token_ptr;
-	// while (tmp)
-	// {
-	// 	printf("Type -%d-\nContenu -%s-\n", tmp->type, tmp->str);
-	// 	tmp = tmp->next;
-	// }
 	while (token_ptr && (token_ptr->type == WORD || token_ptr->type == S_QUOTE
 			|| token_ptr->type == D_QUOTE))
 	{

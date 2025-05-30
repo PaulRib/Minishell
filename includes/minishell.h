@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/30 13:04:05 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:13:41 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,8 @@ char					**build_env(t_shell *shell);
 int						print_env(t_shell *hub);
 char					*ft_get_env(char **env, char *var_name);
 int						find_env_var(char **env, char *var);
-char					**add_env_var(char **env, char *new_var);
-int						update_env_var(t_data *data, char *var_name,
+char					**add_env_var(char **env, char *new_var, t_shell *shell);
+int						update_env_var(t_shell *shell, char *var_name,
 							char *var_value);
 
 /* Tokenisation */
@@ -304,10 +304,10 @@ char					*safe_strdup(char *s, t_shell *shell);
 char					*safe_strjoin(char *s1, char *s2, t_shell *shell,
 							int free_s1);
 void					handle_sigint_status(t_shell *shell);
-char					**add_env_var(char **env, char *new_var);
+char					**add_env_var(char **env, char *new_var, t_shell *shell);
 int						find_env_var(char **env, char *var);
 char					*ft_get_env(char **env, char *var_name);
-int						update_env_var(t_data *data, char *var_name,
+int						update_env_var(t_shell *shell, char *var_name,
 							char *var_value);
 void					free_all(t_shell *shell, int status);
 void					ft_free_node(t_shell *shell);
