@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 22:27:32 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 13:04:05 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,7 @@ void					insert_new_token(t_quote qte, t_token *new_token,
 int						find_space(t_token *current, int i);
 t_token					*change_after(t_shell *shell, t_token *current,
 							int end);
+int 					join_check(t_token *current, int len);
 /* Signals*/
 void					enable_echoctl(void);
 void					disable_echoctl(void);

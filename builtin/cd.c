@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 20:40:47 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/30 13:08:14 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ static int	update_cur_dir(t_data *data, char *path_name, char *old_dir)
 {
 	char	real_path[PATH_MAX];
 
-	// printf("PATHNAME:%s\n", path_name);
-	(void)old_dir;
 	if (path_name && path_name[0] == '/')
 		ft_strlcpy(data->cur_dir, path_name, PATH_MAX);
 	else if (path_name && !ft_strcmp(path_name, "-"))

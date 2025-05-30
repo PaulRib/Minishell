@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 13:08:09 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 13:37:18 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 13:04:39 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,16 @@ t_token	*change_after(t_shell *shell, t_token *current, int end)
 	free(current->str);
 	free(current);
 	return (next_token);
+}
+
+int join_check(t_token *current, int len)
+{
+	if (current->str && current->str[len] != '>' && current->str[len] != '<' && current->str[len] != '|')
+	{
+		if (current->str && current->str[len] != ' ' && current->str[len] != '\t')
+			return (1);
+		else
+			return (0);
+	}
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join_quotes.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:44:29 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 23:14:14 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/30 13:03:31 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,7 @@ static int	should_join_quotes(t_token *current, int check_before)
 	{
 		if (current->prev && (current->prev->type == S_QUOTE
 				|| current->prev->type == D_QUOTE))
-		{
-			if (current->str && current->str[0] != ' '
-				&& current->str[0] != '\t')
-				return (1);
-		}
+			return (join_check(current, 0));
 	}
 	else
 	{
@@ -104,9 +100,7 @@ static int	should_join_quotes(t_token *current, int check_before)
 				|| current->next->type == D_QUOTE))
 		{
 			len = ft_strlen(current->str);
-			if (len > 0 && current->str[len - 1] != ' '
-				&& current->str[len - 1] != '\t')
-				return (1);
+			return (join_check(current, len));
 		}
 	}
 	return (0);
