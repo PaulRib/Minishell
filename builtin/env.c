@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:10:09 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/30 16:30:50 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:50:04 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ static char	*handle_shlvl(char *env_var, t_shell *shell)
 	shell->data->shlvl = ft_atoi(env_var + 6) + 1;
 	if (shell->data->shlvl >= 999)
 	{
-		ft_putstr_fd("bash: warning: shell level ", 2);
+		ft_putstr_fd("bash: warning: shell level (", 2);
 		shlvl_str = ft_itoa(shell->data->shlvl);
 		ft_putstr_fd(shlvl_str, 2);
 		free(shlvl_str);
-		ft_putstr_fd(" too high, resetting to 1\n", 2);
+		ft_putstr_fd(") too high, resetting to 1\n", 2);
 		shell->data->shlvl = 1;
 	}
 	tmp = ft_itoa(shell->data->shlvl);

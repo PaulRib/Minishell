@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:49:30 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/30 14:56:19 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:47:19 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ static unsigned long long	check_overflow(char *str, int *error, int i,
 			return (result);
 		}
 	}
-	if (str[i] != '\0')
-		*error = 1;
 	while (str[i] == ' ' || str[i] == '\t')
 		i++;
+	if (str[i] != '\0')
+		*error = 1;
 	return (result);
 }
 
@@ -59,6 +59,7 @@ static int	atoi_exit_code(char *str, int *error)
 	result = 0;
 	i = 0;
 	sign = 1;
+	is_only_space_or_sign(str, error);
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
 		i++;
 	if (str[i] == '+' || str[i] == '-')
@@ -74,27 +75,28 @@ static int	atoi_exit_code(char *str, int *error)
 	return ((int)((result * sign) % 256));
 }
 
-static int	validate_exit_args(t_token *token_ptr)
+static int	validate_exit_args(t_token *curr)
 {
 	int	error;
 	int	exit_value;
 
 	error = 0;
-	exit_value = atoi_exit_code(token_ptr->next->str, &error);
-	is_only_space_or_sign(token_ptr->next->str, &error);
+	exit_value = atoi_exit_code(curr->next->str, &error);
 	if (error)
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(token_ptr->next->str, 2);
+		ft_putstr_fd(curr->next->str, 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		return (-2);
 	}
-	if (token_ptr->next && token_ptr->next->next)
+	if (curr->next && curr->next->next &&
+		(curr->next->next->type == WORD || curr->next->next->type == S_QUOTE
+		|| curr->next->next->type == D_QUOTE))
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
-	if (token_ptr->next->str[0] == '\0')
+	if (curr->next->str[0] == '\0')
 	{
 		ft_putstr_fd("minishell: exit: : numeric argument required\n", 2);
 		return (2);
