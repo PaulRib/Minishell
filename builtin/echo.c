@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:15:41 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/28 18:23:18 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:24:24 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,26 +18,24 @@ static void	new_node_echo(t_token *current, int start, t_shell *shell)
 	char	*echo;
 
 	new = malloc(sizeof(t_token));
+	if (!new)
+		free_all(shell, 1);
 	new->str = ft_substr(current->str, start, ft_strlen(current->str) - start);
 	if (!new->str)
 	{
 		free(new);
 		free_all(shell, 1);
 	}
-	echo = ft_substr(current->str, 0, start - 1);
-	if (!echo)
-	{
-		free(new->str);
-		free(new);
-		free_all(shell, 1);
-	}
 	free(current->str);
 	new->type = WORD;
-	current->str = echo;
 	new->next = current->next;
 	current->next = new;
 	current->next->prev = new;
 	new->prev = current;
+	echo = ft_substr(current->str, 0, start - 1);
+	if (!echo)
+		free_all(shell, 1);
+	current->str = echo;
 }
 
 static int	is_n_flag(char *str, int i, int *end)

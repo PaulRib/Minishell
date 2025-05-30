@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:28 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 19:07:42 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:18:40 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	execute_parsed_line(t_shell *shell)
 		return ;
 	}
 	if (pid == 0)
-		run_global_child_process_v2(shell);
+		run_global_child_process(shell);
 	else
 	{
 		signal_block();
@@ -39,7 +39,7 @@ int	process_heredocs(t_shell *shell)
 {
 	initiate_heredoc(shell);
 	stock_all_heredoc(shell);
-	if (handle_all_heredocs_globally_v2(shell) != 0)
+	if (handle_all_heredocs(shell) != 0)
 	{
 		ft_free_exec(shell);
 		ft_free_heredoc(&shell);
@@ -48,7 +48,7 @@ int	process_heredocs(t_shell *shell)
 	return (0);
 }
 
-void	run_global_child_process_v2(t_shell *shell)
+void	run_global_child_process(t_shell *shell)
 {
 	init_signals();
 	if (shell->count->nb_heredoc > 0)
@@ -56,30 +56,30 @@ void	run_global_child_process_v2(t_shell *shell)
 			exit(shell->exit_status);
 	process_redirections(shell);
 	setup_heredoc_fds(shell);
-	execute_commands_sequence_child_v2(shell);
+	execute_child(shell);
 	free_all(shell, shell->exit_status);
 }
 
-void	execute_commands_sequence_child_v2(t_shell *shell)
+void	execute_child(t_shell *shell)
 {
 	int	proc_i;
 
 	proc_i = 0;
 	while (proc_i < shell->exec->process)
 	{
-		execute_pipeline_v2(shell, proc_i);
+		execute_pipe(shell, proc_i);
 		proc_i++;
 	}
 }
 
-void	execute_pipeline_v2(t_shell *shell, int proc_i)
+void	execute_pipe(t_shell *shell, int proc_i)
 {
 	pid_t	*pids;
 	int		(*pipe_fds)[2];
 
 	pipe_fds = NULL;
 	if (shell->exec->nb_cmd[proc_i] > 1)
-		if (!create_pipeline_pipes(shell, &pipe_fds, proc_i))
+		if (!create_pipes(shell, &pipe_fds, proc_i))
 			free_all(shell, 1);
 	pids = malloc(sizeof(pid_t) * shell->exec->nb_cmd[proc_i]);
 	if (!pids)
@@ -88,7 +88,7 @@ void	execute_pipeline_v2(t_shell *shell, int proc_i)
 		free(pipe_fds);
 		free_all(shell, 1);
 	}
-	execute_pipeline_commands(shell, proc_i, pipe_fds, pids);
+	execute_all_commands(shell, proc_i, pipe_fds, pids);
 	close_all_pipe_fds(shell, pipe_fds, proc_i);
 	free(pipe_fds);
 	wait_for_all_commands(shell, pids, proc_i);

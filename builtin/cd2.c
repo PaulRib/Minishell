@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:44:26 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/29 23:25:04 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:56:33 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,18 @@ static int	check_change_dir(char *dir, t_shell *shell)
 
 int	handle_directory(char **dir, char *home_dir, char *old_dir, t_shell *shell)
 {
-	int result;
+	int	result;
+	char *tmp;
 
+	tmp = *dir;
 	if (!ft_strncmp(*dir, "-", 2))
 	{
 		*dir = ft_handle_hyphen(*dir, old_dir, shell);
 		if (!*dir)
+		{
+			free(tmp);
 			return (1);
+		}
 	}
 	if (!ft_strncmp(*dir, "~", 2))
 	{

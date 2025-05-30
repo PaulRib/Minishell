@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 23:21:06 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:18:00 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,8 @@ int	is_simple_builtin(t_shell *shell)
 	return (-1);
 }
 
-static int	do_solo_redir(t_shell *shell, t_token *current, int type)
+static void	builtin_fds(t_shell *shell, t_token *current, int type)
 {
-	int save1 = dup(STDIN_FILENO);
-	int save = dup(STDOUT_FILENO);
-	if (shell->count->nb_redir_in > 0)
-		open_infile(shell);
-	if (shell->count->nb_redir_out > 0)
-		open_outfile(shell);
-	if (shell->count->nb_heredoc > 0)
-	{
-		initiate_heredoc(shell);
-		stock_all_heredoc(shell);
-		if (handle_all_heredocs_globally_v2(shell) != 0)
-			free_all(shell, 1);
-	}
 	if (shell->exec->fd_in[0] > 2)
 	{
 		dup2(shell->exec->fd_in[0], STDIN_FILENO);
@@ -71,6 +58,27 @@ static int	do_solo_redir(t_shell *shell, t_token *current, int type)
 		check_unset(shell, current);
 	if (type == 3)
 		check_export(shell, current);
+}
+
+static int	do_solo_redir(t_shell *shell, t_token *current, int type)
+{
+	int	save;
+	int	save1;
+
+	save = dup(STDOUT_FILENO);
+	save1 = dup(STDIN_FILENO);
+	if (shell->count->nb_redir_in > 0)
+		open_infile(shell);
+	if (shell->count->nb_redir_out > 0)
+		open_outfile(shell);
+	if (shell->count->nb_heredoc > 0)
+	{
+		initiate_heredoc(shell);
+		stock_all_heredoc(shell);
+		if (handle_all_heredocs(shell) != 0)
+			free_all(shell, 1);
+	}
+	builtin_fds(shell, current, type);
 	dup2(save1, STDIN_FILENO);
 	dup2(save, STDOUT_FILENO);
 	close(save1);

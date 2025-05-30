@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 21:56:25 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:45:29 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	**give_curr_cmd(t_shell *shell, int i)
 {
 	t_token	*current;
 	int		count;
-	t_token	*tmp; 
+	t_token	*tmp;
 
 	count = 0;
 	current = shell->token;
@@ -105,6 +105,7 @@ void	execute_command(t_shell *shell, char **exec_args, t_pipe *pipe)
 		free(exec_args);
 		free_all(shell, 127);
 	}
+	close_heredoc_fds(shell);
 	if (execve(cmd_path, exec_args, shell->data->new_env) == -1)
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);

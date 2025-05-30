@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:41:29 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 19:03:15 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:41:17 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ void	open_outfile(t_shell *shell)
 				close(shell->exec->fd_out[i]);
 			if (current->prev->type == REDIR_OUT)
 				shell->exec->fd_out[i] = open(current->str,
-						O_WRONLY | O_CREAT | O_TRUNC, 0777);
+						O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC, 0777);
 			else if (current->prev->type == APPEND)
 				shell->exec->fd_out[i] = open(current->str,
-						O_WRONLY | O_CREAT | O_APPEND, 0777);
+						O_WRONLY | O_CREAT | O_APPEND | O_CLOEXEC, 0777);
 		}
 		if (shell->exec->fd_out[i] > 1 && current->type == PIPE)
 			i++;
@@ -51,7 +51,7 @@ void	open_infile(t_shell *shell)
 		{
 			if (shell->exec->fd_in[i])
 				close(shell->exec->fd_in[i]);
-			shell->exec->fd_in[i] = open(current->str, O_RDONLY);
+			shell->exec->fd_in[i] = open(current->str, O_RDONLY | O_CLOEXEC);
 			if (shell->exec->fd_in[i] == -1)
 				infile_warning_msg(shell, current->str);
 			if (current->type == HEREDOC)
@@ -72,11 +72,20 @@ void	close_fd_exec(t_shell *shell)
 	while (i < shell->exec->process)
 	{
 		if (shell->exec->fd_in[i] > 2)
+		{
 			close(shell->exec->fd_in[i]);
+			shell->exec->fd_in[i] = -1;
+		}
 		if (shell->exec->fd_out[i] > 2)
+		{
 			close(shell->exec->fd_out[i]);
+			shell->exec->fd_out[i] = -1;
+		}
 		if (shell->exec->prev_fd[i] > 2)
+		{
 			close(shell->exec->prev_fd[i]);
+			shell->exec->prev_fd[i] = -1;
+		}
 		i++;
 	}
 }
@@ -91,7 +100,7 @@ void	setup_heredoc_fds(t_shell *shell)
 		if (shell->exec->prev_fd[i] > 2)
 		{
 			shell->exec->fd_in[i] = shell->exec->prev_fd[i];
-			shell->exec->prev_fd[i] = 0;
+			shell->exec->prev_fd[i] = -1;
 		}
 		i++;
 	}

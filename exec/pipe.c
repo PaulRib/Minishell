@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipeline_executor.c                                :+:      :+:    :+:   */
+/*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 21:55:23 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:21:43 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	handle_pipeline_child(t_shell *shell, int proc_i, t_pipe *pipe,
+void	exec_child(t_shell *shell, int proc_i, t_pipe *pipe,
 		char **cmd_str)
 {
 	init_signals_cmd();
@@ -21,10 +21,14 @@ void	handle_pipeline_child(t_shell *shell, int proc_i, t_pipe *pipe,
 	if (!is_cmd_a_builtin(shell, pipe))
 		execute_command(shell, cmd_str, pipe);
 	else
-		exit(0);
+	{
+		free(pipe->pids);
+		free(cmd_str);
+		free_all(shell, 0);
+	}
 }
 
-int	fork_pipeline_command(t_shell *shell, int proc_i, t_pipe *pipe)
+int	fork_command(t_shell *shell, int proc_i, t_pipe *pipe)
 {
 	char	**cmd_str;
 
@@ -43,14 +47,14 @@ int	fork_pipeline_command(t_shell *shell, int proc_i, t_pipe *pipe)
 		free_all(shell, 1);
 	}
 	if (pipe->pids[pipe->cmd_idx] == 0)
-		handle_pipeline_child(shell, proc_i, pipe, cmd_str);
+		exec_child(shell, proc_i, pipe, cmd_str);
 	else
 		signal_block();
 	free(cmd_str);
 	return (1);
 }
 
-void	execute_pipeline_commands(t_shell *shell, int proc_i,
+void	execute_all_commands(t_shell *shell, int proc_i,
 		int (*pipe_fds)[2], pid_t *pids)
 {
 	t_pipe	pipe;
@@ -60,7 +64,7 @@ void	execute_pipeline_commands(t_shell *shell, int proc_i,
 	pipe.cmd_idx = 0;
 	while (pipe.cmd_idx < shell->exec->nb_cmd[proc_i])
 	{
-		fork_pipeline_command(shell, proc_i, &pipe);
+		fork_command(shell, proc_i, &pipe);
 		pipe.cmd_idx++;
 	}
 }
@@ -92,7 +96,7 @@ void	setup_pipeline_redir(t_shell *shell, int proc_i, t_pipe *pipe)
 	}
 }
 
-int command_in_pipe(t_token *current)
+int	command_in_pipe(t_token *current)
 {
 	while (current && current->type != PIPE)
 	{
