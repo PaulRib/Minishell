@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/30 16:07:08 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:31:38 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ void					print_export_format(char *env_var);
 int						invalid_identifier_export(char *var);
 int						export_no_args(t_shell *shell);
 int						check_export(t_shell *shell, t_token *token_ptr);
+int						check_consecutive_plus(char *var);
 
 /*Exit*/
 int						ft_exit(t_shell *shell, t_token *token_ptr);
