@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/30 14:59:02 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/02 12:45:49 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 	if (!check_one_builtin(shell))
 		execute_parsed_line(shell);
 	ft_free_exec(shell);
+	ft_memset(shell->count, 0, sizeof(t_count));
 }
 
 void	ft_free_node(t_shell *shell)
@@ -69,13 +70,27 @@ void	ft_free_node(t_shell *shell)
 	}
 }
 
+static int line_empty(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] != ' ' && line[i] != '\t')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void	shell_loop(t_shell *shell)
 {
 	char	*line;
 
 	while (1)
 	{
-		shell->prompt = ft_strjoin(shell->data->cur_dir, "$ ");
+		shell->prompt = safe_strjoin(shell->data->cur_dir, "$ ", shell, 0);
 		line = readline(shell->prompt);
 		free(shell->prompt);
 		if (!line)
@@ -83,7 +98,7 @@ void	shell_loop(t_shell *shell)
 			printf("exit\n");
 			free_all(shell, shell->exit_status);
 		}
-		if (*line && line[0] != '\0')
+		if (!line_empty(line))
 		{
 			shell->token = malloc(sizeof(t_token));
 			ft_memset(shell->token, 0, sizeof(t_token));
@@ -91,25 +106,9 @@ void	shell_loop(t_shell *shell)
 			add_to_history(shell, line);
 			handle_sigint_status(shell);
 			ft_hub_parsing(shell, line);
+			ft_free_node(shell);
 		}
-		ft_free_node(shell);
-		ft_memset(shell->count, 0, sizeof(t_count));
+		else
+			free(line);
 	}
-}
-
-int	main(int ac, char **av, char **env)
-{
-	t_shell	*shell;
-
-	(void)ac;
-	(void)av;
-	shell = malloc(sizeof(t_shell));
-	if (!shell)
-		free_all(shell, 1);
-	ft_memset(shell, 0, sizeof(t_shell));
-	initiate_all(shell);
-	env_exists(env, shell);
-	shell_loop(shell);
-	free_all(shell, 0);
-	return (0);
 }
