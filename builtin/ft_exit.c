@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:49:30 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/30 16:47:19 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/02 12:51:08 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	ft_exit(t_shell *shell, t_token *token_ptr)
 
 	if (ft_strcmp(token_ptr->str, "exit") != 0)
 		return (-1);
-	ft_putstr_fd("exit\n", 1);
+	//ft_putstr_fd("exit\n", 1);
 	if (!token_ptr->next)
 		free_all(shell, shell->exit_status);
 	exit_value = validate_exit_args(token_ptr);

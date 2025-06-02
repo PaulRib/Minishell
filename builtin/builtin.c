@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/02 12:32:38 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/02 12:55:03 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,18 +95,18 @@ int	check_one_builtin(t_shell *shell)
 	current = shell->token;
 	if (shell->exec->process == 1 && shell->count->nb_pipe == 0)
 	{
-		while (current)
-		{
-			if (ft_strcmp(current->str, "cd") == 0)
-				return (do_solo_redir(shell, current, 1));
-			else if (ft_strcmp(current->str, "unset") == 0)
-				return (do_solo_redir(shell, current, 2));
-			else if (ft_strcmp(current->str, "export") == 0)
-				return (do_solo_redir(shell, current, 3));
-			else if (ft_strcmp(current->str, "exit") == 0)
-				return (do_solo_redir(shell, current, 4));
+		while (current && (current->type == REDIR_IN
+			|| current->type == REDIR_OUT || current->type == HEREDOC
+			|| current->type == APPEND))
 			current = current->next;
-		}
+		if (ft_strcmp(current->str, "cd") == 0)
+			return (do_solo_redir(shell, current, 1));
+		else if (ft_strcmp(current->str, "unset") == 0)
+			return (do_solo_redir(shell, current, 2));
+		else if (ft_strcmp(current->str, "export") == 0)
+			return (do_solo_redir(shell, current, 3));
+		else if (ft_strcmp(current->str, "exit") == 0)
+			return (do_solo_redir(shell, current, 4));
 	}
 	return (0);
 }
