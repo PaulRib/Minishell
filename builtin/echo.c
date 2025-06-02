@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:15:41 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/30 14:24:24 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/02 11:58:17 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ static int	ft_echo(t_token *token_ptr, t_shell *shell)
 int	check_echo(t_token *token_ptr, t_shell *shell)
 {
 	if (ft_strncmp(token_ptr->str, "echo ", 5) != 0
-		|| ft_strncmp(token_ptr->str, "echo", 5))
+		&& ft_strncmp(token_ptr->str, "echo", 5) != 0)
 		return (-1);
 	return (ft_echo(token_ptr, shell));
 }

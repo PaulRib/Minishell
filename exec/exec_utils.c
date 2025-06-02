@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:01:44 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 20:33:32 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/02 11:59:43 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ void	count_element(t_shell *shell)
 	current = shell->token;
 	while (current->next)
 	{
-		if (current->type == PIPE && current->next->type != REDIR_IN
-			&& current->next->type != HEREDOC)
+		if (current->type == PIPE && current->prev->type != FILE_OUT)
 		{
 			shell->count->nb_pipe++;
 			shell->exec->nb_cmd[i]++;
@@ -75,8 +74,7 @@ void	count_process(t_shell *shell)
 	shell->exec->process = 1;
 	while (current->next)
 	{
-		if (current->type == PIPE && (current->next->type == REDIR_IN
-				|| current->next->type == HEREDOC))
+		if (current->type == FILE_OUT && current->next->type == PIPE)
 			shell->exec->process++;
 		current = current->next;
 	}

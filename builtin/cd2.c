@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:44:26 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/30 16:14:47 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/02 11:43:21 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,7 @@ int	handle_directory(char **dir, char *home_dir, char *old_dir, t_shell *shell)
 		if (!*dir)
 		{
 			free(tmp);
-		{
-			free(tmp);
 			return (1);
-		}
 		}
 	}
 	if (!ft_strncmp(*dir, "~", 2))

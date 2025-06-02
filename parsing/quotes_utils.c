@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:56:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/29 13:30:59 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/02 11:47:52 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	empty_quote_before(t_token *current, t_token *new, t_quote qte,
 		current->type = D_QUOTE;
 	else if (qte.c == '\'')
 		current->type = S_QUOTE;
+	if (new->last_space == true)
+		current->last_space = true;
 	if (current->str[qte.end + 1])
 		after_mult_quote(current, qte.end + 1, shell);
 	free(current->str);

@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/30 15:45:29 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/02 12:01:08 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ int	is_cmd_a_builtin(t_shell *shell, t_pipe *pipe)
 			i--;
 		current = current->next;
 	}
+	while (current && current->type != WORD && current->type != CMD
+			&& current->type != S_QUOTE && current->type != D_QUOTE)
+		current = current->next;
 	if (is_target_builtin(shell, current) > 0)
 		return (1);
 	return (0);

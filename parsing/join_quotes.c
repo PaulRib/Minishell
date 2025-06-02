@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:44:29 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/30 13:03:31 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/02 11:49:09 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,16 @@ static int	should_join_quotes(t_token *current, int check_before)
 
 	if (check_before)
 	{
+		if (current->prev && current->prev->last_space == true)
+			return (0);
 		if (current->prev && (current->prev->type == S_QUOTE
 				|| current->prev->type == D_QUOTE))
 			return (join_check(current, 0));
 	}
 	else
 	{
+		if (current->last_space == true)
+			return (0);
 		if (current->next && (current->next->type == S_QUOTE
 				|| current->next->type == D_QUOTE))
 		{
