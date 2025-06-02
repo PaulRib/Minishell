@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/02 12:26:20 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/02 12:32:42 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ char					*ft_handle_tilde(char *dir, char *home_dir,
 
 /*Echo*/
 int						ft_count(t_token *current);
-int						check_echo(t_token *token_ptr, t_shell *shell);
+int						check_echo(t_token *token_ptr);
 
 /*Export*/
 int						check_export(t_shell *shell, t_token *token_ptr);

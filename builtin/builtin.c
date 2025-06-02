@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/02 11:54:37 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/02 12:32:38 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	is_simple_builtin(t_shell *shell)
 	{
 		if (check_cd(shell, token_ptr) != -1)
 			return (1);
-		if (check_echo(token_ptr, shell) != -1)
+		if (check_echo(token_ptr) != -1)
 			return (1);
 		if (check_pwd(shell, token_ptr) != -1)
 			return (1);
@@ -115,7 +115,7 @@ int	is_target_builtin(t_shell *shell, t_token *target)
 {
 	if (check_cd(shell, target) != -1)
 		return (1);
-	if (check_echo(target, shell) != -1)
+	if (check_echo(target) != -1)
 		return (1);
 	if (check_pwd(shell, target) != -1)
 		return (1);
