@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 16:14:28 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/30 16:31:13 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:00:15 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,4 @@ char	**build_env(t_shell *shell)
 		free_all(shell, 1);
 	}
 	return (new_env[3] = NULL, new_env);
-}
-
-int	check_consecutive_plus(char *var)
-{
-	int	i;
-
-	i = 0;
-	if (var[i] == '+')
-		i++;
-	if (var[i] != '=')
-		return (1);
-	return (0);
 }
