@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:31:06 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/30 16:31:11 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/03 14:52:11 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ int	is_valid_identifier(char *var)
 		return (0);
 	while (var[len] && var[len] != '=' && var[len] != '+')
 		len++;
-	if(check_consecutive_plus(&var[len]))
-		return(invalid_identifier_export(var));
 	if (len == 0 || (!ft_isalpha(var[0]) && var[0] != '_'))
 		return (invalid_identifier_export(var));
 	while (i < len)

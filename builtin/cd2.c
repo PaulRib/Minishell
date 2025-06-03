@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:44:26 by meel-war          #+#    #+#             */
-/*   Updated: 2025/06/02 11:43:21 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:08:03 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,20 +57,16 @@ static int	check_change_dir(char *dir, t_shell *shell)
 int	handle_directory(char **dir, char *home_dir, char *old_dir, t_shell *shell)
 {
 	int result;
-	char *tmp;
 
-	tmp = *dir;
-	tmp = *dir;
 	if (!ft_strncmp(*dir, "-", 2))
 	{
 		*dir = ft_handle_hyphen(*dir, old_dir, shell);
 		if (!*dir)
 		{
-			free(tmp);
 			return (1);
 		}
 	}
-	if (!ft_strncmp(*dir, "~", 2))
+	if (!ft_strncmp(*dir, "~", 1))
 	{
 		*dir = ft_handle_tilde(*dir, home_dir, shell);
 		if (!*dir)
@@ -82,12 +78,12 @@ int	handle_directory(char **dir, char *home_dir, char *old_dir, t_shell *shell)
 
 char	*ft_handle_hyphen(char *dir, char *old_dir, t_shell *shell)
 {
+	free(dir);
 	if (!old_dir)
 	{
 		ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
 		return (NULL);
 	}
-	free(dir);
 	dir = ft_strdup(old_dir);
 	if (!dir)
 	{
@@ -113,7 +109,7 @@ char	*ft_handle_tilde(char *dir, char *home_dir, t_shell *shell)
 			return (NULL);
 		}
 	}
-	else
+	else if (!ft_strncmp(dir, "~/", 2))
 	{
 		tmp = ft_substr(dir, 1, ft_strlen(dir) - 1);
 		free(dir);

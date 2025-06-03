@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/30 16:01:27 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/03 14:36:03 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,12 @@ int	execute_cd(t_shell *shell, char *path_name, char *home_dir, char *old_dir)
 			return (1);
 		}
 		result = handle_directory(&home_dir, NULL, NULL, shell);
-		path_name = ft_strdup(home_dir);
+		path_name = safe_strdup(home_dir, shell);
 	}
 	else
 		result = handle_directory(&path_name, home_dir, old_dir, shell);
 	if (result != 0)
-		return (result);
+		return (free(path_name), result);
 	ft_strlcpy(shell->data->old_dir, shell->data->cur_dir, PATH_MAX);
 	if (update_cur_dir(shell->data, path_name) != 0)
 		return (free(path_name), -1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:49:30 by meel-war          #+#    #+#             */
-/*   Updated: 2025/06/02 12:51:08 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:55:46 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	is_only_space_or_sign(char *str, int *error)
 }
 
 static unsigned long long	check_overflow(char *str, int *error, int i,
-										unsigned long long result)
+		unsigned long long result)
 {
 	unsigned long long	before;
 
@@ -75,31 +75,24 @@ static int	atoi_exit_code(char *str, int *error)
 	return ((int)((result * sign) % 256));
 }
 
-static int	validate_exit_args(t_token *curr)
+static int	check_numeric_arg(t_token *arg)
 {
 	int	error;
 	int	exit_value;
 
+	if (!arg || arg->str[0] == '\0')
+	{
+		ft_putstr_fd("minishell: exit: : numeric argument required\n", 2);
+		return (-2);
+	}
 	error = 0;
-	exit_value = atoi_exit_code(curr->next->str, &error);
+	exit_value = atoi_exit_code(arg->str, &error);
 	if (error)
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(curr->next->str, 2);
+		ft_putstr_fd(arg->str, 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		return (-2);
-	}
-	if (curr->next && curr->next->next &&
-		(curr->next->next->type == WORD || curr->next->next->type == S_QUOTE
-		|| curr->next->next->type == D_QUOTE))
-	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		return (1);
-	}
-	if (curr->next->str[0] == '\0')
-	{
-		ft_putstr_fd("minishell: exit: : numeric argument required\n", 2);
-		return (2);
 	}
 	return (exit_value);
 }
@@ -110,18 +103,24 @@ int	ft_exit(t_shell *shell, t_token *token_ptr)
 
 	if (ft_strcmp(token_ptr->str, "exit") != 0)
 		return (-1);
-	//ft_putstr_fd("exit\n", 1);
+	ft_putstr_fd("exit\n", 1);
 	if (!token_ptr->next)
 		free_all(shell, shell->exit_status);
-	exit_value = validate_exit_args(token_ptr);
+	exit_value = check_numeric_arg(token_ptr->next);
 	if (exit_value == -2)
-		free_all(shell, 2);
-	if (exit_value == 1)
 	{
+		free_all(shell, 2);
+		return (1);
+	}
+	if (token_ptr->next && token_ptr->next->next
+		&& (token_ptr->next->next->type == WORD
+			|| token_ptr->next->next->type == S_QUOTE
+			|| token_ptr->next->next->type == D_QUOTE))
+	{
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		shell->exit_status = 1;
 		return (1);
 	}
-	shell->exit_status = exit_value;
-	free_all(shell, shell->exit_status);
+	free_all(shell, exit_value);
 	return (1);
 }
