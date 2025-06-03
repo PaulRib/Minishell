@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:44:26 by meel-war          #+#    #+#             */
-/*   Updated: 2025/06/03 17:22:07 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:26:36 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static int	change_dir_utils(char *dir, t_shell *shell)
 	}
 	shell->exit_status = 1;
 	return (1);
-	
 }
 
 static int	check_change_dir(char *dir, t_shell *shell)
