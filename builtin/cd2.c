@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:44:26 by meel-war          #+#    #+#             */
-/*   Updated: 2025/06/03 17:09:31 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:22:07 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,22 @@
 
 static int	change_dir_utils(char *dir, t_shell *shell)
 {
-	if (access(dir, R_OK | X_OK) == -1)
+	struct stat    info;
+
+    if (stat(dir, &info) == 0)
 	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		ft_putstr_fd(dir, 2);
-		ft_putstr_fd(": Permission denied\n", 2);
-	}
-	else
-	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		ft_putstr_fd(dir, 2);
-		ft_putstr_fd(": Not a directory\n", 2);
+        if (!S_ISDIR(info.st_mode))
+    	{
+			ft_putstr_fd("minishell: cd: ", 2);
+			ft_putstr_fd(dir, 2);
+			ft_putstr_fd(": Not a directory\n", 2);
+		}
+		else if (access(dir, R_OK | X_OK) == -1)
+		{
+			ft_putstr_fd("minishell: cd: ", 2);
+			ft_putstr_fd(dir, 2);
+			ft_putstr_fd(": Permission denied\n", 2);
+		}
 	}
 	shell->exit_status = 1;
 	return (1);
