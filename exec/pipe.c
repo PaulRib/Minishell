@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/30 15:21:43 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:25:29 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 void	exec_child(t_shell *shell, int proc_i, t_pipe *pipe,
 		char **cmd_str)
 {
+	if (!cmd_str[0])
+	{
+		close_all_pipe_fds(shell, pipe->pipe_fds, proc_i);
+		free(cmd_str);
+		free(pipe->pipe_fds);
+		free(pipe->pids);
+		free_all(shell, 0);
+	}
 	init_signals_cmd();
 	setup_pipeline_redir(shell, proc_i, pipe);
 	close_all_pipe_fds(shell, pipe->pipe_fds, proc_i);

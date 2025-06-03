@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/02 12:37:21 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/03 15:29:43 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,15 +198,13 @@ void					env_exists(char **env, t_shell *shell);
 /*EXEC*/
 
 /*Error message*/
-void					infile_warning_msg(t_shell *shell, char *str);
-void					print_heredoc_eof_warning_msg(char *delimiter);
-void					print_access_error(t_shell *shell, t_token *current);
-void					print_directory_error(t_shell *shell, t_token *current);
+void					print_access_error(t_token *current);
+void					print_directory_error(t_token *current);
 
 /*Fds*/
-void					verify_access_fd(t_shell *shell);
-void					open_outfile(t_shell *shell);
-void					open_infile(t_shell *shell);
+int						verify_access_fd(t_token *current);
+int						open_outfile(t_shell *shell);
+int						open_infile(t_shell *shell);
 void					close_fd_exec(t_shell *shell);
 void					setup_heredoc_fds(t_shell *shell);
 void					process_redirections(t_shell *shell);
@@ -271,7 +269,6 @@ int						process_heredoc_inputs_loop(t_shell *shell);
 void					stock_all_heredoc(t_shell *shell);
 void					initiate_heredoc(t_shell *shell);
 int						create_heredoc_pipes(t_shell *shell);
-int						handle_all_heredocs(t_shell *shell);
 
 /*PARSING*/
 
