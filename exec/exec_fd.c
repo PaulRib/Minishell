@@ -6,13 +6,13 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:41:29 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/30 15:41:17 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/03 15:11:00 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	open_outfile(t_shell *shell)
+int	open_outfile(t_shell *shell)
 {
 	int		i;
 	t_token	*current;
@@ -31,14 +31,17 @@ void	open_outfile(t_shell *shell)
 			else if (current->prev->type == APPEND)
 				shell->exec->fd_out[i] = open(current->str,
 						O_WRONLY | O_CREAT | O_APPEND | O_CLOEXEC, 0777);
+			if (shell->exec->fd_out[i] == -1)
+				return(verify_access_fd(current));
 		}
 		if (shell->exec->fd_out[i] > 1 && current->type == PIPE)
 			i++;
 		current = current->next;
 	}
+	return (0);
 }
 
-void	open_infile(t_shell *shell)
+int	open_infile(t_shell *shell)
 {
 	int		i;
 	t_token	*current;
@@ -53,7 +56,7 @@ void	open_infile(t_shell *shell)
 				close(shell->exec->fd_in[i]);
 			shell->exec->fd_in[i] = open(current->str, O_RDONLY | O_CLOEXEC);
 			if (shell->exec->fd_in[i] == -1)
-				infile_warning_msg(shell, current->str);
+				return (verify_access_fd(current));
 			if (current->type == HEREDOC)
 				if (shell->exec->fd_in[i])
 					close(shell->exec->fd_in[i]);
@@ -62,6 +65,7 @@ void	open_infile(t_shell *shell)
 			i++;
 		current = current->next;
 	}
+	return (0);
 }
 
 void	close_fd_exec(t_shell *shell)
@@ -108,9 +112,15 @@ void	setup_heredoc_fds(t_shell *shell)
 
 void	process_redirections(t_shell *shell)
 {
+	int in_status;
+	int out_status;
+
+	in_status = 0;
+	out_status = 0;
 	if (shell->count->nb_redir_in > 0)
-		open_infile(shell);
+		in_status = open_infile(shell);
 	if (shell->count->nb_redir_out > 0 || shell->count->nb_append > 0)
-		open_outfile(shell);
-	verify_access_fd(shell);
+		out_status = open_outfile(shell);
+	if (in_status == 1 || out_status == 1)
+		free_all(shell, 1);
 }

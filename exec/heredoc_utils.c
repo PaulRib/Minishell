@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:39:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/30 15:43:54 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/03 15:28:39 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,15 @@
 
 int	handle_heredoc_eof(t_shell *shell, char *delimiter)
 {
-	print_heredoc_eof_warning_msg(delimiter);
+	ft_putstr_fd("\nminishell: warning: ", 2);
+	ft_putstr_fd("here-document delimited by end-of-file (wanted `", 2);
+	if (delimiter)
+		ft_putstr_fd(delimiter, 2);
+	else
+		ft_putstr_fd("unknown", 2);
+	ft_putstr_fd("`)\n", 2);
 	shell->exit_status = 0;
-	close_heredoc_fds(shell);
-	free_all(shell, shell->exit_status);
-	return (2);
+	return (1);
 }
 
 int	check_end(int *i, t_shell *shell, t_heredoc **curr)

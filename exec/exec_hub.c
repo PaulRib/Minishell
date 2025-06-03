@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:28 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/30 15:18:40 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:02:38 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,7 @@ int	process_heredocs(t_shell *shell)
 {
 	initiate_heredoc(shell);
 	stock_all_heredoc(shell);
-	if (handle_all_heredocs(shell) != 0)
-	{
-		ft_free_exec(shell);
-		ft_free_heredoc(&shell);
-		return (1);
-	}
+	process_heredoc_inputs_loop(shell);
 	return (0);
 }
 
@@ -52,8 +47,7 @@ void	run_global_child_process(t_shell *shell)
 {
 	init_signals();
 	if (shell->count->nb_heredoc > 0)
-		if (process_heredocs(shell))
-			exit(shell->exit_status);
+		process_heredocs(shell);
 	process_redirections(shell);
 	setup_heredoc_fds(shell);
 	execute_child(shell);

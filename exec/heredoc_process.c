@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:58:14 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/30 15:44:40 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/03 15:24:31 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ int	process_heredoc_inputs_loop(t_shell *shell)
 	int			i;
 	int			status;
 
+	if (create_heredoc_pipes(shell) != 0)
+		free_all(shell, 1);
 	current = shell->heredoc;
 	i = 0;
 	while (current)
@@ -101,11 +103,6 @@ int	process_heredoc_inputs_loop(t_shell *shell)
 		{
 			if (check_end(&i, shell, &current) == -1)
 				break ;
-		}
-		if (!current->eof_heredoc || !current->eof_heredoc[i])
-		{
-			shell->exit_status = 1;
-			return (3);
 		}
 		status = read_heredoc_line(shell, current, current->eof_heredoc[i], i);
 		if (status == 1)

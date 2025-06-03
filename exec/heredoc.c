@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:36:54 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/30 15:59:52 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/03 15:24:34 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,27 +55,4 @@ int	create_heredoc_pipes(t_shell *shell)
 		current = current->next;
 	}
 	return (0);
-}
-
-int	handle_all_heredocs(t_shell *shell)
-{
-	int	process_status;
-
-	if (!shell->heredoc)
-		return (0);
-	if (create_heredoc_pipes(shell) != 0)
-		free_all(shell, 1);
-	process_status = process_heredoc_inputs_loop(shell);
-	if (process_status == 0 || process_status == 1)
-		return (0);
-	else
-	{
-		close_all_heredoc_fds(shell->heredoc);
-		ft_free_heredoc(&shell);
-		shell->heredoc = NULL;
-		if (process_status == 2)
-			return (130);
-		else
-			return (1);
-	}
 }

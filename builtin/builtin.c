@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/02 12:55:03 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:02:41 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,7 @@ static int	do_solo_redir(t_shell *shell, t_token *current, int type)
 	{
 		initiate_heredoc(shell);
 		stock_all_heredoc(shell);
-		if (handle_all_heredocs(shell) != 0)
-			free_all(shell, 1);
+		process_heredoc_inputs_loop(shell);
 	}
 	builtin_fds(shell, current, type);
 	dup2(save1, STDIN_FILENO);
