@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/03 15:29:43 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:53:15 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,11 +198,11 @@ void					env_exists(char **env, t_shell *shell);
 /*EXEC*/
 
 /*Error message*/
-void					print_access_error(t_token *current);
+int						print_access_error(t_token *current);
 void					print_directory_error(t_token *current);
 
 /*Fds*/
-int						verify_access_fd(t_token *current);
+int						verify_access_fd(t_token *current, int type);
 int						open_outfile(t_shell *shell);
 int						open_infile(t_shell *shell);
 void					close_fd_exec(t_shell *shell);

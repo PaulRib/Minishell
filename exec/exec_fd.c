@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:41:29 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/03 15:11:00 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:26:01 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	open_outfile(t_shell *shell)
 				shell->exec->fd_out[i] = open(current->str,
 						O_WRONLY | O_CREAT | O_APPEND | O_CLOEXEC, 0777);
 			if (shell->exec->fd_out[i] == -1)
-				return(verify_access_fd(current));
+				return(verify_access_fd(current, 1));
 		}
 		if (shell->exec->fd_out[i] > 1 && current->type == PIPE)
 			i++;
@@ -56,7 +56,7 @@ int	open_infile(t_shell *shell)
 				close(shell->exec->fd_in[i]);
 			shell->exec->fd_in[i] = open(current->str, O_RDONLY | O_CLOEXEC);
 			if (shell->exec->fd_in[i] == -1)
-				return (verify_access_fd(current));
+				return (verify_access_fd(current, 0));
 			if (current->type == HEREDOC)
 				if (shell->exec->fd_in[i])
 					close(shell->exec->fd_in[i]);
