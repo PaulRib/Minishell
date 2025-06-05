@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 13:19:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/05 14:04:46 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:48:47 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	after_quote(t_token *current, t_token *new, int end, t_shell *shell)
 	after = malloc(sizeof(t_token));
 	if (!after)
 		free_all(shell, 1);
+	ft_memset(after, 0, sizeof(t_token));
 	after->str = ft_strdup(&current->str[end]);
 	if (!after->str)
 	{
@@ -32,7 +33,6 @@ void	after_quote(t_token *current, t_token *new, int end, t_shell *shell)
 			new->next->prev = after;
 		after->prev = new;
 		new->next = after;
-		after->type = WORD;
 	}
 	else
 	{
@@ -56,7 +56,7 @@ static void	extract_quote(t_token *current, t_quote qte, t_shell *shell)
 		free_all(shell, 1);
 	}
 	if (current->str[qte.end + 1] == ' ' || current->str[qte.end + 1] == '\t')
-		current->last_space = true;
+		new_token->last_space = true;
 	if (is_empty(current, qte.start - 1))
 	{
 		insert_new_token(qte, new_token, current);

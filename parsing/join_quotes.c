@@ -6,21 +6,20 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:44:29 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/02 11:49:09 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:02:11 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static t_token	*fix_quote_before(t_shell *shell, t_token *current)
+static void	*fix_quote_before(t_shell *shell, t_token *current)
 {
 	char	*final;
 	int		end;
 	char	*tmp;
+	t_token	*prev;
 
-	if (!current || !current->prev || !current->str)
-		return (current);
-	end = find_space(current, 0);
+	end = ft_strlen(current->str);
 	tmp = ft_substr(current->str, 0, end);
 	if (!tmp)
 		free_all(shell, 1);
@@ -30,49 +29,27 @@ static t_token	*fix_quote_before(t_shell *shell, t_token *current)
 		free_all(shell, 1);
 	free(current->prev->str);
 	current->prev->str = final;
-	return (change_after(shell, current, end));
-}
-
-static t_token	*update_current_token(t_shell *shell,
-		t_token *current, int start)
-{
-	char	*tmp;
-
-	if (start >= 0)
-	{
-		tmp = ft_substr(current->str, 0, start + 1);
-		if (!tmp)
-			free_all(shell, 1);
-		free(current->str);
-		current->str = tmp;
-		return (current->next);
-	}
-	else
-	{
-		if (current->prev)
-			current->prev->next = current->next;
-		else
-			shell->token = current->next;
-		if (current->next)
-			current->next->prev = current->prev;
-		free(current->str);
-		free(current);
-		return (current->next);
-	}
+	prev = current->prev;
+	prev->last_space = true;
+	if (current->next)
+		current->next->prev = prev;
+	prev->next = current->next;
+	if (shell->token == current)
+		shell->token = prev;
+	free(current->str);
+	free(current);
+	return (prev);
 }
 
 static t_token	*fix_quote_after(t_shell *shell, t_token *current)
 {
 	char	*tmp;
 	char	*final;
-	int		start;
 	int		len;
+	t_token	*next;
 
-	if (!current || !current->next || !current->str)
-		return (current);
 	len = ft_strlen(current->str);
-	start = find_space(current, len - 1);
-	tmp = ft_substr(current->str, start + 1, len - start - 1);
+	tmp = ft_substr(current->str, 0, len);
 	if (!tmp)
 		free_all(shell, 1);
 	final = ft_strjoin(tmp, current->next->str);
@@ -81,7 +58,15 @@ static t_token	*fix_quote_after(t_shell *shell, t_token *current)
 		free_all(shell, 1);
 	free(current->next->str);
 	current->next->str = final;
-	return (update_current_token(shell, current, start));
+	next = current->next;
+	if (current->prev)
+		current->prev->next = next;
+	next->prev = current->prev;
+	if (shell->token == current)
+	shell->token = next;
+	free(current->str);
+	free(current);
+	return (next);
 }
 
 static int	should_join_quotes(t_token *current, int check_before)
@@ -124,16 +109,13 @@ void	join_quote(t_shell *shell)
 			current = fix_quote_before(shell, current);
 			if (!current)
 				break ;
-			continue ;
 		}
 		if (should_join_quotes(current, 0))
 		{
 			current = fix_quote_after(shell, current);
 			if (!current)
 				break ;
-			continue ;
 		}
-		if (current)
-			current = current->next;
+		current = current->next;
 	}
 }

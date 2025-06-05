@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/03 17:53:15 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:09:49 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,6 +287,7 @@ t_token					*change_after(t_shell *shell, t_token *current,
 							int end);
 int						join_check(t_token *current, int len);
 void					join_quote(t_shell *shell);
+void					remove_node(t_token **current);
 
 /*Quote*/
 int						is_closed(t_token *current, int i, char c);
