@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:14:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/05 16:49:51 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:08:13 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	get_type(t_shell *shell)
 		else if (tmp->type != S_QUOTE && tmp->type != D_QUOTE
 			&& ft_strcmp(tmp->str, ">>") == 0)
 			tmp->type = APPEND;
-		else if (tmp->type != S_QUOTE && tmp->type != D_QUOTE 
+		else if (tmp->type != S_QUOTE && tmp->type != D_QUOTE
 			&& ft_strcmp(tmp->str, "<<") == 0)
 			tmp->type = HEREDOC;
 		else if (tmp->type != S_QUOTE && tmp->type != D_QUOTE)

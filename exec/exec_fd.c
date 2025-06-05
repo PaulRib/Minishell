@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:41:29 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/03 17:26:01 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:09:48 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	open_outfile(t_shell *shell)
 				shell->exec->fd_out[i] = open(current->str,
 						O_WRONLY | O_CREAT | O_APPEND | O_CLOEXEC, 0777);
 			if (shell->exec->fd_out[i] == -1)
-				return(verify_access_fd(current, 1));
+				return (verify_access_fd(current, 1));
 		}
 		if (shell->exec->fd_out[i] > 1 && current->type == PIPE)
 			i++;
@@ -112,8 +112,8 @@ void	setup_heredoc_fds(t_shell *shell)
 
 void	process_redirections(t_shell *shell)
 {
-	int in_status;
-	int out_status;
+	int	in_status;
+	int	out_status;
 
 	in_status = 0;
 	out_status = 0;

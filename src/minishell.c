@@ -6,34 +6,13 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/05 16:48:46 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:06:02 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int		g_exit_status = 0;
-
-void verify_space(t_shell *shell)
-{
-	t_token *current;
-	int		len;
-
-	current = shell->token;
-	while (current)
-	{
-		if (current->last_space == false)
-		{
-			len = ft_strlen(current->str);
-			if (len > 0)
-			{
-				if (current->str[len - 1] == ' ' || current->str[len - 1] == '\t')
-					current->last_space = true;
-			}
-		}
-		current = current->next;
-	}
-}
+int			g_exit_status = 0;
 
 void	initiate_all(t_shell *shell)
 {
@@ -92,7 +71,7 @@ void	ft_free_node(t_shell *shell)
 	}
 }
 
-static int line_empty(char *line)
+static int	line_empty(char *line)
 {
 	int	i;
 

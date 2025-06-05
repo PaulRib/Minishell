@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/03 17:02:41 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:11:58 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ int	check_one_builtin(t_shell *shell)
 	if (shell->exec->process == 1 && shell->count->nb_pipe == 0)
 	{
 		while (current && (current->type == REDIR_IN
-			|| current->type == REDIR_OUT || current->type == HEREDOC
-			|| current->type == APPEND))
+				|| current->type == REDIR_OUT || current->type == HEREDOC
+				|| current->type == APPEND))
 			current = current->next;
 		if (ft_strcmp(current->str, "cd") == 0)
 			return (do_solo_redir(shell, current, 1));

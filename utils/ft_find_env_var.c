@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_find_env_var.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 16:29:58 by meel-war          #+#    #+#             */
-/*   Updated: 2025/06/05 16:45:08 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:07:32 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int	find_env_var(char **env, char *var)
 
 int	find_exp_var(char **env, char *var)
 {
-	int i;
-	int len;
+	int	i;
+	int	len;
 
 	i = 0;
 	len = ft_strlen(var);

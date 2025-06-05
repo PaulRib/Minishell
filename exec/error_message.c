@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:08:27 by meel-war          #+#    #+#             */
-/*   Updated: 2025/06/04 13:49:32 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:10:07 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,13 @@ int	verify_access_fd(t_token *current, int type)
 		return (1);
 	}
 	if (stat(current->str, &info) == 0)
+	{
 		if (S_ISDIR(info.st_mode))
 		{
 			print_directory_error(current);
 			return (1);
 		}
+	}
 	if (type == 0)
 		if (access(current->str, R_OK) == -1)
 			return (print_access_error(current));

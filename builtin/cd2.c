@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:44:26 by meel-war          #+#    #+#             */
-/*   Updated: 2025/06/03 17:26:36 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:13:24 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 static int	change_dir_utils(char *dir, t_shell *shell)
 {
-	struct stat    info;
+	struct stat	info;
 
-    if (stat(dir, &info) == 0)
+	if (stat(dir, &info) == 0)
 	{
-        if (!S_ISDIR(info.st_mode))
-    	{
+		if (!S_ISDIR(info.st_mode))
+		{
 			ft_putstr_fd("minishell: cd: ", 2);
 			ft_putstr_fd(dir, 2);
 			ft_putstr_fd(": Not a directory\n", 2);
@@ -54,13 +54,13 @@ static int	check_change_dir(char *dir, t_shell *shell)
 		return (1);
 	}
 	if (chdir(dir) != 0)
-		return(change_dir_utils(dir, shell));
+		return (change_dir_utils(dir, shell));
 	return (0);
 }
 
 int	handle_directory(char **dir, char *home_dir, char *old_dir, t_shell *shell)
 {
-	int result;
+	int	result;
 
 	if (!ft_strncmp(*dir, "-", 2))
 	{

@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:15:41 by meel-war          #+#    #+#             */
-/*   Updated: 2025/06/02 13:01:19 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:12:38 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,27 +46,27 @@ int	ft_count(t_token *current)
 
 static int	ft_echo(t_token *token_ptr)
 {
-	t_token	*curr;
+	t_token	*cur;
 	int		n_param;
 	int		i;
 
 	n_param = 0;
 	n_param = ft_count(token_ptr->next);
 	i = n_param;
-	curr = token_ptr->next;
-	while (curr && i--)
-		curr = curr->next;
-	while (curr && curr->type != PIPE)
+	cur = token_ptr->next;
+	while (cur && i--)
+		cur = cur->next;
+	while (cur && cur->type != PIPE)
 	{
-		if (curr->type == WORD || curr->type == S_QUOTE
-			|| curr->type == D_QUOTE)
+		if (cur->type == WORD || cur->type == S_QUOTE
+			|| cur->type == D_QUOTE)
 		{
-			ft_putstr_fd(curr->str, 1);
-			if (curr->next && curr->next->type != PIPE
-				&& curr->next->type != REDIR_OUT && curr->next->type != REDIR_IN)
+			ft_putstr_fd(cur->str, 1);
+			if (cur->next && cur->next->type != PIPE
+				&& cur->next->type != REDIR_OUT && cur->next->type != REDIR_IN)
 				write(1, " ", 1);
 		}
-		curr = curr->next;
+		cur = cur->next;
 	}
 	if (n_param == 0)
 		write(1, "\n", 1);

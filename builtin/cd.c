@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:03:35 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/03 14:36:03 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:12:09 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	check_cd(t_shell *shell, t_token *token_ptr)
 static int	update_cur_dir(t_data *data, char *path_name)
 {
 	char	real_path[PATH_MAX];
-	
+
 	if (path_name && path_name[0] == '/')
 		ft_strlcpy(data->cur_dir, path_name, PATH_MAX);
 	else if (!path_name)

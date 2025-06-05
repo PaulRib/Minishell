@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 13:08:09 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/05 17:02:26 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:08:46 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,26 @@ int	join_check(t_token *current, int len)
 			return (0);
 	}
 	return (0);
+}
+
+void	verify_space(t_shell *shell)
+{
+	t_token	*current;
+	int		len;
+
+	current = shell->token;
+	while (current)
+	{
+		if (current->last_space == false)
+		{
+			len = ft_strlen(current->str);
+			if (len > 0)
+			{
+				if (current->str[len - 1] == ' ' || current->str[len
+						- 1] == '\t')
+					current->last_space = true;
+			}
+		}
+		current = current->next;
+	}
 }

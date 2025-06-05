@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/05 17:04:43 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:09:22 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,8 +160,7 @@ char					*ft_handle_tilde(char *dir, char *home_dir,
 
 /*Echo*/
 int						ft_count(t_token *current);
-int						check_echo(t_token *token_ptr
-);
+int						check_echo(t_token *token_ptr);
 
 /*Export*/
 int						check_export(t_shell *shell, t_token *token_ptr);
@@ -288,7 +287,7 @@ t_token					*change_after(t_shell *shell, t_token *current,
 							int end);
 int						join_check(t_token *current, int len);
 void					join_quote(t_shell *shell);
-void					remove_node(t_token **current);
+void					verify_space(t_shell *shell);
 
 /*Quote*/
 int						is_closed(t_token *current, int i, char c);
@@ -355,7 +354,8 @@ char					*safe_strdup(char *s, t_shell *shell);
 void					free_all(t_shell *shell, int status);
 
 /*Env var*/
-char					**add_env_var(char **env, char *new_var, t_shell *shell);
+char					**add_env_var(char **env, char *new_var,
+							t_shell *shell);
 int						find_env_var(char **env, char *var);
 char					*ft_get_env(char **env, char *var_name);
 int						update_env_var(t_shell *shell, char *var_name,

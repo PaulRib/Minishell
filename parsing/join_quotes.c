@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:44:29 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/05 17:02:11 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:08:24 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static t_token	*fix_quote_after(t_shell *shell, t_token *current)
 		current->prev->next = next;
 	next->prev = current->prev;
 	if (shell->token == current)
-	shell->token = next;
+		shell->token = next;
 	free(current->str);
 	free(current);
 	return (next);
