@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 13:19:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/02 11:47:25 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 14:04:46 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static void	extract_quote(t_token *current, t_quote qte, t_shell *shell)
 	if (!new_token)
 		free_all(shell, 1);
 	new_token->str = ft_substr(current->str, qte.start, qte.end - qte.start);
+	new_token->last_space = false;
 	if (!new_token->str)
 	{
 		free(new_token);

@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:56:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/02 11:47:52 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 14:16:14 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	after_mult_quote(t_token *current, int end, t_shell *shell)
 	if (!after)
 		free_all(shell, 1);
 	after->str = ft_strdup(&current->str[end]);
+	after->last_space = true;
 	if (!after->str)
 	{
 		free(after);
