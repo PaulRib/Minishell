@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:34:47 by meel-war          #+#    #+#             */
-/*   Updated: 2025/06/05 16:45:27 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:36:20 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,10 @@ void	expand_all_tokens(t_shell *shell)
 	{
 		if (cur->type == WORD || cur->type == D_QUOTE)
 		{
-			if (cur->prev && cur->prev->type != HEREDOC)
+			if (cur->prev && cur->prev->type == HEREDOC)
+			{
+			}
+			else
 			{
 				expanded = expand_variables(shell, cur->str);
 				free(cur->str);

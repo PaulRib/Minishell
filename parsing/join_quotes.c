@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:44:29 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/05 17:08:24 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:42:50 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	*fix_quote_before(t_shell *shell, t_token *current)
 	free(current->prev->str);
 	current->prev->str = final;
 	prev = current->prev;
-	prev->last_space = true;
+	prev->last_space = current->last_space;
 	if (current->next)
 		current->next->prev = prev;
 	prev->next = current->next;

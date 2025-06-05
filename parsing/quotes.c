@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 13:19:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/05 15:48:47 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:18:04 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	handling_quotes(t_shell *shell)
 	tmp = shell->token;
 	while (tmp)
 	{
-		if (tmp->type == WORD)
+		if (tmp->type == WORD || tmp->type == CMD)
 			if (process_quote(tmp, shell) == -1)
 				return (-1);
 		tmp = tmp->next;
