@@ -6,7 +6,7 @@
 /*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 15:17:08 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/29 14:50:07 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:44:15 by meel-war         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,35 @@ static char	**remove_env_var(char **env, int index, t_shell *shell)
 	return (new_env);
 }
 
+static void	update_var_tab(char ***tab, int index, t_shell *shell)
+{
+	char	**new_tab;
+
+	if (!tab || !(*tab) || index == -1)
+		return ;
+	new_tab = remove_env_var(*tab, index, shell);
+	{
+		if (new_tab)
+		{
+			free_tab(*tab);
+			*tab = new_tab;
+		}
+	}
+}
+
 int	ft_unset(t_data *data, char *var_name, t_shell *shell)
 {
-	int		var_index;
-	char	**new_env;
+	int	var_index;
+	int	export_index;
 
 	if (!var_name || !var_name[0])
 		return (0);
 	var_index = find_env_var(data->new_env, var_name);
-	if (var_index != -1)
-	{
-		new_env = remove_env_var(data->new_env, var_index, shell);
-		if (new_env)
-		{
-			free_tab(data->new_env);
-			data->new_env = new_env;
-		}
-	}
+	export_index = -1;
+	if (data->sorted_env)
+		export_index = find_exp_var(data->sorted_env, var_name);
+	update_var_tab(&data->sorted_env, export_index, shell);
+	update_var_tab(&data->new_env, var_index, shell);
 	return (0);
 }
 
