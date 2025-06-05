@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/05 17:11:38 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:51:04 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ void	execute_command(t_shell *shell, char **exec_args, t_pipe *pipe)
 		free(exec_args);
 		free_all(shell, 127);
 	}
+	close_fd_exec(shell);
 	close_heredoc_fds(shell);
 	if (execve(cmd_path, exec_args, shell->data->new_env) == -1)
 	{

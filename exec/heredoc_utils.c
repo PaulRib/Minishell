@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:39:31 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/03 15:28:39 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:09:56 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int	check_end(int *i, t_shell *shell, t_heredoc **curr)
 	current = *curr;
 	if (current->hrd == true)
 		shell->exec->prev_fd[current->process] = current->p_fd[0];
-	close(current->p_fd[1]);
+	if (current->p_fd[1] > 2)
+		close(current->p_fd[1]);
 	if (current->next)
 	{
 		(*i) = 0;

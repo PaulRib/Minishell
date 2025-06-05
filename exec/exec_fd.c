@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:41:29 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/05 17:09:48 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:01:37 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ int	open_outfile(t_shell *shell)
 	{
 		if (current->type == FILE_OUT)
 		{
-			if (shell->exec->fd_out[i] != 1)
+			if (shell->exec->fd_out[i] > 1)
 				close(shell->exec->fd_out[i]);
 			if (current->prev->type == REDIR_OUT)
 				shell->exec->fd_out[i] = open(current->str,
-						O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC, 0777);
+						O_WRONLY | O_CREAT | O_TRUNC, 0777);
 			else if (current->prev->type == APPEND)
 				shell->exec->fd_out[i] = open(current->str,
-						O_WRONLY | O_CREAT | O_APPEND | O_CLOEXEC, 0777);
+						O_WRONLY | O_CREAT | O_APPEND, 0777);
 			if (shell->exec->fd_out[i] == -1)
 				return (verify_access_fd(current, 1));
 		}
@@ -52,13 +52,13 @@ int	open_infile(t_shell *shell)
 	{
 		if (current->type == FILE_IN)
 		{
-			if (shell->exec->fd_in[i])
+			if (shell->exec->fd_in[i] > 0)
 				close(shell->exec->fd_in[i]);
-			shell->exec->fd_in[i] = open(current->str, O_RDONLY | O_CLOEXEC);
+			shell->exec->fd_in[i] = open(current->str, O_RDONLY);
 			if (shell->exec->fd_in[i] == -1)
 				return (verify_access_fd(current, 0));
 			if (current->type == HEREDOC)
-				if (shell->exec->fd_in[i])
+				if (shell->exec->fd_in[i] > 0)
 					close(shell->exec->fd_in[i]);
 		}
 		if (current->type == PIPE && current->prev->type == FILE_OUT)
