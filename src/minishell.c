@@ -6,13 +6,34 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/04 14:31:59 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:48:46 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 int		g_exit_status = 0;
+
+void verify_space(t_shell *shell)
+{
+	t_token *current;
+	int		len;
+
+	current = shell->token;
+	while (current)
+	{
+		if (current->last_space == false)
+		{
+			len = ft_strlen(current->str);
+			if (len > 0)
+			{
+				if (current->str[len - 1] == ' ' || current->str[len - 1] == '\t')
+					current->last_space = true;
+			}
+		}
+		current = current->next;
+	}
+}
 
 void	initiate_all(t_shell *shell)
 {
@@ -37,10 +58,11 @@ void	ft_hub_parsing(t_shell *shell, char *line)
 	shell->token->type = WORD;
 	if (handling_quotes(shell) == -1)
 		return ;
-	expand_all_tokens(shell);
-	join_quote(shell);
+	verify_space(shell);
 	ft_split_word(shell);
 	get_type(shell);
+	expand_all_tokens(shell);
+	join_quote(shell);
 	second_token(shell);
 	if (syntax_hub(shell) == -1)
 		return ;

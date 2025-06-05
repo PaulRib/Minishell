@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:59:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/05/27 16:05:28 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:40:46 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static void	create_and_insert_token(t_token *current, char *remainder,
 	new_token = ft_memset(new_token, 0, sizeof(t_token));
 	new_token->str = remainder;
 	new_token->type = WORD;
+	new_token->last_space = current->last_space;
+	current->last_space = false;
 	new_token->next = current->next;
 	if (current->next)
 		current->next->prev = new_token;
@@ -103,7 +105,7 @@ void	ft_split_word(t_shell *shell)
 	current = shell->token;
 	while (current)
 	{
-		if (current->type == WORD && current->str)
+		if ((current->type == CMD || current->type == WORD) && current->str)
 			process_token(current, shell);
 		current = current->next;
 	}

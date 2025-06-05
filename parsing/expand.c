@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meel-war <meel-war@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:34:47 by meel-war          #+#    #+#             */
-/*   Updated: 2025/05/30 13:24:31 by meel-war         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:45:27 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,12 @@ void	expand_all_tokens(t_shell *shell)
 	{
 		if (cur->type == WORD || cur->type == D_QUOTE)
 		{
-			expanded = expand_variables(shell, cur->str);
-			free(cur->str);
-			cur->str = expanded;
+			if (cur->prev && cur->prev->type != HEREDOC)
+			{
+				expanded = expand_variables(shell, cur->str);
+				free(cur->str);
+				cur->str = expanded;
+			}
 		}
 		cur = cur->next;
 	}
