@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 13:12:19 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/05 17:11:58 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/09 12:42:10 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	check_one_builtin(t_shell *shell)
 	return (0);
 }
 
-int	is_target_builtin(t_shell *shell, t_token *target)
+int	is_target_builtin(t_shell *shell, t_token *target, t_pipe *pip, char **str)
 {
 	if (check_cd(shell, target) != -1)
 		return (1);
@@ -126,7 +126,12 @@ int	is_target_builtin(t_shell *shell, t_token *target)
 		return (1);
 	if (check_export(shell, target) != -1)
 		return (1);
-	if (ft_exit(shell, target) != -1)
-		return (1);
+	if (ft_strcmp(target->str, "exit") == 0)
+	{
+		free(pip->pids);
+		free(pip->pipe_fds);
+		free(str);
+		ft_exit(shell, target);
+	}
 	return (-1);
 }

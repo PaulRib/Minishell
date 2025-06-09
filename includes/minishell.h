@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:03:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/05 17:09:22 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/09 12:42:14 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,8 @@ typedef struct s_shell
 /*Hub*/
 int						is_simple_builtin(t_shell *shell);
 int						check_one_builtin(t_shell *shell);
-int						is_target_builtin(t_shell *shell, t_token *target);
+int						is_target_builtin(t_shell *shell, t_token *target,
+							t_pipe *pip, char **str);
 
 /*Cd*/
 int						validate_tokens(t_shell *shell, t_token *token_ptr);
@@ -225,7 +226,8 @@ char					**extract_cmd(t_shell *shell, t_token *current,
 							int count);
 
 /*Execution*/
-int						is_cmd_a_builtin(t_shell *shell, t_pipe *pipe);
+int						is_cmd_a_builtin(t_shell *shell, t_pipe *pipe,
+							char **cmd_str);
 char					**give_curr_cmd(t_shell *shell, int i);
 int						get_global_cmd_idx(t_shell *shell, int target_proc_i,
 							int cmd_in_target_proc_i);

@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:15:41 by meel-war          #+#    #+#             */
-/*   Updated: 2025/06/05 17:12:38 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/09 12:44:31 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,19 @@ int	ft_count(t_token *current)
 	return (n);
 }
 
+static int	should_print_space(t_token *cur)
+{
+	int	len;
+
+	len = ft_strlen(cur->str);
+	if (cur->next && cur->next->type != PIPE
+		&& cur->next->type != REDIR_OUT && cur->next->type != REDIR_IN)
+		if (len == 0 || (cur->str[len - 1] != ' '
+				&& cur->str[len - 1] != '\t'))
+			return (0);
+	return (1);
+}
+
 static int	ft_echo(t_token *token_ptr)
 {
 	t_token	*cur;
@@ -62,8 +75,7 @@ static int	ft_echo(t_token *token_ptr)
 			|| cur->type == D_QUOTE)
 		{
 			ft_putstr_fd(cur->str, 1);
-			if (cur->next && cur->next->type != PIPE
-				&& cur->next->type != REDIR_OUT && cur->next->type != REDIR_IN)
+			if (!should_print_space(cur))
 				write(1, " ", 1);
 		}
 		cur = cur->next;

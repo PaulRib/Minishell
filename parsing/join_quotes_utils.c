@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 13:08:09 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/05 17:08:46 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/09 12:32:21 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int	join_check(t_token *current, int len)
 	if (current->str && current->str[len] != '>'
 		&& current->str[len] != '<' && current->str[len] != '|')
 	{
+		if (len == 0)
+			return (1);
 		if (current->str && current->str[len] != ' '
 			&& current->str[len] != '\t')
 			return (1);

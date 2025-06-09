@@ -6,13 +6,13 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:01:22 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/05 17:51:04 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/09 12:35:54 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	is_cmd_a_builtin(t_shell *shell, t_pipe *pipe)
+int	is_cmd_a_builtin(t_shell *shell, t_pipe *pipe, char **cmd_str)
 {
 	int		i;
 	t_token	*current;
@@ -28,7 +28,7 @@ int	is_cmd_a_builtin(t_shell *shell, t_pipe *pipe)
 	while (current && current->type != WORD && current->type != CMD
 		&& current->type != S_QUOTE && current->type != D_QUOTE)
 		current = current->next;
-	if (is_target_builtin(shell, current) > 0)
+	if (is_target_builtin(shell, current, pipe, cmd_str) > 0)
 		return (1);
 	return (0);
 }

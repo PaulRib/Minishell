@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:32 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/06/03 18:01:29 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/06/09 12:35:39 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@ void	exec_child(t_shell *shell, int proc_i, t_pipe *pipe,
 	init_signals_cmd();
 	setup_pipeline_redir(shell, proc_i, pipe);
 	close_all_pipe_fds(shell, pipe->pipe_fds, proc_i);
-	if (!is_cmd_a_builtin(shell, pipe))
+	if (!is_cmd_a_builtin(shell, pipe, cmd_str))
 		execute_command(shell, cmd_str, pipe);
 	else
 	{
+		free(pipe->pipe_fds);
 		free(pipe->pids);
 		free(cmd_str);
 		free_all(shell, 0);
